@@ -6,7 +6,9 @@ export * from './natives'
 export * from './numbers'
 export * from './tokens'
 
-export const INIT_CODE_HASH: string = '0xe18a34eb0e04b04f7a0ac29a6e80748dca96319b42c54d679cb821dca90c6303'
+// Temporarily change the init code hash for Conveyor v2 support
+// export const INIT_CODE_HASH: string = '0xe18a34eb0e04b04f7a0ac29a6e80748dca96319b42c54d679cb821dca90c6303'
+export const INIT_CODE_HASH: string = '0xa99ffa392d5d95a688d9158d3f51df02bf6d94b75f1da34a3cdadeb80fe9002b'
 
 export const MINIMUM_LIQUIDITY = JSBI.BigInt(1000)
 
