@@ -1327,7 +1327,9 @@ var Pair = /*#__PURE__*/function () {
   function Pair(currencyAmountA, currencyAmountB) {
     var currencyAmounts = currencyAmountA.currency.sortsBefore(currencyAmountB.currency) // does safety checks
     ? [currencyAmountA, currencyAmountB] : [currencyAmountB, currencyAmountA];
-    this.liquidityToken = new Token(currencyAmounts[0].currency.chainId, Pair.getAddress(currencyAmounts[0].currency, currencyAmounts[1].currency), 18, 'UNI-V2', 'Uniswap V2');
+    this.liquidityToken = new Token(currencyAmounts[0].currency.chainId, Pair.getAddress(currencyAmounts[0].currency, currencyAmounts[1].currency), 18, // 'UNI-V2',
+    // 'Uniswap V2'
+    'CON-V2', 'Conveyor V2');
     this.tokenAmounts = currencyAmounts;
   }
 
