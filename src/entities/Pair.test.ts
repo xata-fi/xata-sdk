@@ -12,7 +12,8 @@ describe('computePairAddress', () => {
     const result = computePairAddress({
       factoryAddress: '0x1111111111111111111111111111111111111111',
       tokenA,
-      tokenB
+      tokenB,
+      isConveyorPair: false
     })
 
     expect(result).toEqual('0xbCfFCD50d09095E48CC5ea02d564CAEe61aBc004')
@@ -25,7 +26,8 @@ describe('computePairAddress', () => {
     const resultA = computePairAddress({
       factoryAddress: '0x1111111111111111111111111111111111111111',
       tokenA,
-      tokenB
+      tokenB,
+      isConveyorPair: false
     })
 
     tokenA = DAI
@@ -33,7 +35,8 @@ describe('computePairAddress', () => {
     const resultB = computePairAddress({
       factoryAddress: '0x1111111111111111111111111111111111111111',
       tokenA,
-      tokenB
+      tokenB,
+      isConveyorPair: false
     })
 
     expect(resultA).toEqual(resultB)

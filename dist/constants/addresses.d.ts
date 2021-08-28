@@ -1,6 +1,9 @@
 import { AddressMap } from '../types';
+import { Exchanger } from '../enums/Exchanger';
 export declare const USDC_ADDRESS: AddressMap;
-export declare const FACTORY_ADDRESS: AddressMap;
+export declare const FACTORY_ADDRESS: {
+    [exchanger in Exchanger]: AddressMap;
+};
 export declare const ROUTER_ADDRESS: AddressMap;
 export declare const SUSHI_ADDRESS: AddressMap;
 export declare const MASTERCHEF_ADDRESS: AddressMap;
@@ -27,3 +30,4 @@ export declare const ENS_REGISTRAR_ADDRESS: AddressMap;
 export declare const ZAPPER_ADDRESS: AddressMap;
 export declare const MERKLE_DISTRIBUTOR_ADDRESS: AddressMap;
 export declare const MULTICALL2_ADDRESS: AddressMap;
+export declare const CONVEYOR_V2_ROUTER_ADDRESS: AddressMap;

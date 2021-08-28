@@ -5,8 +5,8 @@ import { Token } from './Token';
 export declare class Pair {
     readonly liquidityToken: Token;
     private readonly tokenAmounts;
-    static getAddress(tokenA: Token, tokenB: Token): string;
-    constructor(currencyAmountA: CurrencyAmount<Token>, currencyAmountB: CurrencyAmount<Token>);
+    static getAddress(tokenA: Token, tokenB: Token, isConveyorPair?: boolean): string;
+    constructor(currencyAmountA: CurrencyAmount<Token>, currencyAmountB: CurrencyAmount<Token>, isConveyorPair?: boolean);
     /**
      * Returns true if the token is either token0 or token1
      * @param token to check

@@ -1,4 +1,4 @@
-import { FACTORY_ADDRESS, FIVE, MINIMUM_LIQUIDITY, ONE, ZERO, _1000, _997 } from '../constants'
+import { /*FACTORY_ADDRESS,*/ FIVE, MINIMUM_LIQUIDITY, ONE, ZERO, _1000, _997 } from '../constants'
 import { InsufficientInputAmountError, InsufficientReservesError } from '../errors'
 
 import { BigintIsh } from '../types'
@@ -9,31 +9,38 @@ import { Token } from './Token'
 import { computePairAddress } from '../functions/computePairAddress'
 import invariant from 'tiny-invariant'
 import { sqrt } from '../functions/sqrt'
+import { factoryAddressOf, tokenIdentityOf } from '../functions/determiner'
+import { TokenType } from '../enums/Liquidity'
+import { Exchanger } from '../enums/Exchanger'
 
 export class Pair {
   public readonly liquidityToken: Token
   private readonly tokenAmounts: [CurrencyAmount<Token>, CurrencyAmount<Token>]
 
-  public static getAddress(tokenA: Token, tokenB: Token): string {
+  public static getAddress(tokenA: Token, tokenB: Token, isConveyorPair: boolean = false): string {
+    const exchanger = !isConveyorPair ? Exchanger.SUSHI : Exchanger.CONVEYOR
+    const factoryAddress = factoryAddressOf(tokenA.chainId, exchanger)
     return computePairAddress({
-      factoryAddress: FACTORY_ADDRESS[tokenA.chainId],
+      factoryAddress,
       tokenA,
-      tokenB
+      tokenB,
+      isConveyorPair
     })
   }
 
-  public constructor(currencyAmountA: CurrencyAmount<Token>, currencyAmountB: CurrencyAmount<Token>) {
+  public constructor(currencyAmountA: CurrencyAmount<Token>, currencyAmountB: CurrencyAmount<Token>, isConveyorPair: boolean = false) {
     const currencyAmounts = currencyAmountA.currency.sortsBefore(currencyAmountB.currency) // does safety checks
       ? [currencyAmountA, currencyAmountB]
       : [currencyAmountB, currencyAmountA]
+    const [tokenSymbol, tokenName] = tokenIdentityOf(!isConveyorPair ? TokenType.UNISWAP : TokenType.CONVEYOR)
     this.liquidityToken = new Token(
       currencyAmounts[0].currency.chainId,
-      Pair.getAddress(currencyAmounts[0].currency, currencyAmounts[1].currency),
+      Pair.getAddress(currencyAmounts[0].currency, currencyAmounts[1].currency, isConveyorPair),
       18,
       // 'UNI-V2',
       // 'Uniswap V2'
-      'CON-V2',
-      'Conveyor V2'
+      tokenSymbol,
+      tokenName
     )
     this.tokenAmounts = currencyAmounts as [CurrencyAmount<Token>, CurrencyAmount<Token>]
   }

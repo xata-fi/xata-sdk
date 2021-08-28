@@ -1,10 +1,17 @@
 import JSBI from 'jsbi';
+import { Exchanger } from '../enums/Exchanger';
+import { TokenType } from '../enums/Liquidity';
 export * from './addresses';
 export * from './kashi';
 export * from './natives';
 export * from './numbers';
 export * from './tokens';
-export declare const INIT_CODE_HASH: string;
+export declare const LIQUIDITY_TOKEN_IDENTITY: {
+    [tokenType in TokenType]: string[];
+};
+export declare const INIT_CODE_HASH: {
+    [exchanger in Exchanger]: string;
+};
 export declare const MINIMUM_LIQUIDITY: JSBI;
 export declare enum SolidityType {
     uint8 = "uint8",
