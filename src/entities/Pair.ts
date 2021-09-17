@@ -17,9 +17,9 @@ export class Pair {
   public readonly liquidityToken: Token
   private readonly tokenAmounts: [CurrencyAmount<Token>, CurrencyAmount<Token>]
 
-  public static getAddress(tokenA: Token, tokenB: Token, isConveyorPair: boolean = false): string {
+  public static getAddress(tokenA: Token, tokenB: Token, isConveyorPair: boolean = false, conveyorEnvIsProduction: boolean|undefined = undefined): string {
     const exchanger = !isConveyorPair ? Exchanger.SUSHI : Exchanger.CONVEYOR
-    const factoryAddress = factoryAddressOf(tokenA.chainId, exchanger)
+    const factoryAddress = factoryAddressOf(tokenA.chainId, exchanger, conveyorEnvIsProduction)
     return computePairAddress({
       factoryAddress,
       tokenA,
@@ -28,14 +28,14 @@ export class Pair {
     })
   }
 
-  public constructor(currencyAmountA: CurrencyAmount<Token>, currencyAmountB: CurrencyAmount<Token>, isConveyorPair: boolean = false) {
+  public constructor(currencyAmountA: CurrencyAmount<Token>, currencyAmountB: CurrencyAmount<Token>, isConveyorPair: boolean = false, conveyorEnvIsProduction: boolean|undefined = undefined) {
     const currencyAmounts = currencyAmountA.currency.sortsBefore(currencyAmountB.currency) // does safety checks
       ? [currencyAmountA, currencyAmountB]
       : [currencyAmountB, currencyAmountA]
     const [tokenSymbol, tokenName] = tokenIdentityOf(!isConveyorPair ? TokenType.UNISWAP : TokenType.CONVEYOR)
     this.liquidityToken = new Token(
       currencyAmounts[0].currency.chainId,
-      Pair.getAddress(currencyAmounts[0].currency, currencyAmounts[1].currency, isConveyorPair),
+      Pair.getAddress(currencyAmounts[0].currency, currencyAmounts[1].currency, isConveyorPair, conveyorEnvIsProduction),
       18,
       // 'UNI-V2',
       // 'Uniswap V2'

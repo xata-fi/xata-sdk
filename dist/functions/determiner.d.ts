@@ -7,7 +7,7 @@ import { ChainId } from '../enums';
  * @param exchanger Default to Sushiswap
  * @returns Factory address
  */
-export declare function factoryAddressOf(chainId: ChainId, exchanger?: Exchanger): string;
+export declare function factoryAddressOf(chainId: ChainId, exchanger?: Exchanger, isProduction?: boolean | undefined): string;
 /**
  * Determine the init code hash of the selected exchanger
  * @param exchanger Default to Sushiswap

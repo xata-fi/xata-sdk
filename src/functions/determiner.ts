@@ -1,4 +1,4 @@
-import { FACTORY_ADDRESS, INIT_CODE_HASH, LIQUIDITY_TOKEN_IDENTITY } from '../constants'
+import { FACTORY_ADDRESS, CONVEYOR_V2_FACTORY_ADDRESS, INIT_CODE_HASH, LIQUIDITY_TOKEN_IDENTITY } from '../constants'
 import { TokenType } from '../enums/Liquidity'
 import { Exchanger } from '../enums/Exchanger'
 import { ChainId } from '../enums'
@@ -9,8 +9,23 @@ import { ChainId } from '../enums'
  * @param exchanger Default to Sushiswap
  * @returns Factory address
  */
-export function factoryAddressOf(chainId: ChainId, exchanger: Exchanger = Exchanger.SUSHI): string {
-  return FACTORY_ADDRESS[exchanger][chainId]
+export function factoryAddressOf(
+  chainId: ChainId,
+  exchanger: Exchanger = Exchanger.SUSHI,
+  isProduction: boolean | undefined = undefined
+): string {
+  if (exchanger === Exchanger.SUSHI) {
+    return FACTORY_ADDRESS[chainId]
+  } else {
+    let factory
+    if (typeof isProduction !== 'undefined' && isProduction === true) {
+      factory = CONVEYOR_V2_FACTORY_ADDRESS.production
+    } else {
+      factory = CONVEYOR_V2_FACTORY_ADDRESS.staging
+    }
+
+    return factory[chainId]
+  }
 }
 
 /**
