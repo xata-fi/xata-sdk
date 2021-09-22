@@ -13,7 +13,6 @@ var _Big = _interopDefault(require('big.js'));
 var _Decimal = _interopDefault(require('decimal.js-light'));
 var toFormat = _interopDefault(require('toformat'));
 var solidity = require('@ethersproject/solidity');
-var enums = require('enums');
 var signingKey = require('@ethersproject/signing-key');
 var eip712 = require('eip-712');
 var bytes = require('@ethersproject/bytes');
@@ -1420,7 +1419,7 @@ var Pair = /*#__PURE__*/function () {
       conveyorEnvIsProduction = undefined;
     }
 
-    var env = conveyorEnvIsProduction ? enums.Environment.PRODUCTION : enums.Environment.STAGING;
+    var env = conveyorEnvIsProduction ? exports.Environment.PRODUCTION : exports.Environment.STAGING;
     var factoryAddress = factoryAddressOf(tokenA.chainId, env);
     return computePairAddress({
       factoryAddress: factoryAddress,

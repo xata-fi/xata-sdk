@@ -8,7 +8,6 @@ import _Big from 'big.js';
 import _Decimal from 'decimal.js-light';
 import toFormat from 'toformat';
 import { keccak256, pack } from '@ethersproject/solidity';
-import { Environment as Environment$1 } from 'enums';
 import { SigningKey } from '@ethersproject/signing-key';
 import { getMessage } from 'eip-712';
 import { splitSignature } from '@ethersproject/bytes';
@@ -1433,7 +1432,7 @@ var Pair = /*#__PURE__*/function () {
       conveyorEnvIsProduction = undefined;
     }
 
-    var env = conveyorEnvIsProduction ? Environment$1.PRODUCTION : Environment$1.STAGING;
+    var env = conveyorEnvIsProduction ? Environment.PRODUCTION : Environment.STAGING;
     var factoryAddress = factoryAddressOf(tokenA.chainId, env);
     return computePairAddress({
       factoryAddress: factoryAddress,

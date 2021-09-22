@@ -11,7 +11,7 @@ import invariant from 'tiny-invariant'
 import { sqrt } from '../functions/sqrt'
 import { factoryAddressOf, tokenIdentityOf } from '../functions/determiner'
 import { TokenType } from '../enums/Liquidity'
-import { Environment } from 'enums'
+import { Environment } from '../enums/Environment'
 
 export class Pair {
   public readonly liquidityToken: Token
