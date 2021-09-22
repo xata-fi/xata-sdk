@@ -11,15 +11,15 @@ import invariant from 'tiny-invariant'
 import { sqrt } from '../functions/sqrt'
 import { factoryAddressOf, tokenIdentityOf } from '../functions/determiner'
 import { TokenType } from '../enums/Liquidity'
-import { Exchanger } from '../enums/Exchanger'
+import { Environment } from 'enums'
 
 export class Pair {
   public readonly liquidityToken: Token
   private readonly tokenAmounts: [CurrencyAmount<Token>, CurrencyAmount<Token>]
 
   public static getAddress(tokenA: Token, tokenB: Token, isConveyorPair: boolean = false, conveyorEnvIsProduction: boolean|undefined = undefined): string {
-    const exchanger = !isConveyorPair ? Exchanger.SUSHI : Exchanger.CONVEYOR
-    const factoryAddress = factoryAddressOf(tokenA.chainId, exchanger, conveyorEnvIsProduction)
+    const env = conveyorEnvIsProduction ? Environment.PRODUCTION : Environment.STAGING
+    const factoryAddress = factoryAddressOf(tokenA.chainId, env)
     return computePairAddress({
       factoryAddress,
       tokenA,

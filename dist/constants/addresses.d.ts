@@ -1,12 +1,11 @@
 import { AddressMap } from '../types';
+import { Environment } from '../enums';
 export declare const USDC_ADDRESS: AddressMap;
-export declare const FACTORY_ADDRESS: AddressMap;
-export declare const CONVEYOR_V2_FACTORY_ADDRESS: {
-    [key: string]: string;
+export declare const FACTORY_ADDRESS: {
+    [env in Environment]: AddressMap;
 };
-export declare const ROUTER_ADDRESS: AddressMap;
-export declare const CONVEYOR_V2_ROUTER_ADDRESS: {
-    [key: string]: string;
+export declare const ROUTER_ADDRESS: {
+    [env in Environment]: AddressMap;
 };
 export declare const SUSHI_ADDRESS: AddressMap;
 export declare const MASTERCHEF_ADDRESS: AddressMap;

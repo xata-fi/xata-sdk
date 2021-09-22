@@ -13,6 +13,7 @@ var _Big = _interopDefault(require('big.js'));
 var _Decimal = _interopDefault(require('decimal.js-light'));
 var toFormat = _interopDefault(require('toformat'));
 var solidity = require('@ethersproject/solidity');
+var enums = require('enums');
 var signingKey = require('@ethersproject/signing-key');
 var eip712 = require('eip-712');
 var bytes = require('@ethersproject/bytes');
@@ -108,44 +109,15 @@ var UniswapV2Pair = _interopDefault(require('@sushiswap/core/artifacts/contracts
   OrderStatus["PENDING"] = "PENDING";
 })(exports.OrderStatus || (exports.OrderStatus = {}));
 
-var _USDC_ADDRESS, _FACTORY_ADDRESS, _ROUTER_ADDRESS, _SUSHI_ADDRESS, _MASTERCHEF_ADDRESS, _BAR_ADDRESS, _MAKER_ADDRESS, _TIMELOCK_ADDRESS, _BENTOBOX_ADDRESS, _KASHI_ADDRESS, _SUSHISWAP_SWAPPER_AD, _SUSHISWAP_MULTISWAPP, _SUSHISWAP_MULTI_EXAC, _BORING_HELPER_ADDRES, _STOP_LIMIT_ORDER_ADD, _ARCHER_ROUTER_ADDRES, _MINICHEF_ADDRESS, _WETH9_ADDRESS, _WNATIVE_ADDRESS, _MASTERCHEF_V2_ADDRES, _ENS_REGISTRAR_ADDRES, _ZAPPER_ADDRESS, _MERKLE_DISTRIBUTOR_A, _MULTICALL2_ADDRESS;
+(function (Environment) {
+  Environment[Environment["PRODUCTION"] = 0] = "PRODUCTION";
+  Environment[Environment["STAGING"] = 1] = "STAGING";
+})(exports.Environment || (exports.Environment = {}));
+
+var _USDC_ADDRESS, _Environment$PRODUCTI, _Environment$STAGING, _FACTORY_ADDRESS, _Environment$PRODUCTI2, _Environment$STAGING2, _ROUTER_ADDRESS, _SUSHI_ADDRESS, _MASTERCHEF_ADDRESS, _BAR_ADDRESS, _MAKER_ADDRESS, _TIMELOCK_ADDRESS, _BENTOBOX_ADDRESS, _KASHI_ADDRESS, _SUSHISWAP_SWAPPER_AD, _SUSHISWAP_MULTISWAPP, _SUSHISWAP_MULTI_EXAC, _BORING_HELPER_ADDRES, _STOP_LIMIT_ORDER_ADD, _ARCHER_ROUTER_ADDRES, _MINICHEF_ADDRESS, _WETH9_ADDRESS, _WNATIVE_ADDRESS, _MASTERCHEF_V2_ADDRES, _ENS_REGISTRAR_ADDRES, _ZAPPER_ADDRESS, _MERKLE_DISTRIBUTOR_A, _MULTICALL2_ADDRESS;
 var USDC_ADDRESS = (_USDC_ADDRESS = {}, _USDC_ADDRESS[exports.ChainId.MAINNET] = '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48', _USDC_ADDRESS[exports.ChainId.ROPSTEN] = '0x0D9C8723B343A8368BebE0B5E89273fF8D712e3C', _USDC_ADDRESS[exports.ChainId.KOVAN] = '0xb7a4F3E9097C08dA09517b5aB877F7a917224ede', _USDC_ADDRESS[exports.ChainId.MATIC] = '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174', _USDC_ADDRESS[exports.ChainId.FANTOM] = '0x04068DA6C83AFCFA0e13ba15A6696662335D5B75', _USDC_ADDRESS[exports.ChainId.BSC] = '0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d', _USDC_ADDRESS[exports.ChainId.HARMONY] = '0x985458E523dB3d53125813eD68c274899e9DfAb4', _USDC_ADDRESS[exports.ChainId.HECO] = '0x9362Bbef4B8313A8Aa9f0c9808B80577Aa26B73B', _USDC_ADDRESS[exports.ChainId.OKEX] = '0xc946DAf81b08146B1C7A8Da2A851Ddf2B3EAaf85', _USDC_ADDRESS[exports.ChainId.XDAI] = '0xDDAfbb505ad214D7b80b1f830fcCc89B60fb7A83', _USDC_ADDRESS);
-var FACTORY_ADDRESS = (_FACTORY_ADDRESS = {}, _FACTORY_ADDRESS[exports.ChainId.MAINNET] = '0xC0AEe478e3658e2610c5F7A4A2E1777cE9e4f2Ac', _FACTORY_ADDRESS[exports.ChainId.ROPSTEN] = '0xc35DADB65012eC5796536bD9864eD8773aBc74C4', _FACTORY_ADDRESS[exports.ChainId.RINKEBY] = '0xc35DADB65012eC5796536bD9864eD8773aBc74C4', _FACTORY_ADDRESS[exports.ChainId.GÖRLI] = '0xc35DADB65012eC5796536bD9864eD8773aBc74C4', _FACTORY_ADDRESS[exports.ChainId.KOVAN] = '0xc35DADB65012eC5796536bD9864eD8773aBc74C4', _FACTORY_ADDRESS[exports.ChainId.FANTOM] = '0xc35DADB65012eC5796536bD9864eD8773aBc74C4', _FACTORY_ADDRESS[exports.ChainId.FANTOM_TESTNET] = '', _FACTORY_ADDRESS[exports.ChainId.MATIC] = '0xc35DADB65012eC5796536bD9864eD8773aBc74C4', _FACTORY_ADDRESS[exports.ChainId.MATIC_TESTNET] = '0xc35DADB65012eC5796536bD9864eD8773aBc74C4', _FACTORY_ADDRESS[exports.ChainId.XDAI] = '0xc35DADB65012eC5796536bD9864eD8773aBc74C4', _FACTORY_ADDRESS[exports.ChainId.BSC] = '0xc35DADB65012eC5796536bD9864eD8773aBc74C4', _FACTORY_ADDRESS[exports.ChainId.BSC_TESTNET] = '0xc35DADB65012eC5796536bD9864eD8773aBc74C4', _FACTORY_ADDRESS[exports.ChainId.ARBITRUM] = '0xc35DADB65012eC5796536bD9864eD8773aBc74C4', _FACTORY_ADDRESS[exports.ChainId.ARBITRUM_TESTNET] = '', _FACTORY_ADDRESS[exports.ChainId.MOONBEAM_TESTNET] = '0x2Ce3F07dD4c62b56a502E223A7cBE38b1d77A1b5', _FACTORY_ADDRESS[exports.ChainId.AVALANCHE] = '0xc35DADB65012eC5796536bD9864eD8773aBc74C4', _FACTORY_ADDRESS[exports.ChainId.AVALANCHE_TESTNET] = '0xd00ae08403B9bbb9124bB305C09058E32C39A48c', _FACTORY_ADDRESS[exports.ChainId.HECO] = '0xc35DADB65012eC5796536bD9864eD8773aBc74C4', _FACTORY_ADDRESS[exports.ChainId.HECO_TESTNET] = '0xc35DADB65012eC5796536bD9864eD8773aBc74C4', _FACTORY_ADDRESS[exports.ChainId.HARMONY] = '0xc35DADB65012eC5796536bD9864eD8773aBc74C4', _FACTORY_ADDRESS[exports.ChainId.HARMONY_TESTNET] = '0xc35DADB65012eC5796536bD9864eD8773aBc74C4', _FACTORY_ADDRESS[exports.ChainId.OKEX] = '0xc35DADB65012eC5796536bD9864eD8773aBc74C4', _FACTORY_ADDRESS[exports.ChainId.OKEX_TESTNET] = '0xc35DADB65012eC5796536bD9864eD8773aBc74C4', _FACTORY_ADDRESS[exports.ChainId.CELO] = '0xc35DADB65012eC5796536bD9864eD8773aBc74C4', _FACTORY_ADDRESS[exports.ChainId.PALM] = '0xc35DADB65012eC5796536bD9864eD8773aBc74C4', _FACTORY_ADDRESS[exports.ChainId.PALM_TESTNET] = '', _FACTORY_ADDRESS); // export const CONVEYOR_V2_FACTORY_ADDRESS: { [key: string]: AddressMap } = {
-//   production: {
-//     [ChainId.MAINNET]: '0x0000000000000000000000000000000000000000',
-//     [ChainId.BSC]: '0x0000000000000000000000000000000000000000',
-//     [ChainId.MATIC]: '0x50CE3bC33df424785314a7F8482CD43b61dAc5C9'
-//   },
-//   staging: {
-//     [ChainId.MAINNET]: '0xD417aF1FC4bA9b8371a5703e63FD728b4D0C531A',
-//     [ChainId.BSC]: '0xB889fb7fd2cf5F411522C97ef117D27974e1E182',
-//     [ChainId.MATIC]: '0x9A3947355AC93947Fe87099Deb198cf0F7D5a115'
-//   }
-// }
-
-var CONVEYOR_V2_FACTORY_ADDRESS = {
-  production: '0x5f8017621825BC10D63d15C3e863f893946781F7',
-  staging: '0x5f8017621825BC10D63d15C3e863f893946781F7' // Matic test only
-
-};
-var ROUTER_ADDRESS = (_ROUTER_ADDRESS = {}, _ROUTER_ADDRESS[exports.ChainId.MAINNET] = '0xd9e1cE17f2641f24aE83637ab66a2cca9C378B9F', _ROUTER_ADDRESS[exports.ChainId.RINKEBY] = '0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506', _ROUTER_ADDRESS[exports.ChainId.ROPSTEN] = '0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506', _ROUTER_ADDRESS[exports.ChainId.GÖRLI] = '0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506', _ROUTER_ADDRESS[exports.ChainId.KOVAN] = '0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506', _ROUTER_ADDRESS[exports.ChainId.FANTOM] = '0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506', _ROUTER_ADDRESS[exports.ChainId.FANTOM_TESTNET] = '', _ROUTER_ADDRESS[exports.ChainId.MATIC] = '0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506', _ROUTER_ADDRESS[exports.ChainId.MATIC_TESTNET] = '0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506', _ROUTER_ADDRESS[exports.ChainId.XDAI] = '0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506', _ROUTER_ADDRESS[exports.ChainId.BSC] = '0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506', _ROUTER_ADDRESS[exports.ChainId.BSC_TESTNET] = '0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506', _ROUTER_ADDRESS[exports.ChainId.ARBITRUM] = '0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506', _ROUTER_ADDRESS[exports.ChainId.ARBITRUM_TESTNET] = '', _ROUTER_ADDRESS[exports.ChainId.MOONBEAM_TESTNET] = '0xeB5c2BB5E83B51d83F3534Ae21E84336B8B376ef', _ROUTER_ADDRESS[exports.ChainId.AVALANCHE] = '0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506', _ROUTER_ADDRESS[exports.ChainId.AVALANCHE_TESTNET] = '0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506', _ROUTER_ADDRESS[exports.ChainId.HECO] = '0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506', _ROUTER_ADDRESS[exports.ChainId.HECO_TESTNET] = '0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506', _ROUTER_ADDRESS[exports.ChainId.HARMONY] = '0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506', _ROUTER_ADDRESS[exports.ChainId.HARMONY_TESTNET] = '0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506', _ROUTER_ADDRESS[exports.ChainId.OKEX] = '0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506', _ROUTER_ADDRESS[exports.ChainId.OKEX_TESTNET] = '0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506', _ROUTER_ADDRESS[exports.ChainId.CELO] = '0x1421bDe4B10e8dd459b3BCb598810B1337D56842', _ROUTER_ADDRESS[exports.ChainId.PALM] = '0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506', _ROUTER_ADDRESS[exports.ChainId.PALM_TESTNET] = '', _ROUTER_ADDRESS); // export const CONVEYOR_V2_ROUTER_ADDRESS: { [key: string]: AddressMap } = {
-//   production: {
-//     [ChainId.MAINNET]: '0x0000000000000000000000000000000000000000',
-//     [ChainId.BSC]: '0x0000000000000000000000000000000000000000',
-//     [ChainId.MATIC]: '0x1524E3DCA50349Ebf03a8Af8Ffdc03C30378FD69'
-//   },
-//   staging: {
-//     [ChainId.MAINNET]: '0x0d78d0c45774517a58565ef1e9915e7e8ee8fc07',
-//     [ChainId.BSC]: '0xd40cB7a08B77e20B4A6860855CF8ad8D2Fe64813',
-//     [ChainId.MATIC]: '0xd417af1fc4ba9b8371a5703e63fd728b4d0c531a'
-//   }
-// }
-
-var CONVEYOR_V2_ROUTER_ADDRESS = {
-  production: '0x838309Bc4C6769050A23007742CF8f9F305DcE13',
-  staging: '0x838309Bc4C6769050A23007742CF8f9F305DcE13' // Matic test only
-
-};
+var FACTORY_ADDRESS = (_FACTORY_ADDRESS = {}, _FACTORY_ADDRESS[exports.Environment.PRODUCTION] = (_Environment$PRODUCTI = {}, _Environment$PRODUCTI[exports.ChainId.MAINNET] = '0x5f8017621825BC10D63d15C3e863f893946781F7', _Environment$PRODUCTI[exports.ChainId.RINKEBY] = '', _Environment$PRODUCTI[exports.ChainId.ROPSTEN] = '', _Environment$PRODUCTI[exports.ChainId.GÖRLI] = '', _Environment$PRODUCTI[exports.ChainId.KOVAN] = '', _Environment$PRODUCTI[exports.ChainId.FANTOM] = '', _Environment$PRODUCTI[exports.ChainId.FANTOM_TESTNET] = '', _Environment$PRODUCTI[exports.ChainId.MATIC] = '0x5f8017621825BC10D63d15C3e863f893946781F7', _Environment$PRODUCTI[exports.ChainId.MATIC_TESTNET] = '', _Environment$PRODUCTI[exports.ChainId.XDAI] = '', _Environment$PRODUCTI[exports.ChainId.BSC] = '0x5f8017621825BC10D63d15C3e863f893946781F7', _Environment$PRODUCTI[exports.ChainId.BSC_TESTNET] = '', _Environment$PRODUCTI[exports.ChainId.ARBITRUM] = '', _Environment$PRODUCTI[exports.ChainId.ARBITRUM_TESTNET] = '', _Environment$PRODUCTI[exports.ChainId.MOONBEAM_TESTNET] = '', _Environment$PRODUCTI[exports.ChainId.AVALANCHE] = '', _Environment$PRODUCTI[exports.ChainId.AVALANCHE_TESTNET] = '', _Environment$PRODUCTI[exports.ChainId.HECO] = '', _Environment$PRODUCTI[exports.ChainId.HECO_TESTNET] = '', _Environment$PRODUCTI[exports.ChainId.HARMONY] = '', _Environment$PRODUCTI[exports.ChainId.HARMONY_TESTNET] = '', _Environment$PRODUCTI[exports.ChainId.OKEX] = '', _Environment$PRODUCTI[exports.ChainId.OKEX_TESTNET] = '', _Environment$PRODUCTI[exports.ChainId.CELO] = '', _Environment$PRODUCTI[exports.ChainId.PALM] = '', _Environment$PRODUCTI[exports.ChainId.PALM_TESTNET] = '', _Environment$PRODUCTI), _FACTORY_ADDRESS[exports.Environment.STAGING] = (_Environment$STAGING = {}, _Environment$STAGING[exports.ChainId.MAINNET] = '0xb780dD5884CC280a203378f6ebECe689594dAa8D', _Environment$STAGING[exports.ChainId.RINKEBY] = '', _Environment$STAGING[exports.ChainId.ROPSTEN] = '', _Environment$STAGING[exports.ChainId.GÖRLI] = '', _Environment$STAGING[exports.ChainId.KOVAN] = '', _Environment$STAGING[exports.ChainId.FANTOM] = '', _Environment$STAGING[exports.ChainId.FANTOM_TESTNET] = '', _Environment$STAGING[exports.ChainId.MATIC] = '0x5f8017621825BC10D63d15C3e863f893946781F7', _Environment$STAGING[exports.ChainId.MATIC_TESTNET] = '', _Environment$STAGING[exports.ChainId.XDAI] = '', _Environment$STAGING[exports.ChainId.BSC] = '0xb780dD5884CC280a203378f6ebECe689594dAa8D', _Environment$STAGING[exports.ChainId.BSC_TESTNET] = '', _Environment$STAGING[exports.ChainId.ARBITRUM] = '', _Environment$STAGING[exports.ChainId.ARBITRUM_TESTNET] = '', _Environment$STAGING[exports.ChainId.MOONBEAM_TESTNET] = '', _Environment$STAGING[exports.ChainId.AVALANCHE] = '', _Environment$STAGING[exports.ChainId.AVALANCHE_TESTNET] = '', _Environment$STAGING[exports.ChainId.HECO] = '', _Environment$STAGING[exports.ChainId.HECO_TESTNET] = '', _Environment$STAGING[exports.ChainId.HARMONY] = '', _Environment$STAGING[exports.ChainId.HARMONY_TESTNET] = '', _Environment$STAGING[exports.ChainId.OKEX] = '', _Environment$STAGING[exports.ChainId.OKEX_TESTNET] = '', _Environment$STAGING[exports.ChainId.CELO] = '', _Environment$STAGING[exports.ChainId.PALM] = '', _Environment$STAGING[exports.ChainId.PALM_TESTNET] = '', _Environment$STAGING), _FACTORY_ADDRESS);
+var ROUTER_ADDRESS = (_ROUTER_ADDRESS = {}, _ROUTER_ADDRESS[exports.Environment.PRODUCTION] = (_Environment$PRODUCTI2 = {}, _Environment$PRODUCTI2[exports.ChainId.MAINNET] = '0x838309Bc4C6769050A23007742CF8f9F305DcE13', _Environment$PRODUCTI2[exports.ChainId.RINKEBY] = '', _Environment$PRODUCTI2[exports.ChainId.ROPSTEN] = '', _Environment$PRODUCTI2[exports.ChainId.GÖRLI] = '', _Environment$PRODUCTI2[exports.ChainId.KOVAN] = '', _Environment$PRODUCTI2[exports.ChainId.FANTOM] = '', _Environment$PRODUCTI2[exports.ChainId.FANTOM_TESTNET] = '', _Environment$PRODUCTI2[exports.ChainId.MATIC] = '0x838309Bc4C6769050A23007742CF8f9F305DcE13', _Environment$PRODUCTI2[exports.ChainId.MATIC_TESTNET] = '', _Environment$PRODUCTI2[exports.ChainId.XDAI] = '', _Environment$PRODUCTI2[exports.ChainId.BSC] = '0x838309Bc4C6769050A23007742CF8f9F305DcE13', _Environment$PRODUCTI2[exports.ChainId.BSC_TESTNET] = '', _Environment$PRODUCTI2[exports.ChainId.ARBITRUM] = '', _Environment$PRODUCTI2[exports.ChainId.ARBITRUM_TESTNET] = '', _Environment$PRODUCTI2[exports.ChainId.MOONBEAM_TESTNET] = '', _Environment$PRODUCTI2[exports.ChainId.AVALANCHE] = '', _Environment$PRODUCTI2[exports.ChainId.AVALANCHE_TESTNET] = '', _Environment$PRODUCTI2[exports.ChainId.HECO] = '', _Environment$PRODUCTI2[exports.ChainId.HECO_TESTNET] = '', _Environment$PRODUCTI2[exports.ChainId.HARMONY] = '', _Environment$PRODUCTI2[exports.ChainId.HARMONY_TESTNET] = '', _Environment$PRODUCTI2[exports.ChainId.OKEX] = '', _Environment$PRODUCTI2[exports.ChainId.OKEX_TESTNET] = '', _Environment$PRODUCTI2[exports.ChainId.CELO] = '', _Environment$PRODUCTI2[exports.ChainId.PALM] = '', _Environment$PRODUCTI2[exports.ChainId.PALM_TESTNET] = '', _Environment$PRODUCTI2), _ROUTER_ADDRESS[exports.Environment.STAGING] = (_Environment$STAGING2 = {}, _Environment$STAGING2[exports.ChainId.MAINNET] = '0x4dB1B22A57bF1cFBCA5589bDB2c2527aa5a00d8d', _Environment$STAGING2[exports.ChainId.RINKEBY] = '', _Environment$STAGING2[exports.ChainId.ROPSTEN] = '', _Environment$STAGING2[exports.ChainId.GÖRLI] = '', _Environment$STAGING2[exports.ChainId.KOVAN] = '', _Environment$STAGING2[exports.ChainId.FANTOM] = '', _Environment$STAGING2[exports.ChainId.FANTOM_TESTNET] = '', _Environment$STAGING2[exports.ChainId.MATIC] = '0x838309Bc4C6769050A23007742CF8f9F305DcE13', _Environment$STAGING2[exports.ChainId.MATIC_TESTNET] = '', _Environment$STAGING2[exports.ChainId.XDAI] = '', _Environment$STAGING2[exports.ChainId.BSC] = '0x4dB1B22A57bF1cFBCA5589bDB2c2527aa5a00d8d', _Environment$STAGING2[exports.ChainId.BSC_TESTNET] = '', _Environment$STAGING2[exports.ChainId.ARBITRUM] = '', _Environment$STAGING2[exports.ChainId.ARBITRUM_TESTNET] = '', _Environment$STAGING2[exports.ChainId.MOONBEAM_TESTNET] = '', _Environment$STAGING2[exports.ChainId.AVALANCHE] = '', _Environment$STAGING2[exports.ChainId.AVALANCHE_TESTNET] = '', _Environment$STAGING2[exports.ChainId.HECO] = '', _Environment$STAGING2[exports.ChainId.HECO_TESTNET] = '', _Environment$STAGING2[exports.ChainId.HARMONY] = '', _Environment$STAGING2[exports.ChainId.HARMONY_TESTNET] = '', _Environment$STAGING2[exports.ChainId.OKEX] = '', _Environment$STAGING2[exports.ChainId.OKEX_TESTNET] = '', _Environment$STAGING2[exports.ChainId.CELO] = '', _Environment$STAGING2[exports.ChainId.PALM] = '', _Environment$STAGING2[exports.ChainId.PALM_TESTNET] = '', _Environment$STAGING2), _ROUTER_ADDRESS);
 var SUSHI_ADDRESS = (_SUSHI_ADDRESS = {}, _SUSHI_ADDRESS[exports.ChainId.MAINNET] = '0x6B3595068778DD592e39A122f4f5a5cF09C90fE2', _SUSHI_ADDRESS[exports.ChainId.ROPSTEN] = '0x0769fd68dFb93167989C6f7254cd0D766Fb2841F', _SUSHI_ADDRESS[exports.ChainId.RINKEBY] = '0x0769fd68dFb93167989C6f7254cd0D766Fb2841F', _SUSHI_ADDRESS[exports.ChainId.GÖRLI] = '0x0769fd68dFb93167989C6f7254cd0D766Fb2841F', _SUSHI_ADDRESS[exports.ChainId.KOVAN] = '0x0769fd68dFb93167989C6f7254cd0D766Fb2841F', _SUSHI_ADDRESS[exports.ChainId.FANTOM] = '0xae75A438b2E0cB8Bb01Ec1E1e376De11D44477CC', _SUSHI_ADDRESS[exports.ChainId.FANTOM_TESTNET] = '', _SUSHI_ADDRESS[exports.ChainId.MATIC] = '0x0b3F868E0BE5597D5DB7fEB59E1CADBb0fdDa50a', _SUSHI_ADDRESS[exports.ChainId.MATIC_TESTNET] = '', _SUSHI_ADDRESS[exports.ChainId.XDAI] = '0x2995D1317DcD4f0aB89f4AE60F3f020A4F17C7CE', _SUSHI_ADDRESS[exports.ChainId.BSC] = '0x947950BcC74888a40Ffa2593C5798F11Fc9124C4', _SUSHI_ADDRESS[exports.ChainId.BSC_TESTNET] = '', _SUSHI_ADDRESS[exports.ChainId.ARBITRUM] = '', _SUSHI_ADDRESS[exports.ChainId.ARBITRUM_TESTNET] = '', _SUSHI_ADDRESS[exports.ChainId.MOONBEAM_TESTNET] = '', _SUSHI_ADDRESS[exports.ChainId.AVALANCHE] = '0x39cf1BD5f15fb22eC3D9Ff86b0727aFc203427cc', _SUSHI_ADDRESS[exports.ChainId.AVALANCHE_TESTNET] = '', _SUSHI_ADDRESS[exports.ChainId.HECO] = '0x52E00B2dA5Bd7940fFe26B609A42F957f31118D5', _SUSHI_ADDRESS[exports.ChainId.HECO_TESTNET] = '', _SUSHI_ADDRESS[exports.ChainId.HARMONY] = '0xBEC775Cb42AbFa4288dE81F387a9b1A3c4Bc552A', _SUSHI_ADDRESS[exports.ChainId.HARMONY_TESTNET] = '', _SUSHI_ADDRESS[exports.ChainId.OKEX] = '0x2218E0D5E0173769F5b4939a3aE423f7e5E4EAB7', _SUSHI_ADDRESS[exports.ChainId.OKEX_TESTNET] = '', _SUSHI_ADDRESS[exports.ChainId.CELO] = '', _SUSHI_ADDRESS[exports.ChainId.PALM] = '', _SUSHI_ADDRESS[exports.ChainId.PALM_TESTNET] = '', _SUSHI_ADDRESS);
 var MASTERCHEF_ADDRESS = (_MASTERCHEF_ADDRESS = {}, _MASTERCHEF_ADDRESS[exports.ChainId.MAINNET] = '0xc2EdaD668740f1aA35E4D8f227fB8E17dcA888Cd', _MASTERCHEF_ADDRESS[exports.ChainId.ROPSTEN] = '0x80C7DD17B01855a6D2347444a0FCC36136a314de', _MASTERCHEF_ADDRESS[exports.ChainId.RINKEBY] = '0x80C7DD17B01855a6D2347444a0FCC36136a314de', _MASTERCHEF_ADDRESS[exports.ChainId.GÖRLI] = '0x80C7DD17B01855a6D2347444a0FCC36136a314de', _MASTERCHEF_ADDRESS[exports.ChainId.KOVAN] = '0x80C7DD17B01855a6D2347444a0FCC36136a314de', _MASTERCHEF_ADDRESS[exports.ChainId.FANTOM] = '', _MASTERCHEF_ADDRESS[exports.ChainId.FANTOM_TESTNET] = '', _MASTERCHEF_ADDRESS[exports.ChainId.MATIC] = '', _MASTERCHEF_ADDRESS[exports.ChainId.MATIC_TESTNET] = '', _MASTERCHEF_ADDRESS[exports.ChainId.XDAI] = '', _MASTERCHEF_ADDRESS[exports.ChainId.BSC] = '', _MASTERCHEF_ADDRESS[exports.ChainId.BSC_TESTNET] = '', _MASTERCHEF_ADDRESS[exports.ChainId.ARBITRUM] = '', _MASTERCHEF_ADDRESS[exports.ChainId.ARBITRUM_TESTNET] = '', _MASTERCHEF_ADDRESS[exports.ChainId.MOONBEAM_TESTNET] = '', _MASTERCHEF_ADDRESS[exports.ChainId.AVALANCHE] = '', _MASTERCHEF_ADDRESS[exports.ChainId.AVALANCHE_TESTNET] = '', _MASTERCHEF_ADDRESS[exports.ChainId.HECO] = '', _MASTERCHEF_ADDRESS[exports.ChainId.HECO_TESTNET] = '', _MASTERCHEF_ADDRESS[exports.ChainId.HARMONY] = '', _MASTERCHEF_ADDRESS[exports.ChainId.HARMONY_TESTNET] = '', _MASTERCHEF_ADDRESS[exports.ChainId.OKEX] = '', _MASTERCHEF_ADDRESS[exports.ChainId.OKEX_TESTNET] = '', _MASTERCHEF_ADDRESS[exports.ChainId.CELO] = '', _MASTERCHEF_ADDRESS[exports.ChainId.PALM] = '', _MASTERCHEF_ADDRESS[exports.ChainId.PALM_TESTNET] = '', _MASTERCHEF_ADDRESS);
 var BAR_ADDRESS = (_BAR_ADDRESS = {}, _BAR_ADDRESS[exports.ChainId.MAINNET] = '0x8798249c2E607446EfB7Ad49eC89dD1865Ff4272', _BAR_ADDRESS[exports.ChainId.ROPSTEN] = '0x1be211D8DA40BC0ae8719c6663307Bfc987b1d6c', _BAR_ADDRESS[exports.ChainId.RINKEBY] = '0x1be211D8DA40BC0ae8719c6663307Bfc987b1d6c', _BAR_ADDRESS[exports.ChainId.GÖRLI] = '0x1be211D8DA40BC0ae8719c6663307Bfc987b1d6c', _BAR_ADDRESS[exports.ChainId.KOVAN] = '0x1be211D8DA40BC0ae8719c6663307Bfc987b1d6c', _BAR_ADDRESS[exports.ChainId.FANTOM] = '', _BAR_ADDRESS[exports.ChainId.FANTOM_TESTNET] = '', _BAR_ADDRESS[exports.ChainId.MATIC] = '', _BAR_ADDRESS[exports.ChainId.MATIC_TESTNET] = '', _BAR_ADDRESS[exports.ChainId.XDAI] = '', _BAR_ADDRESS[exports.ChainId.BSC] = '', _BAR_ADDRESS[exports.ChainId.BSC_TESTNET] = '', _BAR_ADDRESS[exports.ChainId.ARBITRUM] = '', _BAR_ADDRESS[exports.ChainId.ARBITRUM_TESTNET] = '', _BAR_ADDRESS[exports.ChainId.MOONBEAM_TESTNET] = '', _BAR_ADDRESS[exports.ChainId.AVALANCHE] = '', _BAR_ADDRESS[exports.ChainId.AVALANCHE_TESTNET] = '', _BAR_ADDRESS[exports.ChainId.HECO] = '', _BAR_ADDRESS[exports.ChainId.HECO_TESTNET] = '', _BAR_ADDRESS[exports.ChainId.HARMONY] = '', _BAR_ADDRESS[exports.ChainId.HARMONY_TESTNET] = '', _BAR_ADDRESS[exports.ChainId.OKEX] = '', _BAR_ADDRESS[exports.ChainId.OKEX_TESTNET] = '', _BAR_ADDRESS[exports.ChainId.CELO] = '', _BAR_ADDRESS[exports.ChainId.PALM] = '', _BAR_ADDRESS[exports.ChainId.PALM_TESTNET] = '', _BAR_ADDRESS);
@@ -1330,38 +1302,22 @@ var Price = /*#__PURE__*/function (_Fraction) {
 /**
  * Determine the factory address of the selected exchanger
  * @param chainId
- * @param exchanger Default to Sushiswap
+ * @param env Environment. Default to staging.
  * @returns Factory address
  */
 
-function factoryAddressOf(chainId, exchanger, isProduction) {
-  if (exchanger === void 0) {
-    exchanger = exports.Exchanger.SUSHI;
+function factoryAddressOf(chainId, env) {
+  if (env === void 0) {
+    env = exports.Environment.STAGING;
   }
 
-  if (isProduction === void 0) {
-    isProduction = undefined;
-  }
-
-  if (exchanger === exports.Exchanger.SUSHI) {
-    return FACTORY_ADDRESS[chainId];
-  } else {
-    var factory;
-
-    if (typeof isProduction !== 'undefined' && isProduction === true) {
-      factory = CONVEYOR_V2_FACTORY_ADDRESS.production;
-    } else {
-      factory = CONVEYOR_V2_FACTORY_ADDRESS.staging;
-    } // return factory[chainId]
-
-
-    return factory;
-  }
+  return FACTORY_ADDRESS[env][chainId];
 }
 /**
  * Determine the init code hash of the selected exchanger
  * @param exchanger Default to Sushiswap
  * @returns Init code hash
+ * @deprecated
  */
 
 function initCodeHashOf(exchanger) {
@@ -1375,6 +1331,7 @@ function initCodeHashOf(exchanger) {
  * Determine the token symbol and name of the selected liquidity pair type
  * @param type Default to Uniswap token
  * @returns [{token symbol}, {token name}]
+ * @deprecated
  */
 
 function tokenIdentityOf(type) {
@@ -1463,8 +1420,8 @@ var Pair = /*#__PURE__*/function () {
       conveyorEnvIsProduction = undefined;
     }
 
-    var exchanger = !isConveyorPair ? exports.Exchanger.SUSHI : exports.Exchanger.CONVEYOR;
-    var factoryAddress = factoryAddressOf(tokenA.chainId, exchanger, conveyorEnvIsProduction);
+    var env = conveyorEnvIsProduction ? enums.Environment.PRODUCTION : enums.Environment.STAGING;
+    var factoryAddress = factoryAddressOf(tokenA.chainId, env);
     return computePairAddress({
       factoryAddress: factoryAddress,
       tokenA: tokenA,
@@ -5027,8 +4984,6 @@ exports.Binance = Binance;
 exports.CHAINLINK_ORACLE_ADDRESS = CHAINLINK_ORACLE_ADDRESS;
 exports.CL_MAX_TICK = CL_MAX_TICK;
 exports.CL_MIN_TICK = CL_MIN_TICK;
-exports.CONVEYOR_V2_FACTORY_ADDRESS = CONVEYOR_V2_FACTORY_ADDRESS;
-exports.CONVEYOR_V2_ROUTER_ADDRESS = CONVEYOR_V2_ROUTER_ADDRESS;
 exports.Celo = Celo;
 exports.ConcentratedLiquidityPool = ConcentratedLiquidityPool;
 exports.ConstantProductPool = ConstantProductPool;

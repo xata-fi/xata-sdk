@@ -1,5 +1,5 @@
 import { AddressMap } from '../types'
-import { ChainId } from '../enums'
+import { ChainId, Environment } from '../enums'
 
 export const USDC_ADDRESS: AddressMap = {
   [ChainId.MAINNET]: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
@@ -14,97 +14,124 @@ export const USDC_ADDRESS: AddressMap = {
   [ChainId.XDAI]: '0xDDAfbb505ad214D7b80b1f830fcCc89B60fb7A83'
 }
 
-export const FACTORY_ADDRESS: AddressMap = {
-  [ChainId.MAINNET]: '0xC0AEe478e3658e2610c5F7A4A2E1777cE9e4f2Ac',
-  [ChainId.ROPSTEN]: '0xc35DADB65012eC5796536bD9864eD8773aBc74C4',
-  [ChainId.RINKEBY]: '0xc35DADB65012eC5796536bD9864eD8773aBc74C4',
-  [ChainId.GÖRLI]: '0xc35DADB65012eC5796536bD9864eD8773aBc74C4',
-  [ChainId.KOVAN]: '0xc35DADB65012eC5796536bD9864eD8773aBc74C4',
-  [ChainId.FANTOM]: '0xc35DADB65012eC5796536bD9864eD8773aBc74C4',
-  [ChainId.FANTOM_TESTNET]: '',
-  [ChainId.MATIC]: '0xc35DADB65012eC5796536bD9864eD8773aBc74C4',
-  [ChainId.MATIC_TESTNET]: '0xc35DADB65012eC5796536bD9864eD8773aBc74C4',
-  [ChainId.XDAI]: '0xc35DADB65012eC5796536bD9864eD8773aBc74C4',
-  [ChainId.BSC]: '0xc35DADB65012eC5796536bD9864eD8773aBc74C4',
-  [ChainId.BSC_TESTNET]: '0xc35DADB65012eC5796536bD9864eD8773aBc74C4',
-  [ChainId.ARBITRUM]: '0xc35DADB65012eC5796536bD9864eD8773aBc74C4',
-  [ChainId.ARBITRUM_TESTNET]: '',
-  [ChainId.MOONBEAM_TESTNET]: '0x2Ce3F07dD4c62b56a502E223A7cBE38b1d77A1b5',
-  [ChainId.AVALANCHE]: '0xc35DADB65012eC5796536bD9864eD8773aBc74C4',
-  [ChainId.AVALANCHE_TESTNET]: '0xd00ae08403B9bbb9124bB305C09058E32C39A48c',
-  [ChainId.HECO]: '0xc35DADB65012eC5796536bD9864eD8773aBc74C4',
-  [ChainId.HECO_TESTNET]: '0xc35DADB65012eC5796536bD9864eD8773aBc74C4',
-  [ChainId.HARMONY]: '0xc35DADB65012eC5796536bD9864eD8773aBc74C4',
-  [ChainId.HARMONY_TESTNET]: '0xc35DADB65012eC5796536bD9864eD8773aBc74C4',
-  [ChainId.OKEX]: '0xc35DADB65012eC5796536bD9864eD8773aBc74C4',
-  [ChainId.OKEX_TESTNET]: '0xc35DADB65012eC5796536bD9864eD8773aBc74C4',
-  [ChainId.CELO]: '0xc35DADB65012eC5796536bD9864eD8773aBc74C4',
-  [ChainId.PALM]: '0xc35DADB65012eC5796536bD9864eD8773aBc74C4',
-  [ChainId.PALM_TESTNET]: ''
+export const FACTORY_ADDRESS: { [env in Environment]: AddressMap } = {
+  [Environment.PRODUCTION]: {
+    [ChainId.MAINNET]: '0x5f8017621825BC10D63d15C3e863f893946781F7',
+    [ChainId.RINKEBY]: '',
+    [ChainId.ROPSTEN]: '',
+    [ChainId.GÖRLI]: '',
+    [ChainId.KOVAN]: '',
+    [ChainId.FANTOM]: '',
+    [ChainId.FANTOM_TESTNET]: '',
+    [ChainId.MATIC]: '0x5f8017621825BC10D63d15C3e863f893946781F7',
+    [ChainId.MATIC_TESTNET]: '',
+    [ChainId.XDAI]: '',
+    [ChainId.BSC]: '0x5f8017621825BC10D63d15C3e863f893946781F7',
+    [ChainId.BSC_TESTNET]: '',
+    [ChainId.ARBITRUM]: '',
+    [ChainId.ARBITRUM_TESTNET]: '',
+    [ChainId.MOONBEAM_TESTNET]: '',
+    [ChainId.AVALANCHE]: '',
+    [ChainId.AVALANCHE_TESTNET]: '',
+    [ChainId.HECO]: '',
+    [ChainId.HECO_TESTNET]: '',
+    [ChainId.HARMONY]: '',
+    [ChainId.HARMONY_TESTNET]: '',
+    [ChainId.OKEX]: '',
+    [ChainId.OKEX_TESTNET]: '',
+    [ChainId.CELO]: '',
+    [ChainId.PALM]: '',
+    [ChainId.PALM_TESTNET]: ''
+  },
+  [Environment.STAGING]: {
+    [ChainId.MAINNET]: '0xb780dD5884CC280a203378f6ebECe689594dAa8D',
+    [ChainId.RINKEBY]: '',
+    [ChainId.ROPSTEN]: '',
+    [ChainId.GÖRLI]: '',
+    [ChainId.KOVAN]: '',
+    [ChainId.FANTOM]: '',
+    [ChainId.FANTOM_TESTNET]: '',
+    // TODO Update MATIC address when the contract has been deployed to mainnet
+    [ChainId.MATIC]: '0x5f8017621825BC10D63d15C3e863f893946781F7',
+    [ChainId.MATIC_TESTNET]: '',
+    [ChainId.XDAI]: '',
+    [ChainId.BSC]: '0xb780dD5884CC280a203378f6ebECe689594dAa8D',
+    [ChainId.BSC_TESTNET]: '',
+    [ChainId.ARBITRUM]: '',
+    [ChainId.ARBITRUM_TESTNET]: '',
+    [ChainId.MOONBEAM_TESTNET]: '',
+    [ChainId.AVALANCHE]: '',
+    [ChainId.AVALANCHE_TESTNET]: '',
+    [ChainId.HECO]: '',
+    [ChainId.HECO_TESTNET]: '',
+    [ChainId.HARMONY]: '',
+    [ChainId.HARMONY_TESTNET]: '',
+    [ChainId.OKEX]: '',
+    [ChainId.OKEX_TESTNET]: '',
+    [ChainId.CELO]: '',
+    [ChainId.PALM]: '',
+    [ChainId.PALM_TESTNET]: ''
+  }
 }
 
-// export const CONVEYOR_V2_FACTORY_ADDRESS: { [key: string]: AddressMap } = {
-//   production: {
-//     [ChainId.MAINNET]: '0x0000000000000000000000000000000000000000',
-//     [ChainId.BSC]: '0x0000000000000000000000000000000000000000',
-//     [ChainId.MATIC]: '0x50CE3bC33df424785314a7F8482CD43b61dAc5C9'
-//   },
-//   staging: {
-//     [ChainId.MAINNET]: '0xD417aF1FC4bA9b8371a5703e63FD728b4D0C531A',
-//     [ChainId.BSC]: '0xB889fb7fd2cf5F411522C97ef117D27974e1E182',
-//     [ChainId.MATIC]: '0x9A3947355AC93947Fe87099Deb198cf0F7D5a115'
-//   }
-// }
-export const CONVEYOR_V2_FACTORY_ADDRESS: { [key: string]: string } = {
-  production: '0x5f8017621825BC10D63d15C3e863f893946781F7',
-  staging: '0x5f8017621825BC10D63d15C3e863f893946781F7' // Matic test only
-}
-
-export const ROUTER_ADDRESS: AddressMap = {
-  [ChainId.MAINNET]: '0xd9e1cE17f2641f24aE83637ab66a2cca9C378B9F',
-  [ChainId.RINKEBY]: '0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506',
-  [ChainId.ROPSTEN]: '0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506',
-  [ChainId.GÖRLI]: '0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506',
-  [ChainId.KOVAN]: '0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506',
-  [ChainId.FANTOM]: '0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506',
-  [ChainId.FANTOM_TESTNET]: '',
-  [ChainId.MATIC]: '0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506',
-  [ChainId.MATIC_TESTNET]: '0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506',
-  [ChainId.XDAI]: '0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506',
-  [ChainId.BSC]: '0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506',
-  [ChainId.BSC_TESTNET]: '0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506',
-  [ChainId.ARBITRUM]: '0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506',
-  [ChainId.ARBITRUM_TESTNET]: '',
-  [ChainId.MOONBEAM_TESTNET]: '0xeB5c2BB5E83B51d83F3534Ae21E84336B8B376ef',
-  [ChainId.AVALANCHE]: '0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506',
-  [ChainId.AVALANCHE_TESTNET]: '0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506',
-  [ChainId.HECO]: '0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506',
-  [ChainId.HECO_TESTNET]: '0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506',
-  [ChainId.HARMONY]: '0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506',
-  [ChainId.HARMONY_TESTNET]: '0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506',
-  [ChainId.OKEX]: '0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506',
-  [ChainId.OKEX_TESTNET]: '0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506',
-  [ChainId.CELO]: '0x1421bDe4B10e8dd459b3BCb598810B1337D56842',
-  [ChainId.PALM]: '0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506',
-  [ChainId.PALM_TESTNET]: ''
-}
-
-// export const CONVEYOR_V2_ROUTER_ADDRESS: { [key: string]: AddressMap } = {
-//   production: {
-//     [ChainId.MAINNET]: '0x0000000000000000000000000000000000000000',
-//     [ChainId.BSC]: '0x0000000000000000000000000000000000000000',
-//     [ChainId.MATIC]: '0x1524E3DCA50349Ebf03a8Af8Ffdc03C30378FD69'
-//   },
-//   staging: {
-//     [ChainId.MAINNET]: '0x0d78d0c45774517a58565ef1e9915e7e8ee8fc07',
-//     [ChainId.BSC]: '0xd40cB7a08B77e20B4A6860855CF8ad8D2Fe64813',
-//     [ChainId.MATIC]: '0xd417af1fc4ba9b8371a5703e63fd728b4d0c531a'
-//   }
-// }
-
-export const CONVEYOR_V2_ROUTER_ADDRESS: { [key: string]: string } = {
-  production: '0x838309Bc4C6769050A23007742CF8f9F305DcE13',
-  staging: '0x838309Bc4C6769050A23007742CF8f9F305DcE13' // Matic test only
+export const ROUTER_ADDRESS: { [env in Environment]: AddressMap} = {
+  [Environment.PRODUCTION]: {
+    [ChainId.MAINNET]: '0x838309Bc4C6769050A23007742CF8f9F305DcE13',
+    [ChainId.RINKEBY]: '',
+    [ChainId.ROPSTEN]: '',
+    [ChainId.GÖRLI]: '',
+    [ChainId.KOVAN]: '',
+    [ChainId.FANTOM]: '',
+    [ChainId.FANTOM_TESTNET]: '',
+    [ChainId.MATIC]: '0x838309Bc4C6769050A23007742CF8f9F305DcE13',
+    [ChainId.MATIC_TESTNET]: '',
+    [ChainId.XDAI]: '',
+    [ChainId.BSC]: '0x838309Bc4C6769050A23007742CF8f9F305DcE13',
+    [ChainId.BSC_TESTNET]: '',
+    [ChainId.ARBITRUM]: '',
+    [ChainId.ARBITRUM_TESTNET]: '',
+    [ChainId.MOONBEAM_TESTNET]: '',
+    [ChainId.AVALANCHE]: '',
+    [ChainId.AVALANCHE_TESTNET]: '',
+    [ChainId.HECO]: '',
+    [ChainId.HECO_TESTNET]: '',
+    [ChainId.HARMONY]: '',
+    [ChainId.HARMONY_TESTNET]: '',
+    [ChainId.OKEX]: '',
+    [ChainId.OKEX_TESTNET]: '',
+    [ChainId.CELO]: '',
+    [ChainId.PALM]: '',
+    [ChainId.PALM_TESTNET]: ''
+  },
+  [Environment.STAGING]: {
+    [ChainId.MAINNET]: '0x4dB1B22A57bF1cFBCA5589bDB2c2527aa5a00d8d',
+    [ChainId.RINKEBY]: '',
+    [ChainId.ROPSTEN]: '',
+    [ChainId.GÖRLI]: '',
+    [ChainId.KOVAN]: '',
+    [ChainId.FANTOM]: '',
+    [ChainId.FANTOM_TESTNET]: '',
+    // TODO Update MATIC address when the contract has been deployed to mainnet
+    [ChainId.MATIC]: '0x838309Bc4C6769050A23007742CF8f9F305DcE13',
+    [ChainId.MATIC_TESTNET]: '',
+    [ChainId.XDAI]: '',
+    [ChainId.BSC]: '0x4dB1B22A57bF1cFBCA5589bDB2c2527aa5a00d8d',
+    [ChainId.BSC_TESTNET]: '',
+    [ChainId.ARBITRUM]: '',
+    [ChainId.ARBITRUM_TESTNET]: '',
+    [ChainId.MOONBEAM_TESTNET]: '',
+    [ChainId.AVALANCHE]: '',
+    [ChainId.AVALANCHE_TESTNET]: '',
+    [ChainId.HECO]: '',
+    [ChainId.HECO_TESTNET]: '',
+    [ChainId.HARMONY]: '',
+    [ChainId.HARMONY_TESTNET]: '',
+    [ChainId.OKEX]: '',
+    [ChainId.OKEX_TESTNET]: '',
+    [ChainId.CELO]: '',
+    [ChainId.PALM]: '',
+    [ChainId.PALM_TESTNET]: ''
+  }
 }
 
 export const SUSHI_ADDRESS: AddressMap = {
