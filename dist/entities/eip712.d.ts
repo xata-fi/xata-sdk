@@ -1,4 +1,4 @@
-import { ChainId } from 'enums';
+import { ChainId } from '../enums';
 import { Web3Provider } from '@ethersproject/providers';
 export interface Domain {
     name: string;
