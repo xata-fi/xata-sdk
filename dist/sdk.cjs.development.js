@@ -19,6 +19,9 @@ var bytes = require('@ethersproject/bytes');
 var contracts = require('@ethersproject/contracts');
 var abi$1 = require('@ethersproject/abi');
 var fetch = _interopDefault(require('isomorphic-unfetch'));
+var networks = require('@ethersproject/networks');
+var providers = require('@ethersproject/providers');
+var UniswapV2Pair = _interopDefault(require('@sushiswap/core/artifacts/contracts/uniswapv2/UniswapV2Pair.sol/UniswapV2Pair.json'));
 
 (function (Exchanger) {
   Exchanger[Exchanger["SUSHI"] = 0] = "SUSHI";
@@ -4908,6 +4911,67 @@ var FillLimitOrder = /*#__PURE__*/function () {
   return FillLimitOrder;
 }();
 
+/**
+ * Contains methods for constructing instances of pairs and tokens from on-chain data.
+ */
+
+var Fetcher = /*#__PURE__*/function () {
+  /**
+   * Cannot be constructed.
+   */
+  function Fetcher() {}
+  /**
+   * Fetches information about a pair and constructs a pair from the given two tokens.
+   * @param tokenA first token
+   * @param tokenB second token
+   * @param provider the provider to use to fetch the data
+   */
+
+
+  Fetcher.fetchPairData =
+  /*#__PURE__*/
+  function () {
+    var _fetchPairData = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/runtime_1.mark(function _callee(tokenA, tokenB, provider) {
+      var address, _yield$Contract$getRe, reserves0, reserves1, balances;
+
+      return runtime_1.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              if (provider === void 0) {
+                provider = /*#__PURE__*/providers.getDefaultProvider( /*#__PURE__*/networks.getNetwork(tokenA.chainId));
+              }
+
+              !(tokenA.chainId === tokenB.chainId) ?  invariant(false, 'CHAIN_ID')  : void 0;
+              address = Pair.getAddress(tokenA, tokenB);
+              _context.next = 5;
+              return new contracts.Contract(address, UniswapV2Pair.abi, provider).getReserves();
+
+            case 5:
+              _yield$Contract$getRe = _context.sent;
+              reserves0 = _yield$Contract$getRe[0];
+              reserves1 = _yield$Contract$getRe[1];
+              balances = tokenA.sortsBefore(tokenB) ? [reserves0, reserves1] : [reserves1, reserves0];
+              return _context.abrupt("return", new Pair(CurrencyAmount.fromRawAmount(tokenA, balances[0]), CurrencyAmount.fromRawAmount(tokenB, balances[1])));
+
+            case 10:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    }));
+
+    function fetchPairData(_x, _x2, _x3) {
+      return _fetchPairData.apply(this, arguments);
+    }
+
+    return fetchPairData;
+  }();
+
+  return Fetcher;
+}();
+
 exports.JSBI = JSBI;
 exports.ACTION_ACCRUE = ACTION_ACCRUE;
 exports.ACTION_ADD_ASSET = ACTION_ADD_ASSET;
@@ -4950,6 +5014,7 @@ exports.FIVE = FIVE;
 exports.FULL_UTILIZATION = FULL_UTILIZATION;
 exports.FULL_UTILIZATION_MINUS_MAX = FULL_UTILIZATION_MINUS_MAX;
 exports.Fantom = Fantom;
+exports.Fetcher = Fetcher;
 exports.FillLimitOrder = FillLimitOrder;
 exports.Fraction = Fraction;
 exports.Harmony = Harmony;

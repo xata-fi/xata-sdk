@@ -14,6 +14,9 @@ import { splitSignature } from '@ethersproject/bytes';
 import { Contract } from '@ethersproject/contracts';
 import { defaultAbiCoder } from '@ethersproject/abi';
 import fetch from 'isomorphic-unfetch';
+import { getNetwork } from '@ethersproject/networks';
+import { getDefaultProvider } from '@ethersproject/providers';
+import UniswapV2Pair from '@sushiswap/core/artifacts/contracts/uniswapv2/UniswapV2Pair.sol/UniswapV2Pair.json';
 
 var Exchanger;
 
@@ -4922,5 +4925,66 @@ var FillLimitOrder = /*#__PURE__*/function () {
   return FillLimitOrder;
 }();
 
-export { ACTION_ACCRUE, ACTION_ADD_ASSET, ACTION_ADD_COLLATERAL, ACTION_BENTO_DEPOSIT, ACTION_BENTO_SETAPPROVAL, ACTION_BENTO_TRANSFER, ACTION_BENTO_TRANSFER_MULTIPLE, ACTION_BENTO_WITHDRAW, ACTION_BORROW, ACTION_CALL, ACTION_GET_REPAY_PART, ACTION_GET_REPAY_SHARE, ACTION_REMOVE_ASSET, ACTION_REMOVE_COLLATERAL, ACTION_REPAY, ACTION_UPDATE_EXCHANGE_RATE, ARCHER_ROUTER_ADDRESS, ASSERT, AbstractCurrency, Avalanche, BAR_ADDRESS, BENTOBOX_ADDRESS, BORING_HELPER_ADDRESS, Binance, CHAINLINK_ORACLE_ADDRESS, CL_MAX_TICK, CL_MIN_TICK, CONVEYOR_V2_FACTORY_ADDRESS, CONVEYOR_V2_ROUTER_ADDRESS, Celo, ChainId, ConcentratedLiquidityPool, ConstantProductPool, CurrencyAmount, ENS_REGISTRAR_ADDRESS, Ether, Exchanger, FACTORY_ADDRESS, FACTOR_PRECISION, FIVE, FULL_UTILIZATION, FULL_UTILIZATION_MINUS_MAX, Fantom, Fee, FillLimitOrder, Fraction, Harmony, Heco, HybridComputeLiquidity, HybridPool, HybridgetY, INIT_CODE_HASH, INTEREST_ELASTICITY, InsufficientInputAmountError, InsufficientReservesError, KASHI_ADDRESS, KashiAction, LAMBDA_URL, LIQUIDITY_TOKEN_IDENTITY, LimitOrder, MAKER_ADDRESS, MASTERCHEF_ADDRESS, MASTERCHEF_V2_ADDRESS, MAXIMUM_INTEREST_PER_YEAR, MAXIMUM_TARGET_UTILIZATION, MERKLE_DISTRIBUTOR_ADDRESS, MINICHEF_ADDRESS, MINIMUM_INTEREST_PER_YEAR, MINIMUM_LIQUIDITY, MINIMUM_TARGET_UTILIZATION, MULTICALL2_ADDRESS, Matic, MaxUint256, NATIVE, NativeCurrency, ONE, Okex, OrderStatus, OutOfLiquidity, PEGGED_ORACLE_ADDRESS, PROTOCOL_FEE, PROTOCOL_FEE_DIVISOR, Pair, Palm, Percent, Pool, PoolType, Price, ROUTER_ADDRESS, Rounding, Route, RouteStatus, Router, SOCKET_URL, SOLIDITY_TYPE_MAXIMA, STARTING_INTEREST_PER_YEAR, STOP_LIMIT_ORDER_ADDRESS, SUSHISWAP_MULTISWAPPER_ADDRESS, SUSHISWAP_MULTI_EXACT_SWAPPER_ADDRESS, SUSHISWAP_SWAPPER_ADDRESS, SUSHISWAP_TWAP_0_ORACLE_ADDRESS, SUSHISWAP_TWAP_1_ORACLE_ADDRESS, SUSHI_ADDRESS, SolidityType, TEN, THREE, TIMELOCK_ADDRESS, TWO, Token, TokenType, Trade, TradeType, USDC, USDC_ADDRESS, UTILIZATION_PRECISION, WETH9, WETH9_ADDRESS, WNATIVE, WNATIVE_ADDRESS, WeightedPool, ZAPPER_ADDRESS, ZERO, _100, _1000, _997, bentoTypes, calcInByOut, calcInputByPrice, calcOutByIn, calcPrice, calcSquareEquation, closeValues, computePairAddress, computePriceImpact, currencyEquals, getBigNumber, getSignature, getSignatureBento, getSignatureWithProvider, getSignatureWithProviderBentobox, getTypeHash, getTypedData, getTypedDataBento, inputOutputComparator, name, revertPositive, sortedInsert, sqrt, toHex, tradeComparator, types, validateAndParseAddress, validateSolidityTypeInstance, xDai };
+/**
+ * Contains methods for constructing instances of pairs and tokens from on-chain data.
+ */
+
+var Fetcher = /*#__PURE__*/function () {
+  /**
+   * Cannot be constructed.
+   */
+  function Fetcher() {}
+  /**
+   * Fetches information about a pair and constructs a pair from the given two tokens.
+   * @param tokenA first token
+   * @param tokenB second token
+   * @param provider the provider to use to fetch the data
+   */
+
+
+  Fetcher.fetchPairData =
+  /*#__PURE__*/
+  function () {
+    var _fetchPairData = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/runtime_1.mark(function _callee(tokenA, tokenB, provider) {
+      var address, _yield$Contract$getRe, reserves0, reserves1, balances;
+
+      return runtime_1.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              if (provider === void 0) {
+                provider = /*#__PURE__*/getDefaultProvider( /*#__PURE__*/getNetwork(tokenA.chainId));
+              }
+
+              !(tokenA.chainId === tokenB.chainId) ? process.env.NODE_ENV !== "production" ? invariant(false, 'CHAIN_ID') : invariant(false) : void 0;
+              address = Pair.getAddress(tokenA, tokenB);
+              _context.next = 5;
+              return new Contract(address, UniswapV2Pair.abi, provider).getReserves();
+
+            case 5:
+              _yield$Contract$getRe = _context.sent;
+              reserves0 = _yield$Contract$getRe[0];
+              reserves1 = _yield$Contract$getRe[1];
+              balances = tokenA.sortsBefore(tokenB) ? [reserves0, reserves1] : [reserves1, reserves0];
+              return _context.abrupt("return", new Pair(CurrencyAmount.fromRawAmount(tokenA, balances[0]), CurrencyAmount.fromRawAmount(tokenB, balances[1])));
+
+            case 10:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    }));
+
+    function fetchPairData(_x, _x2, _x3) {
+      return _fetchPairData.apply(this, arguments);
+    }
+
+    return fetchPairData;
+  }();
+
+  return Fetcher;
+}();
+
+export { ACTION_ACCRUE, ACTION_ADD_ASSET, ACTION_ADD_COLLATERAL, ACTION_BENTO_DEPOSIT, ACTION_BENTO_SETAPPROVAL, ACTION_BENTO_TRANSFER, ACTION_BENTO_TRANSFER_MULTIPLE, ACTION_BENTO_WITHDRAW, ACTION_BORROW, ACTION_CALL, ACTION_GET_REPAY_PART, ACTION_GET_REPAY_SHARE, ACTION_REMOVE_ASSET, ACTION_REMOVE_COLLATERAL, ACTION_REPAY, ACTION_UPDATE_EXCHANGE_RATE, ARCHER_ROUTER_ADDRESS, ASSERT, AbstractCurrency, Avalanche, BAR_ADDRESS, BENTOBOX_ADDRESS, BORING_HELPER_ADDRESS, Binance, CHAINLINK_ORACLE_ADDRESS, CL_MAX_TICK, CL_MIN_TICK, CONVEYOR_V2_FACTORY_ADDRESS, CONVEYOR_V2_ROUTER_ADDRESS, Celo, ChainId, ConcentratedLiquidityPool, ConstantProductPool, CurrencyAmount, ENS_REGISTRAR_ADDRESS, Ether, Exchanger, FACTORY_ADDRESS, FACTOR_PRECISION, FIVE, FULL_UTILIZATION, FULL_UTILIZATION_MINUS_MAX, Fantom, Fee, Fetcher, FillLimitOrder, Fraction, Harmony, Heco, HybridComputeLiquidity, HybridPool, HybridgetY, INIT_CODE_HASH, INTEREST_ELASTICITY, InsufficientInputAmountError, InsufficientReservesError, KASHI_ADDRESS, KashiAction, LAMBDA_URL, LIQUIDITY_TOKEN_IDENTITY, LimitOrder, MAKER_ADDRESS, MASTERCHEF_ADDRESS, MASTERCHEF_V2_ADDRESS, MAXIMUM_INTEREST_PER_YEAR, MAXIMUM_TARGET_UTILIZATION, MERKLE_DISTRIBUTOR_ADDRESS, MINICHEF_ADDRESS, MINIMUM_INTEREST_PER_YEAR, MINIMUM_LIQUIDITY, MINIMUM_TARGET_UTILIZATION, MULTICALL2_ADDRESS, Matic, MaxUint256, NATIVE, NativeCurrency, ONE, Okex, OrderStatus, OutOfLiquidity, PEGGED_ORACLE_ADDRESS, PROTOCOL_FEE, PROTOCOL_FEE_DIVISOR, Pair, Palm, Percent, Pool, PoolType, Price, ROUTER_ADDRESS, Rounding, Route, RouteStatus, Router, SOCKET_URL, SOLIDITY_TYPE_MAXIMA, STARTING_INTEREST_PER_YEAR, STOP_LIMIT_ORDER_ADDRESS, SUSHISWAP_MULTISWAPPER_ADDRESS, SUSHISWAP_MULTI_EXACT_SWAPPER_ADDRESS, SUSHISWAP_SWAPPER_ADDRESS, SUSHISWAP_TWAP_0_ORACLE_ADDRESS, SUSHISWAP_TWAP_1_ORACLE_ADDRESS, SUSHI_ADDRESS, SolidityType, TEN, THREE, TIMELOCK_ADDRESS, TWO, Token, TokenType, Trade, TradeType, USDC, USDC_ADDRESS, UTILIZATION_PRECISION, WETH9, WETH9_ADDRESS, WNATIVE, WNATIVE_ADDRESS, WeightedPool, ZAPPER_ADDRESS, ZERO, _100, _1000, _997, bentoTypes, calcInByOut, calcInputByPrice, calcOutByIn, calcPrice, calcSquareEquation, closeValues, computePairAddress, computePriceImpact, currencyEquals, getBigNumber, getSignature, getSignatureBento, getSignatureWithProvider, getSignatureWithProviderBentobox, getTypeHash, getTypedData, getTypedDataBento, inputOutputComparator, name, revertPositive, sortedInsert, sqrt, toHex, tradeComparator, types, validateAndParseAddress, validateSolidityTypeInstance, xDai };
 //# sourceMappingURL=sdk.esm.js.map
