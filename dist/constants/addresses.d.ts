@@ -2,11 +2,11 @@ import { AddressMap } from '../types';
 export declare const USDC_ADDRESS: AddressMap;
 export declare const FACTORY_ADDRESS: AddressMap;
 export declare const CONVEYOR_V2_FACTORY_ADDRESS: {
-    [key: string]: AddressMap;
+    [key: string]: string;
 };
 export declare const ROUTER_ADDRESS: AddressMap;
 export declare const CONVEYOR_V2_ROUTER_ADDRESS: {
-    [key: string]: AddressMap;
+    [key: string]: string;
 };
 export declare const SUSHI_ADDRESS: AddressMap;
 export declare const MASTERCHEF_ADDRESS: AddressMap;

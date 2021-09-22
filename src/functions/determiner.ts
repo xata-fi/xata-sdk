@@ -24,7 +24,8 @@ export function factoryAddressOf(
       factory = CONVEYOR_V2_FACTORY_ADDRESS.staging
     }
 
-    return factory[chainId]
+    // return factory[chainId]
+    return factory
   }
 }
 

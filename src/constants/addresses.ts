@@ -43,17 +43,21 @@ export const FACTORY_ADDRESS: AddressMap = {
   [ChainId.PALM_TESTNET]: ''
 }
 
-export const CONVEYOR_V2_FACTORY_ADDRESS: { [key: string]: AddressMap } = {
-  production: {
-    [ChainId.MAINNET]: '0x0000000000000000000000000000000000000000',
-    [ChainId.BSC]: '0x0000000000000000000000000000000000000000',
-    [ChainId.MATIC]: '0x50CE3bC33df424785314a7F8482CD43b61dAc5C9'
-  },
-  staging: {
-    [ChainId.MAINNET]: '0xD417aF1FC4bA9b8371a5703e63FD728b4D0C531A',
-    [ChainId.BSC]: '0xB889fb7fd2cf5F411522C97ef117D27974e1E182',
-    [ChainId.MATIC]: '0x9A3947355AC93947Fe87099Deb198cf0F7D5a115'
-  }
+// export const CONVEYOR_V2_FACTORY_ADDRESS: { [key: string]: AddressMap } = {
+//   production: {
+//     [ChainId.MAINNET]: '0x0000000000000000000000000000000000000000',
+//     [ChainId.BSC]: '0x0000000000000000000000000000000000000000',
+//     [ChainId.MATIC]: '0x50CE3bC33df424785314a7F8482CD43b61dAc5C9'
+//   },
+//   staging: {
+//     [ChainId.MAINNET]: '0xD417aF1FC4bA9b8371a5703e63FD728b4D0C531A',
+//     [ChainId.BSC]: '0xB889fb7fd2cf5F411522C97ef117D27974e1E182',
+//     [ChainId.MATIC]: '0x9A3947355AC93947Fe87099Deb198cf0F7D5a115'
+//   }
+// }
+export const CONVEYOR_V2_FACTORY_ADDRESS: { [key: string]: string } = {
+  production: '0x5f8017621825BC10D63d15C3e863f893946781F7',
+  staging: '0xb780dD5884CC280a203378f6ebECe689594dAa8D'
 }
 
 export const ROUTER_ADDRESS: AddressMap = {
@@ -85,17 +89,22 @@ export const ROUTER_ADDRESS: AddressMap = {
   [ChainId.PALM_TESTNET]: ''
 }
 
-export const CONVEYOR_V2_ROUTER_ADDRESS: { [key: string]: AddressMap } = {
-  production: {
-    [ChainId.MAINNET]: '0x0000000000000000000000000000000000000000',
-    [ChainId.BSC]: '0x0000000000000000000000000000000000000000',
-    [ChainId.MATIC]: '0x1524E3DCA50349Ebf03a8Af8Ffdc03C30378FD69'
-  },
-  staging: {
-    [ChainId.MAINNET]: '0x0d78d0c45774517a58565ef1e9915e7e8ee8fc07',
-    [ChainId.BSC]: '0xd40cB7a08B77e20B4A6860855CF8ad8D2Fe64813',
-    [ChainId.MATIC]: '0xd417af1fc4ba9b8371a5703e63fd728b4d0c531a'
-  }
+// export const CONVEYOR_V2_ROUTER_ADDRESS: { [key: string]: AddressMap } = {
+//   production: {
+//     [ChainId.MAINNET]: '0x0000000000000000000000000000000000000000',
+//     [ChainId.BSC]: '0x0000000000000000000000000000000000000000',
+//     [ChainId.MATIC]: '0x1524E3DCA50349Ebf03a8Af8Ffdc03C30378FD69'
+//   },
+//   staging: {
+//     [ChainId.MAINNET]: '0x0d78d0c45774517a58565ef1e9915e7e8ee8fc07',
+//     [ChainId.BSC]: '0xd40cB7a08B77e20B4A6860855CF8ad8D2Fe64813',
+//     [ChainId.MATIC]: '0xd417af1fc4ba9b8371a5703e63fd728b4d0c531a'
+//   }
+// }
+
+export const CONVEYOR_V2_ROUTER_ADDRESS: { [key: string]: string } = {
+  production: '0x838309Bc4C6769050A23007742CF8f9F305DcE13',
+  staging: '0x4dB1B22A57bF1cFBCA5589bDB2c2527aa5a00d8d'
 }
 
 export const SUSHI_ADDRESS: AddressMap = {
