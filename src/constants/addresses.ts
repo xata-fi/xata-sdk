@@ -57,7 +57,7 @@ export const FACTORY_ADDRESS: AddressMap = {
 // }
 export const CONVEYOR_V2_FACTORY_ADDRESS: { [key: string]: string } = {
   production: '0x5f8017621825BC10D63d15C3e863f893946781F7',
-  staging: '0xb780dD5884CC280a203378f6ebECe689594dAa8D'
+  staging: '0x5f8017621825BC10D63d15C3e863f893946781F7' // Matic test only
 }
 
 export const ROUTER_ADDRESS: AddressMap = {
@@ -104,7 +104,7 @@ export const ROUTER_ADDRESS: AddressMap = {
 
 export const CONVEYOR_V2_ROUTER_ADDRESS: { [key: string]: string } = {
   production: '0x838309Bc4C6769050A23007742CF8f9F305DcE13',
-  staging: '0x4dB1B22A57bF1cFBCA5589bDB2c2527aa5a00d8d'
+  staging: '0x838309Bc4C6769050A23007742CF8f9F305DcE13' // Matic test only
 }
 
 export const SUSHI_ADDRESS: AddressMap = {
