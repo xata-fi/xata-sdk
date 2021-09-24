@@ -4914,7 +4914,7 @@ var Fetcher = /*#__PURE__*/function () {
   Fetcher.fetchPairData =
   /*#__PURE__*/
   function () {
-    var _fetchPairData = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/runtime_1.mark(function _callee(tokenA, tokenB, provider) {
+    var _fetchPairData = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/runtime_1.mark(function _callee(tokenA, tokenB, conveyorEnvIsProduction, provider) {
       var address, _yield$Contract$getRe, reserves0, reserves1, balances;
 
       return runtime_1.wrap(function _callee$(_context) {
@@ -4926,7 +4926,7 @@ var Fetcher = /*#__PURE__*/function () {
               }
 
               !(tokenA.chainId === tokenB.chainId) ?  invariant(false, 'CHAIN_ID')  : void 0;
-              address = Pair.getAddress(tokenA, tokenB);
+              address = Pair.getAddress(tokenA, tokenB, true, conveyorEnvIsProduction);
               _context.next = 5;
               return new contracts.Contract(address, UniswapV2Pair.abi, provider).getReserves();
 
@@ -4945,7 +4945,7 @@ var Fetcher = /*#__PURE__*/function () {
       }, _callee);
     }));
 
-    function fetchPairData(_x, _x2, _x3) {
+    function fetchPairData(_x, _x2, _x3, _x4) {
       return _fetchPairData.apply(this, arguments);
     }
 
