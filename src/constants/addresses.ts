@@ -44,7 +44,7 @@ export const FACTORY_ADDRESS: { [env in Environment]: AddressMap } = {
     [ChainId.PALM_TESTNET]: ''
   },
   [Environment.STAGING]: {
-    [ChainId.MAINNET]: '0xb780dD5884CC280a203378f6ebECe689594dAa8D',
+    [ChainId.MAINNET]: '0x5f8017621825BC10D63d15C3e863f893946781F7',
     [ChainId.RINKEBY]: '',
     [ChainId.ROPSTEN]: '',
     [ChainId.GÖRLI]: '',
@@ -55,7 +55,7 @@ export const FACTORY_ADDRESS: { [env in Environment]: AddressMap } = {
     [ChainId.MATIC]: '0x5f8017621825BC10D63d15C3e863f893946781F7',
     [ChainId.MATIC_TESTNET]: '',
     [ChainId.XDAI]: '',
-    [ChainId.BSC]: '0xb780dD5884CC280a203378f6ebECe689594dAa8D',
+    [ChainId.BSC]: '0x5f8017621825BC10D63d15C3e863f893946781F7',
     [ChainId.BSC_TESTNET]: '',
     [ChainId.ARBITRUM]: '',
     [ChainId.ARBITRUM_TESTNET]: '',
@@ -104,7 +104,7 @@ export const ROUTER_ADDRESS: { [env in Environment]: AddressMap} = {
     [ChainId.PALM_TESTNET]: ''
   },
   [Environment.STAGING]: {
-    [ChainId.MAINNET]: '0x4dB1B22A57bF1cFBCA5589bDB2c2527aa5a00d8d',
+    [ChainId.MAINNET]: '0x838309Bc4C6769050A23007742CF8f9F305DcE13',
     [ChainId.RINKEBY]: '',
     [ChainId.ROPSTEN]: '',
     [ChainId.GÖRLI]: '',
@@ -115,7 +115,7 @@ export const ROUTER_ADDRESS: { [env in Environment]: AddressMap} = {
     [ChainId.MATIC]: '0x838309Bc4C6769050A23007742CF8f9F305DcE13',
     [ChainId.MATIC_TESTNET]: '',
     [ChainId.XDAI]: '',
-    [ChainId.BSC]: '0x4dB1B22A57bF1cFBCA5589bDB2c2527aa5a00d8d',
+    [ChainId.BSC]: '0x838309Bc4C6769050A23007742CF8f9F305DcE13',
     [ChainId.BSC_TESTNET]: '',
     [ChainId.ARBITRUM]: '',
     [ChainId.ARBITRUM_TESTNET]: '',
