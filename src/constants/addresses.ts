@@ -76,17 +76,17 @@ export const FACTORY_ADDRESS: { [env in Environment]: AddressMap } = {
 
 export const ROUTER_ADDRESS: { [env in Environment]: AddressMap} = {
   [Environment.PRODUCTION]: {
-    [ChainId.MAINNET]: '0x838309Bc4C6769050A23007742CF8f9F305DcE13',
+    [ChainId.MAINNET]: '0xe4C5Cf259351d7877039CBaE0e7f92EB2Ab017EB',
     [ChainId.RINKEBY]: '',
     [ChainId.ROPSTEN]: '',
     [ChainId.GÖRLI]: '',
     [ChainId.KOVAN]: '',
     [ChainId.FANTOM]: '',
     [ChainId.FANTOM_TESTNET]: '',
-    [ChainId.MATIC]: '0x838309Bc4C6769050A23007742CF8f9F305DcE13',
+    [ChainId.MATIC]: '0xe4C5Cf259351d7877039CBaE0e7f92EB2Ab017EB',
     [ChainId.MATIC_TESTNET]: '',
     [ChainId.XDAI]: '',
-    [ChainId.BSC]: '0x838309Bc4C6769050A23007742CF8f9F305DcE13',
+    [ChainId.BSC]: '0xe4C5Cf259351d7877039CBaE0e7f92EB2Ab017EB',
     [ChainId.BSC_TESTNET]: '',
     [ChainId.ARBITRUM]: '',
     [ChainId.ARBITRUM_TESTNET]: '',
@@ -104,7 +104,7 @@ export const ROUTER_ADDRESS: { [env in Environment]: AddressMap} = {
     [ChainId.PALM_TESTNET]: ''
   },
   [Environment.STAGING]: {
-    [ChainId.MAINNET]: '0x838309Bc4C6769050A23007742CF8f9F305DcE13',
+    [ChainId.MAINNET]: '0xe4C5Cf259351d7877039CBaE0e7f92EB2Ab017EB',
     [ChainId.RINKEBY]: '',
     [ChainId.ROPSTEN]: '',
     [ChainId.GÖRLI]: '',
@@ -112,10 +112,10 @@ export const ROUTER_ADDRESS: { [env in Environment]: AddressMap} = {
     [ChainId.FANTOM]: '',
     [ChainId.FANTOM_TESTNET]: '',
     // TODO Update MATIC address when the contract has been deployed to mainnet
-    [ChainId.MATIC]: '0x838309Bc4C6769050A23007742CF8f9F305DcE13',
+    [ChainId.MATIC]: '0xe4C5Cf259351d7877039CBaE0e7f92EB2Ab017EB',
     [ChainId.MATIC_TESTNET]: '',
     [ChainId.XDAI]: '',
-    [ChainId.BSC]: '0x838309Bc4C6769050A23007742CF8f9F305DcE13',
+    [ChainId.BSC]: '0xe4C5Cf259351d7877039CBaE0e7f92EB2Ab017EB',
     [ChainId.BSC_TESTNET]: '',
     [ChainId.ARBITRUM]: '',
     [ChainId.ARBITRUM_TESTNET]: '',
