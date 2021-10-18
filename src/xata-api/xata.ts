@@ -24,7 +24,7 @@ interface Response {
     }
 }
 
-export default class Conveyor {
+export default class XATA {
     chainId: number = -1;
     geodeEndpoint: string = '';
     provider: JsonRpcProvider = new ethers.providers.JsonRpcProvider(); // defaults to localhost
@@ -53,7 +53,7 @@ export default class Conveyor {
         || this.routerContract.address === zeroAddress;
 
         if (notInit) {
-            throw new Error('Error: Conveyor has not been initialized!');
+            throw new Error('Error: XATA API has not been initialized yet!');
         }
     }
 

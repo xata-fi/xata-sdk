@@ -1,4 +1,4 @@
-import Conveyor from '../conveyor';
+import XATA from '../xata';
 import { BigNumber, ethers, utils } from 'ethers';
 
 const { parseUnits } = utils;
@@ -11,18 +11,18 @@ async function main() {
     // // Metamask
     // const provider = new ethers.providers.Web3Provider(window.ethereum);
     
-    // instantiate a Conveyor instance for mainnet
+    // instantiate a XATA instance for mainnet
 
     // rpcProvider = localhost, feeToken = USD Coin, isLocalHostProvider = true <- defaults at false.
-    const mainnetConveyor = new Conveyor();
-    await mainnetConveyor.init(provider, '0xdAC17F958D2ee523a2206206994597C13D831ec7');
+    const mainnetXata = new XATA();
+    await mainnetXata.init(provider, '0xdAC17F958D2ee523a2206206994597C13D831ec7');
 
     // // switch fee token to DAI
-    // mainnetConveyor.setFeeToken('0x6B175474E89094C44Da98b954EedeAC495271d0F');
+    // mainnetXata.setFeeToken('0x6B175474E89094C44Da98b954EedeAC495271d0F');
 
     // attempts to add liquidity
     console.log('adding liquidity...');
-    const addLiquidityResponse = await mainnetConveyor.addLiquidity(
+    const addLiquidityResponse = await mainnetXata.addLiquidity(
         '0xdAC17F958D2ee523a2206206994597C13D831ec7', // tokenA <- USDT
         '0x6B175474E89094C44Da98b954EedeAC495271d0F', // tokenB <- DAI
         parseUnits('500', 6), // amountADesired
@@ -37,7 +37,7 @@ async function main() {
 
     // attempts to swap
     console.log('swapping...');
-    const swapResponse = await mainnetConveyor.swapExactTokensForTokens(
+    const swapResponse = await mainnetXata.swapExactTokensForTokens(
         parseUnits('10', 18), // amount0
         parseUnits('5', 6), // amount1
         ['0x6B175474E89094C44Da98b954EedeAC495271d0F', '0xdAC17F958D2ee523a2206206994597C13D831ec7'],
@@ -49,7 +49,7 @@ async function main() {
 
     // attempts to remove liquidity
     console.log('removing liquidity...');
-    const removeResponse = await mainnetConveyor.removeLiquidity(
+    const removeResponse = await mainnetXata.removeLiquidity(
         '0xdAC17F958D2ee523a2206206994597C13D831ec7', // tokenA <- USDT
         '0x6B175474E89094C44Da98b954EedeAC495271d0F', // tokenB <- DAI
         BigNumber.from('50000000000000'), // 10% of liquidity
