@@ -82,7 +82,7 @@ export default class XATA {
         method: string,
         gasLimit: BigNumber,
         gasPrice?: BigNumber,
-    ) {
+    ): Promise<Response> {
         this._checkInit();
 
         const price: BigNumber = gasPrice || await this.provider.getGasPrice(); // WEI per gas
@@ -159,18 +159,41 @@ export default class XATA {
             // send request
             console.log(requestOptions);
             const jsonRpcResponse = await fetch(this.geodeEndpoint, requestOptions);
-            const { result } = (await jsonRpcResponse.json()) as Response;
+            const result  = (await jsonRpcResponse.json()) as Response;
             return result;
         } else {
             // send the txn directly
-            const tx = await signer.sendTransaction({
-                to: router.address,
-                data: message.data,
-                gasLimit: gasLimit,
-                gasPrice: price,
-            })
-
-            return tx;
+            let res: Response;
+            try {
+                const tx = await signer.sendTransaction({
+                    to: router.address,
+                    data: message.data,
+                    gasLimit: gasLimit,
+                    gasPrice: price,
+                });
+                await tx.wait();
+                res = {
+                    id: 1,
+                    jsonrpc: '2.0',
+                    result: {
+                        errorMessage: '',
+                        success: true,
+                        txnHash: tx.hash,
+                    } 
+                }
+            } catch (e) {
+                const err = e as Error;
+                res = {
+                    id: 1,
+                    jsonrpc: '2.0',
+                    result: {
+                        errorMessage: err.message,
+                        success: false,
+                        txnHash: '',
+                    } 
+                }
+            }
+            return res;
         }
     }
 

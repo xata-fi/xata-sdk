@@ -7379,7 +7379,7 @@ var XATA = /*#__PURE__*/function () {
 
   _proto.sendRequest = /*#__PURE__*/function () {
     var _sendRequest = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/runtime_1.mark(function _callee3(args, method, gasLimit, gasPrice) {
-      var price, txnFee, maxTokenFee, provider, signer, user, router, nonce, message, domain, EIP712Content, sigParams, metaIsEnabled, sig, _splitSignature, v, r, s, params, jsonRpcRequest, requestOptions, jsonRpcResponse, _yield$jsonRpcRespons, result, tx;
+      var price, txnFee, maxTokenFee, provider, signer, user, router, nonce, message, domain, EIP712Content, sigParams, metaIsEnabled, sig, _splitSignature, v, r, s, params, jsonRpcRequest, requestOptions, jsonRpcResponse, result, res, tx, err;
 
       return runtime_1.wrap(function _callee3$(_context3) {
         while (1) {
@@ -7495,7 +7495,7 @@ var XATA = /*#__PURE__*/function () {
               metaIsEnabled = _context3.sent;
 
               if (!metaIsEnabled) {
-                _context3.next = 81;
+                _context3.next = 80;
                 break;
               }
 
@@ -7539,11 +7539,11 @@ var XATA = /*#__PURE__*/function () {
               return jsonRpcResponse.json();
 
             case 76:
-              _yield$jsonRpcRespons = _context3.sent;
-              result = _yield$jsonRpcRespons.result;
+              result = _context3.sent;
               return _context3.abrupt("return", result);
 
-            case 81:
+            case 80:
+              _context3.prev = 80;
               _context3.next = 83;
               return signer.sendTransaction({
                 to: router.address,
@@ -7554,14 +7554,45 @@ var XATA = /*#__PURE__*/function () {
 
             case 83:
               tx = _context3.sent;
-              return _context3.abrupt("return", tx);
+              _context3.next = 86;
+              return tx.wait();
 
-            case 85:
+            case 86:
+              res = {
+                id: 1,
+                jsonrpc: '2.0',
+                result: {
+                  errorMessage: '',
+                  success: true,
+                  txnHash: tx.hash
+                }
+              };
+              _context3.next = 93;
+              break;
+
+            case 89:
+              _context3.prev = 89;
+              _context3.t16 = _context3["catch"](80);
+              err = _context3.t16;
+              res = {
+                id: 1,
+                jsonrpc: '2.0',
+                result: {
+                  errorMessage: err.message,
+                  success: false,
+                  txnHash: ''
+                }
+              };
+
+            case 93:
+              return _context3.abrupt("return", res);
+
+            case 94:
             case "end":
               return _context3.stop();
           }
         }
-      }, _callee3, this);
+      }, _callee3, this, [[80, 89]]);
     }));
 
     function sendRequest(_x5, _x6, _x7, _x8) {
