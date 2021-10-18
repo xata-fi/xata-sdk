@@ -7,14 +7,14 @@ const addliquidity_tuple =
 const addLiquiditySig = [`function addLiquidity(${addliquidity_tuple})`];
 const addLiquidityIFace = new utils.Interface(addLiquiditySig);
 export function encodeAddLiquidity(
-    tokenA: string,
-    tokenB: string,
-    amountADesired: BigNumber,
-    amountBDesired: BigNumber,
-    amountAMin: BigNumber,
-    amountBMin: BigNumber,
-    user: string,
-    deadline: BigNumber,
+    _tokenA: string,
+    _tokenB: string,
+    _amountADesired: BigNumber,
+    _amountBDesired: BigNumber,
+    _amountAMin: BigNumber,
+    _amountBMin: BigNumber,
+    _user: string,
+    _deadline: BigNumber,
 ): string {
   const args = [...arguments];
   const typedArgs = args as [string, string, BigNumber, BigNumber, BigNumber, BigNumber, string, BigNumber];
@@ -27,23 +27,24 @@ const swapExactTokensForTokensSig = [`function swapExactTokensForTokens(${swap_t
 const swapTokensForExactTokensSig = [`function swapTokensForExactTokens(${swap_tuple})`];
 const swapExactTokensForTokensIFace = new utils.Interface(swapExactTokensForTokensSig);
 const swapTokensForExactTokensIFace = new utils.Interface(swapTokensForExactTokensSig);
+
 export function encodeSwapExactTokensForTokens(
-  amountIn: BigNumber,
-  amountOutMin: BigNumber,
-  path: string[],
-  user: string,
-  deadline: BigNumber
+  _amountIn: BigNumber,
+  _amountOutMin: BigNumber,
+  _path: string[],
+  _user: string,
+  _deadline: BigNumber
 ): string {
   const args = [...arguments];
   const typedArgs = args as [BigNumber, BigNumber, string[], string, BigNumber];
   return swapExactTokensForTokensIFace.encodeFunctionData('swapExactTokensForTokens', [typedArgs]);
 }
 export function encodeSwapTokensForExactTokens(
-  amountOut: BigNumber,
-  amountInMax: BigNumber,
-  path: string[],
-  user: string,
-  deadline: BigNumber
+  _amountOut: BigNumber,
+  _amountInMax: BigNumber,
+  _path: string[],
+  _user: string,
+  _deadline: BigNumber
 ): string {
   const args = [...arguments];
   const typedArgs = args as [BigNumber, BigNumber, string[], string, BigNumber];
@@ -55,17 +56,17 @@ const removeLiquidity_tuple =
 const removeLiquidityWithPermitSig = [`function removeLiquidityWithPermit(${removeLiquidity_tuple},${sig_tuple})`];
 const removeLiquidityWithPermitIFace = new utils.Interface(removeLiquidityWithPermitSig);
 export function encodeRemoveLiquidityWithPermit(
-  tokenA: string,
-  tokenB: string,
-  liquidity: BigNumber,
-  amountAMin: BigNumber,
-  amountBMin: BigNumber,
-  user: string,
-  deadline: BigNumber,
-  sig_obj: Signature
+  _tokenA: string,
+  _tokenB: string,
+  _liquidity: BigNumber,
+  _amountAMin: BigNumber,
+  _amountBMin: BigNumber,
+  _user: string,
+  _deadline: BigNumber,
+  _sig_obj: Signature
 ): string {
   const args = [...arguments];
   const trimmedArgs = args.slice(0, args.length - 1);
   const typedArgs = trimmedArgs as [string, string, BigNumber, BigNumber, BigNumber, string, BigNumber];
-  return removeLiquidityWithPermitIFace.encodeFunctionData('removeLiquidityWithPermit', [typedArgs, sig_obj]);
+  return removeLiquidityWithPermitIFace.encodeFunctionData('removeLiquidityWithPermit', [typedArgs, _sig_obj]);
 }

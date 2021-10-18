@@ -175,21 +175,21 @@ export default class XATA {
     }
 
     async addLiquidity(
-        tokenA: string,
-        tokenB: string,
-        amountADesired: BigNumber,
-        amountBDesired: BigNumber,
-        amountAMin: BigNumber,
-        amountBMin: BigNumber,
-        user: string,
-        deadline: BigNumber,
+        _tokenA: string,
+        _tokenB: string,
+        _amountADesired: BigNumber,
+        _amountBDesired: BigNumber,
+        _amountAMin: BigNumber,
+        _amountBMin: BigNumber,
+        _user: string,
+        _deadline: BigNumber,
         gasLimit?: BigNumber,
         gasPrice?: BigNumber
     ) {
         this._checkInit();
 
         // check if a pair exists
-        const pairExists: boolean = (await this.factoryContract.getPair(tokenA, tokenB)) !== zeroAddress;
+        const pairExists: boolean = (await this.factoryContract.getPair(_tokenA, _tokenB)) !== zeroAddress;
 
         // get gas limit if not provided
         let limit: BigNumber;
@@ -213,17 +213,17 @@ export default class XATA {
     }
 
     async swapExactTokensForTokens(
-        amountIn: BigNumber,
-        amountOutMin: BigNumber,
-        path: string[],
-        user: string,
-        deadline: BigNumber,
+        _amountIn: BigNumber,
+        _amountOutMin: BigNumber,
+        _path: string[],
+        _user: string,
+        _deadline: BigNumber,
         gasLimit?: BigNumber,
         gasPrice?: BigNumber
     ) {
         this._checkInit();
 
-        const pathExists: boolean = (await this._pathExists(path)) && path.length >= 2;
+        const pathExists: boolean = (await this._pathExists(_path)) && _path.length >= 2;
 
         // get gas limit if not provided
         let limit: BigNumber;
@@ -234,8 +234,8 @@ export default class XATA {
                 limit = gasLimit;
             } else {
                 limit = BigNumber.from(constants.SWAP_GAS_LIMIT);
-                if (path.length >= 2) {
-                    limit = limit.add(BigNumber.from(constants.HOP_ADDITIONAL_GAS * (path.length - 2)));
+                if (_path.length >= 2) {
+                    limit = limit.add(BigNumber.from(constants.HOP_ADDITIONAL_GAS * (_path.length - 2)));
                 }
             }
         }
@@ -252,20 +252,20 @@ export default class XATA {
     }
 
     async removeLiquidity(
-        tokenA: string,
-        tokenB: string,
-        liquidity: BigNumber,
-        amountAMin: BigNumber,
-        amountBMin: BigNumber,
-        user: string,
-        deadline: BigNumber,
+        _tokenA: string,
+        _tokenB: string,
+        _liquidity: BigNumber,
+        _amountAMin: BigNumber,
+        _amountBMin: BigNumber,
+        _user: string,
+        _deadline: BigNumber,
         gasLimit?: BigNumber,
         gasPrice?: BigNumber
     ) {
         this._checkInit();
 
         // check if a pair exists
-        const pairAddr = await this.factoryContract.getPair(tokenA, tokenB);
+        const pairAddr = await this.factoryContract.getPair(_tokenA, _tokenB);
         const pairExists: boolean = pairAddr !== zeroAddress;
 
         // determine gas limit
@@ -283,13 +283,13 @@ export default class XATA {
         // sign the permit message
         const pairErc20 = new ethers.Contract(pairAddr, PairAbi, this.provider);
         const permitDomain = eip712.getDomain(pairAddr, this.chainId, 'Conveyor V2');
-        const pairNonce = await pairErc20.nonces(user);
+        const pairNonce = await pairErc20.nonces(_user);
         const permitMessage = {
-            owner: user,
+            owner: _user,
             spender: this.routerContract.address,
-            value: liquidity.toHexString(),
+            value: _liquidity.toHexString(),
             nonce: pairNonce.toHexString(),
-            deadline: deadline.toHexString(),
+            deadline: _deadline.toHexString(),
         }
         const EIP712Permit = {
             types: {
@@ -300,7 +300,7 @@ export default class XATA {
             primaryType: 'Permit',
             message: permitMessage
         }
-        const permitSigParams = [user, JSON.stringify(EIP712Permit)];
+        const permitSigParams = [_user, JSON.stringify(EIP712Permit)];
 
         const permitSig: Signature = await this.provider.send(
             'eth_signTypedData_v4',

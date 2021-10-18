@@ -2,7 +2,7 @@ import { BigNumber, ethers, Signature } from 'ethers';
 import * as eip712 from './lib/eip712';
 import { JsonRpcProvider } from '@ethersproject/providers';
 import { Environment } from '../enums';
-export default class Conveyor {
+export default class XATA {
     chainId: number;
     geodeEndpoint: string;
     provider: JsonRpcProvider;
@@ -19,17 +19,17 @@ export default class Conveyor {
         success: boolean;
         txnHash: string;
     } | ethers.providers.TransactionResponse>;
-    addLiquidity(tokenA: string, tokenB: string, amountADesired: BigNumber, amountBDesired: BigNumber, amountAMin: BigNumber, amountBMin: BigNumber, user: string, deadline: BigNumber, gasLimit?: BigNumber, gasPrice?: BigNumber): Promise<{
+    addLiquidity(_tokenA: string, _tokenB: string, _amountADesired: BigNumber, _amountBDesired: BigNumber, _amountAMin: BigNumber, _amountBMin: BigNumber, _user: string, _deadline: BigNumber, gasLimit?: BigNumber, gasPrice?: BigNumber): Promise<{
         errorMessage: string;
         success: boolean;
         txnHash: string;
     } | ethers.providers.TransactionResponse>;
-    swapExactTokensForTokens(amountIn: BigNumber, amountOutMin: BigNumber, path: string[], user: string, deadline: BigNumber, gasLimit?: BigNumber, gasPrice?: BigNumber): Promise<{
+    swapExactTokensForTokens(_amountIn: BigNumber, _amountOutMin: BigNumber, _path: string[], _user: string, _deadline: BigNumber, gasLimit?: BigNumber, gasPrice?: BigNumber): Promise<{
         errorMessage: string;
         success: boolean;
         txnHash: string;
     } | ethers.providers.TransactionResponse>;
-    removeLiquidity(tokenA: string, tokenB: string, liquidity: BigNumber, amountAMin: BigNumber, amountBMin: BigNumber, user: string, deadline: BigNumber, gasLimit?: BigNumber, gasPrice?: BigNumber): Promise<{
+    removeLiquidity(_tokenA: string, _tokenB: string, _liquidity: BigNumber, _amountAMin: BigNumber, _amountBMin: BigNumber, _user: string, _deadline: BigNumber, gasLimit?: BigNumber, gasPrice?: BigNumber): Promise<{
         errorMessage: string;
         success: boolean;
         txnHash: string;

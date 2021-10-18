@@ -7,16 +7,19 @@ import warning from 'tiny-warning';
 import _Big from 'big.js';
 import _Decimal from 'decimal.js-light';
 import toFormat from 'toformat';
-import { keccak256, pack } from '@ethersproject/solidity';
+import { keccak256 as keccak256$1, pack } from '@ethersproject/solidity';
 import { SigningKey } from '@ethersproject/signing-key';
 import { getMessage } from 'eip-712';
-import { splitSignature } from '@ethersproject/bytes';
+import { splitSignature as splitSignature$1 } from '@ethersproject/bytes';
 import { Contract } from '@ethersproject/contracts';
-import { defaultAbiCoder } from '@ethersproject/abi';
+import { defaultAbiCoder as defaultAbiCoder$1 } from '@ethersproject/abi';
 import fetch from 'isomorphic-unfetch';
 import { getNetwork } from '@ethersproject/networks';
 import { getDefaultProvider } from '@ethersproject/providers';
 import UniswapV2Pair from '@sushiswap/core/artifacts/contracts/uniswapv2/UniswapV2Pair.sol/UniswapV2Pair.json';
+import { utils, BigNumber as BigNumber$1, ethers, constants } from 'ethers';
+import { BigNumber as BigNumber$2 } from 'bignumber.js';
+import fetch$1 from 'cross-fetch';
 
 var Exchanger;
 
@@ -1367,7 +1370,7 @@ var computePairAddress = function computePairAddress(_ref) {
 
 
   var exchanger = !isConveyorPair ? Exchanger.SUSHI : Exchanger.CONVEYOR;
-  return getCreate2Address(factoryAddress, keccak256(['bytes'], [pack(['address', 'address'], [token0.address, token1.address])]), // INIT_CODE_HASH
+  return getCreate2Address(factoryAddress, keccak256$1(['bytes'], [pack(['address', 'address'], [token0.address, token1.address])]), // INIT_CODE_HASH
   initCodeHashOf(exchanger));
 };
 
@@ -3110,7 +3113,7 @@ var getSignatureWithProvider = /*#__PURE__*/function () {
 
           case 3:
             signature = _context.sent;
-            _splitSignature = splitSignature(signature), v = _splitSignature.v, r = _splitSignature.r, s = _splitSignature.s;
+            _splitSignature = splitSignature$1(signature), v = _splitSignature.v, r = _splitSignature.r, s = _splitSignature.s;
             return _context.abrupt("return", {
               v: v,
               r: r,
@@ -3143,7 +3146,7 @@ var getSignatureWithProviderBentobox = /*#__PURE__*/function () {
 
           case 3:
             signature = _context2.sent;
-            _splitSignature2 = splitSignature(signature), v = _splitSignature2.v, r = _splitSignature2.r, s = _splitSignature2.s;
+            _splitSignature2 = splitSignature$1(signature), v = _splitSignature2.v, r = _splitSignature2.r, s = _splitSignature2.s;
             return _context2.abrupt("return", {
               v: v,
               r: r,
@@ -4611,7 +4614,7 @@ var LimitOrder = /*#__PURE__*/function () {
       endTime: this.endTime,
       stopPrice: this.stopPrice,
       oracleAddress: this.oracleAddress,
-      oracleData: keccak256(['bytes'], [this.oracleData])
+      oracleData: keccak256$1(['bytes'], [this.oracleData])
     };
 
     var _getSignature = getSignature(order, chainId, privateKey),
@@ -4648,7 +4651,7 @@ var LimitOrder = /*#__PURE__*/function () {
                 endTime: this.endTime,
                 stopPrice: this.stopPrice,
                 oracleAddress: this.oracleAddress,
-                oracleData: keccak256(['bytes'], [this.oracleData])
+                oracleData: keccak256$1(['bytes'], [this.oracleData])
               };
               _context.next = 3;
               return getSignatureWithProvider(order, chainId, provider);
@@ -4694,7 +4697,7 @@ var LimitOrder = /*#__PURE__*/function () {
       endTime: this.endTime,
       stopPrice: this.stopPrice,
       oracleAddress: this.oracleAddress,
-      oracleData: keccak256(['bytes'], [this.oracleData])
+      oracleData: keccak256$1(['bytes'], [this.oracleData])
     };
     return getTypedData(order, this.chainId);
   };
@@ -4822,7 +4825,7 @@ var FillLimitOrder = /*#__PURE__*/function () {
     this.to = validateAndParseAddress(to);
     this.tokenIn = order.amountIn.currency.address;
     this.tokenOut = order.amountOut.currency.address;
-    this.limitOrderReceiverData = defaultAbiCoder.encode(['address[]', 'uint256', 'address', 'bool'], [this.path, this.amountExternal.toString(), this.to, keepTokenIn]);
+    this.limitOrderReceiverData = defaultAbiCoder$1.encode(['address[]', 'uint256', 'address', 'bool'], [this.path, this.amountExternal.toString(), this.to, keepTokenIn]);
   }
 
   var _proto2 = FillLimitOrder.prototype;
@@ -4971,5 +4974,2861 @@ var Fetcher = /*#__PURE__*/function () {
   return Fetcher;
 }();
 
-export { ACTION_ACCRUE, ACTION_ADD_ASSET, ACTION_ADD_COLLATERAL, ACTION_BENTO_DEPOSIT, ACTION_BENTO_SETAPPROVAL, ACTION_BENTO_TRANSFER, ACTION_BENTO_TRANSFER_MULTIPLE, ACTION_BENTO_WITHDRAW, ACTION_BORROW, ACTION_CALL, ACTION_GET_REPAY_PART, ACTION_GET_REPAY_SHARE, ACTION_REMOVE_ASSET, ACTION_REMOVE_COLLATERAL, ACTION_REPAY, ACTION_UPDATE_EXCHANGE_RATE, ARCHER_ROUTER_ADDRESS, ASSERT, AbstractCurrency, Avalanche, BAR_ADDRESS, BENTOBOX_ADDRESS, BORING_HELPER_ADDRESS, Binance, CHAINLINK_ORACLE_ADDRESS, CL_MAX_TICK, CL_MIN_TICK, Celo, ChainId, ConcentratedLiquidityPool, ConstantProductPool, CurrencyAmount, ENS_REGISTRAR_ADDRESS, Environment, Ether, Exchanger, FACTORY_ADDRESS, FACTOR_PRECISION, FIVE, FULL_UTILIZATION, FULL_UTILIZATION_MINUS_MAX, Fantom, Fee, Fetcher, FillLimitOrder, Fraction, Harmony, Heco, HybridComputeLiquidity, HybridPool, HybridgetY, INIT_CODE_HASH, INTEREST_ELASTICITY, InsufficientInputAmountError, InsufficientReservesError, KASHI_ADDRESS, KashiAction, LAMBDA_URL, LIQUIDITY_TOKEN_IDENTITY, LimitOrder, MAKER_ADDRESS, MASTERCHEF_ADDRESS, MASTERCHEF_V2_ADDRESS, MAXIMUM_INTEREST_PER_YEAR, MAXIMUM_TARGET_UTILIZATION, MERKLE_DISTRIBUTOR_ADDRESS, MINICHEF_ADDRESS, MINIMUM_INTEREST_PER_YEAR, MINIMUM_LIQUIDITY, MINIMUM_TARGET_UTILIZATION, MULTICALL2_ADDRESS, Matic, MaxUint256, NATIVE, NativeCurrency, ONE, Okex, OrderStatus, OutOfLiquidity, PEGGED_ORACLE_ADDRESS, PROTOCOL_FEE, PROTOCOL_FEE_DIVISOR, Pair, Palm, Percent, Pool, PoolType, Price, ROUTER_ADDRESS, Rounding, Route, RouteStatus, Router, SOCKET_URL, SOLIDITY_TYPE_MAXIMA, STARTING_INTEREST_PER_YEAR, STOP_LIMIT_ORDER_ADDRESS, SUSHISWAP_MULTISWAPPER_ADDRESS, SUSHISWAP_MULTI_EXACT_SWAPPER_ADDRESS, SUSHISWAP_SWAPPER_ADDRESS, SUSHISWAP_TWAP_0_ORACLE_ADDRESS, SUSHISWAP_TWAP_1_ORACLE_ADDRESS, SUSHI_ADDRESS, SolidityType, TEN, THREE, TIMELOCK_ADDRESS, TWO, Token, TokenType, Trade, TradeType, USDC, USDC_ADDRESS, UTILIZATION_PRECISION, WETH9, WETH9_ADDRESS, WNATIVE, WNATIVE_ADDRESS, WeightedPool, ZAPPER_ADDRESS, ZERO, _100, _1000, _997, bentoTypes, calcInByOut, calcInputByPrice, calcOutByIn, calcPrice, calcSquareEquation, closeValues, computePairAddress, computePriceImpact, currencyEquals, getBigNumber, getSignature, getSignatureBento, getSignatureWithProvider, getSignatureWithProviderBentobox, getTypeHash, getTypedData, getTypedDataBento, inputOutputComparator, name, revertPositive, sortedInsert, sqrt, toHex, tradeComparator, types, validateAndParseAddress, validateSolidityTypeInstance, xDai };
+var sig_tuple = 'tuple(uint8 v, bytes32 r, bytes32 s)';
+var addliquidity_tuple = 'tuple(address tokenA, address tokenB, uint256 amountADesired, uint256 amountBDesired, uint256 amountAMin, uint256 amountBMin, address user, uint256 deadline)';
+var addLiquiditySig = ["function addLiquidity(" + addliquidity_tuple + ")"];
+var addLiquidityIFace = /*#__PURE__*/new utils.Interface(addLiquiditySig);
+function encodeAddLiquidity(_tokenA, _tokenB, _amountADesired, _amountBDesired, _amountAMin, _amountBMin, _user, _deadline) {
+  var args = Array.prototype.slice.call(arguments);
+  var typedArgs = args;
+  var res = addLiquidityIFace.encodeFunctionData('addLiquidity', [typedArgs]);
+  return res;
+}
+var swap_tuple = 'tuple(uint256 amount0, uint256 amount1, address[] path, address user, uint256 deadline)';
+var swapExactTokensForTokensSig = ["function swapExactTokensForTokens(" + swap_tuple + ")"];
+var swapExactTokensForTokensIFace = /*#__PURE__*/new utils.Interface(swapExactTokensForTokensSig);
+function encodeSwapExactTokensForTokens(_amountIn, _amountOutMin, _path, _user, _deadline) {
+  var args = Array.prototype.slice.call(arguments);
+  var typedArgs = args;
+  return swapExactTokensForTokensIFace.encodeFunctionData('swapExactTokensForTokens', [typedArgs]);
+}
+var removeLiquidity_tuple = 'tuple(address tokenA, address tokenB, uint256 liquidity, uint256 amountAMin, uint256 amountBMin, address user, uint256 deadline)';
+var removeLiquidityWithPermitSig = ["function removeLiquidityWithPermit(" + removeLiquidity_tuple + "," + sig_tuple + ")"];
+var removeLiquidityWithPermitIFace = /*#__PURE__*/new utils.Interface(removeLiquidityWithPermitSig);
+function encodeRemoveLiquidityWithPermit(_tokenA, _tokenB, _liquidity, _amountAMin, _amountBMin, _user, _deadline, _sig_obj) {
+  var args = Array.prototype.slice.call(arguments);
+  var trimmedArgs = args.slice(0, args.length - 1);
+  var typedArgs = trimmedArgs;
+  return removeLiquidityWithPermitIFace.encodeFunctionData('removeLiquidityWithPermit', [typedArgs, _sig_obj]);
+}
+
+var keccak256 = utils.keccak256,
+    defaultAbiCoder = utils.defaultAbiCoder,
+    toUtf8Bytes = utils.toUtf8Bytes,
+    solidityPack = utils.solidityPack;
+
+var DomainType = [{
+  name: 'name',
+  type: 'string'
+}, {
+  name: 'version',
+  type: 'string'
+}, {
+  name: 'chainId',
+  type: 'uint256'
+}, {
+  name: 'verifyingContract',
+  type: 'address'
+}];
+var PermitType = [{
+  name: 'owner',
+  type: 'address'
+}, {
+  name: 'spender',
+  type: 'address'
+}, {
+  name: 'value',
+  type: 'uint256'
+}, {
+  name: 'nonce',
+  type: 'uint256'
+}, {
+  name: 'deadline',
+  type: 'uint256'
+}];
+var ForwarderType = [{
+  name: 'from',
+  type: 'address'
+}, {
+  name: 'feeToken',
+  type: 'address'
+}, {
+  name: 'maxTokenAmount',
+  type: 'uint256'
+}, {
+  name: 'deadline',
+  type: 'uint256'
+}, {
+  name: 'nonce',
+  type: 'uint256'
+}, {
+  name: 'data',
+  type: 'bytes'
+}, {
+  name: 'hashedPayload',
+  type: 'bytes32'
+}]; // hash payloads
+
+function hashAddLiquidityPayload(tokenA, tokenB, amountADesired, amountBDesired, amountAMin, amountBMin, user, deadline) {
+  var ADDLIQUIDITY_TYPEHASH = keccak256(toUtf8Bytes('AddLiquidity(address tokenA,address tokenB,uint256 amountADesired,uint256 amountBDesired,uint256 amountAMin,uint256 amountBMin,address user,uint256 deadline)'));
+  return keccak256(defaultAbiCoder.encode(['bytes', 'address', 'address', 'uint256', 'uint256', 'uint256', 'uint256', 'address', 'uint256'], [ADDLIQUIDITY_TYPEHASH, tokenA, tokenB, amountADesired, amountBDesired, amountAMin, amountBMin, user, deadline]));
+}
+function hashSwapPayload(amount0, amount1, path, user, deadline) {
+  var SWAP_TYPEHASH = keccak256(toUtf8Bytes('Swap(uint256 amount0,uint256 amount1,address[] path,address user,uint256 deadline)'));
+  return keccak256(defaultAbiCoder.encode(['bytes', 'uint256', 'uint256', 'bytes32', 'address', 'uint256'], [SWAP_TYPEHASH, amount0, amount1, keccak256(solidityPack(['address[]'], [path])), user, deadline]));
+}
+function hashRemoveLiquidityPayload(tokenA, tokenB, liquidity, amountAMin, amountBMin, user, deadline, sig) {
+  var REMOVE_LIQUIDITY_TYPEHASH = keccak256(toUtf8Bytes('RemoveLiquidity(address tokenA,address tokenB,uint256 liquidity,uint256 amountAMin,uint256 amountBMin,address user,uint256 deadline,uint8 v,bytes32 r,bytes32 s)'));
+  return keccak256(defaultAbiCoder.encode(['bytes', 'address', 'address', 'uint256', 'uint256', 'uint256', 'address', 'uint256', 'uint8', 'bytes32', 'bytes32'], [REMOVE_LIQUIDITY_TYPEHASH, tokenA, tokenB, liquidity, amountAMin, amountBMin, user, deadline, sig.v, sig.r, sig.s]));
+}
+function getDomain(contractAddress, chain_id, domain_name) {
+  return {
+    name: domain_name,
+    version: '1',
+    chainId: BigNumber$1.from(chain_id).toHexString(),
+    verifyingContract: contractAddress
+  };
+}
+function buildMessage(args, method, feeToken, maxTokenAmount, nonce) {
+  var hashedPayload = '';
+  var data = '';
+  var typedArgs;
+  var deadline = '';
+  var from = '';
+
+  switch (method) {
+    case 'addLiquidity':
+      typedArgs = args;
+      hashedPayload = hashAddLiquidityPayload.apply(void 0, typedArgs);
+      data = encodeAddLiquidity.apply(void 0, typedArgs);
+      deadline = args[args.length - 1].toHexString();
+      from = args[args.length - 2];
+      break;
+
+    case 'swapExactTokensForTokens':
+      typedArgs = args;
+      hashedPayload = hashSwapPayload.apply(void 0, typedArgs);
+      data = encodeSwapExactTokensForTokens.apply(void 0, typedArgs);
+      deadline = args[args.length - 1].toHexString();
+      from = args[args.length - 2];
+      break;
+
+    case 'removeLiquidity':
+      typedArgs = args;
+      hashedPayload = hashRemoveLiquidityPayload.apply(void 0, typedArgs);
+      data = encodeRemoveLiquidityWithPermit.apply(void 0, typedArgs);
+      deadline = args[args.length - 2].toHexString();
+      from = args[args.length - 3];
+      break;
+
+    default:
+      throw new Error('Error: Method not recognized!');
+  }
+
+  return {
+    from: from,
+    feeToken: feeToken,
+    maxTokenAmount: maxTokenAmount.toHexString(),
+    deadline: deadline,
+    nonce: nonce.toHexString(),
+    data: data,
+    hashedPayload: hashedPayload
+  };
+}
+
+var FACTORY_ADDRESS$1 = '0x5f8017621825BC10D63d15C3e863f893946781F7';
+var ROUTER_ADDRESS$1 = '0x838309Bc4C6769050A23007742CF8f9F305DcE13';
+var SWAP_GAS_LIMIT = 512500;
+var ADD_LIQUIDITY_GAS_LIMIT = 662500;
+var CREATE_PAIR_GAS_LIMIT = 5125000;
+var HOP_ADDITIONAL_GAS = 175000;
+var REMOVE_LIQUIDITY_GAS_LIMIT = 625000;
+
+var _PRICE_API_PREFIX;
+var PRICE_API_PREFIX = (_PRICE_API_PREFIX = {}, _PRICE_API_PREFIX[ChainId.BSC] = 'https://api.coingecko.com/api/v3/simple/token_price/binance-smart-chain?', _PRICE_API_PREFIX[ChainId.MATIC] = 'https://api.coingecko.com/api/v3/simple/token_price/polygon-pos?', _PRICE_API_PREFIX[ChainId.MAINNET] = 'https://api.coingecko.com/api/v3/simple/token_price/ethereum?', _PRICE_API_PREFIX);
+/**
+ * This function converts a transaction fee to the equivalent value of the provided payment token
+ * @param chainId the chainID of the network
+ * @param token the payment token
+ * @param tokenDecimals the decimals of the token
+ * @param gasFee the transaction fee
+ * @param nativeToken the native token of the network. 'eth', 'bsc' etc
+ * @param nativeTokenDecimals defaults at 18
+ * @return the total amount of tokens to be paid for the transaction fee
+ */
+
+function calculateFee(_x, _x2, _x3, _x4, _x5, _x6) {
+  return _calculateFee.apply(this, arguments);
+}
+/**
+ * Same as the calculateFee() method but used exclusively for calculating token fees on the Matic network
+ * @param token the payment token
+ * @param tokenDecimals the decimals of the token
+ * @param gasFee the transaction fee
+ * @returns the total amount of tokens to be paid for the transaction fee
+ */
+
+function _calculateFee() {
+  _calculateFee = _asyncToGenerator( /*#__PURE__*/runtime_1.mark(function _callee(chainId, token, tokenDecimals, gasFee, nativeToken, nativeTokenDecimals) {
+    var priceApiPrefix, response, data, ethPerToken, _yield$data, eth, _yield$data2, bnb, factor, adjustedPrice, fee;
+
+    return runtime_1.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            if (nativeTokenDecimals === void 0) {
+              nativeTokenDecimals = 18;
+            }
+
+            priceApiPrefix = PRICE_API_PREFIX[chainId];
+
+            if (priceApiPrefix) {
+              _context.next = 4;
+              break;
+            }
+
+            throw new Error("Error: API support for the provided chainId " + chainId + " is not supported");
+
+          case 4:
+            _context.next = 6;
+            return fetch$1(priceApiPrefix + "contract_addresses=" + token + "&vs_currencies=" + nativeToken);
+
+          case 6:
+            response = _context.sent;
+            data = response.json().then(function (res) {
+              if (Object.keys(res).length === 0) {
+                throw new Error('Error: Unsupported fee token.');
+              }
+
+              return Object.values(res)[0];
+            });
+
+            if (!(nativeToken === 'eth')) {
+              _context.next = 16;
+              break;
+            }
+
+            _context.next = 11;
+            return data;
+
+          case 11:
+            _yield$data = _context.sent;
+            eth = _yield$data.eth;
+            ethPerToken = eth;
+            _context.next = 25;
+            break;
+
+          case 16:
+            if (!(nativeToken === 'bnb')) {
+              _context.next = 24;
+              break;
+            }
+
+            _context.next = 19;
+            return data;
+
+          case 19:
+            _yield$data2 = _context.sent;
+            bnb = _yield$data2.bnb;
+            ethPerToken = bnb;
+            _context.next = 25;
+            break;
+
+          case 24:
+            throw new Error('Error: Unsupported native token. Use the calculateFeeOnMatic() method for calculating fees on the Matic network.');
+
+          case 25:
+            factor = new BigNumber$2(10).pow(nativeTokenDecimals).div(new BigNumber$2(10).pow(tokenDecimals));
+            adjustedPrice = new BigNumber$2(ethPerToken).multipliedBy(factor); // WEI per token - adjusted for the token decimals
+
+            fee = new BigNumber$2(gasFee.toString()).div(adjustedPrice);
+            return _context.abrupt("return", BigNumber.from(fee.toFixed(0)));
+
+          case 29:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee);
+  }));
+  return _calculateFee.apply(this, arguments);
+}
+
+function calculateFeeOnMatic(_x7, _x8, _x9) {
+  return _calculateFeeOnMatic.apply(this, arguments);
+}
+
+function _calculateFeeOnMatic() {
+  _calculateFeeOnMatic = _asyncToGenerator( /*#__PURE__*/runtime_1.mark(function _callee2(token, tokenDecimals, gasFee) {
+    var priceApiPrefix, response, data, _yield$data3, bnb, adjustedBnbPerToken, maticBnbRatioApi, maticResponse, maticResponseMap, maticData, maticBnb, bnbPerMatic, fee;
+
+    return runtime_1.wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            priceApiPrefix = PRICE_API_PREFIX[ChainId.MATIC];
+            _context2.next = 3;
+            return fetch$1(priceApiPrefix + "contract_addresses=" + token + "&vs_currencies=bnb");
+
+          case 3:
+            response = _context2.sent;
+            data = response.json().then(function (res) {
+              if (Object.keys(res).length === 0) {
+                throw new Error('Error: Unsupported fee token.');
+              }
+
+              return res;
+            });
+            _context2.next = 7;
+            return data;
+
+          case 7:
+            _yield$data3 = _context2.sent;
+            bnb = _yield$data3.bnb;
+            adjustedBnbPerToken = new BigNumber$2(bnb).multipliedBy(new BigNumber$2(10).pow(18)).div(new BigNumber$2(10).pow(tokenDecimals));
+            maticBnbRatioApi = 'https://api.coingecko.com/api/v3/simple/price?ids=matic-network&vs_currencies=bnb';
+            _context2.next = 13;
+            return fetch$1(maticBnbRatioApi);
+
+          case 13:
+            maticResponse = _context2.sent;
+            _context2.next = 16;
+            return maticResponse.json();
+
+          case 16:
+            maticResponseMap = _context2.sent;
+            maticData = maticResponseMap['matic-network'];
+            maticBnb = maticData['bnb'];
+            bnbPerMatic = new BigNumber$2(maticBnb);
+            fee = new BigNumber$2(gasFee.toString()).div(adjustedBnbPerToken.div(bnbPerMatic));
+            return _context2.abrupt("return", BigNumber.from(fee.toFixed(0)));
+
+          case 22:
+          case "end":
+            return _context2.stop();
+        }
+      }
+    }, _callee2);
+  }));
+  return _calculateFeeOnMatic.apply(this, arguments);
+}
+
+var abi$1 = [
+	{
+		inputs: [
+			{
+				internalType: "address",
+				name: "_factory",
+				type: "address"
+			}
+		],
+		stateMutability: "nonpayable",
+		type: "constructor"
+	},
+	{
+		anonymous: false,
+		inputs: [
+			{
+				indexed: false,
+				internalType: "address",
+				name: "sender",
+				type: "address"
+			},
+			{
+				indexed: false,
+				internalType: "bool",
+				name: "success",
+				type: "bool"
+			},
+			{
+				indexed: false,
+				internalType: "string",
+				name: "error",
+				type: "string"
+			}
+		],
+		name: "MetaStatus",
+		type: "event"
+	},
+	{
+		anonymous: false,
+		inputs: [
+			{
+				indexed: true,
+				internalType: "address",
+				name: "previousOwner",
+				type: "address"
+			},
+			{
+				indexed: true,
+				internalType: "address",
+				name: "newOwner",
+				type: "address"
+			}
+		],
+		name: "OwnershipTransferred",
+		type: "event"
+	},
+	{
+		inputs: [
+		],
+		name: "DOMAIN_TYPEHASH",
+		outputs: [
+			{
+				internalType: "bytes32",
+				name: "",
+				type: "bytes32"
+			}
+		],
+		stateMutability: "view",
+		type: "function"
+	},
+	{
+		inputs: [
+		],
+		name: "FORWARDER_TYPEHASH",
+		outputs: [
+			{
+				internalType: "bytes32",
+				name: "",
+				type: "bytes32"
+			}
+		],
+		stateMutability: "view",
+		type: "function"
+	},
+	{
+		inputs: [
+			{
+				components: [
+					{
+						internalType: "address",
+						name: "tokenA",
+						type: "address"
+					},
+					{
+						internalType: "address",
+						name: "tokenB",
+						type: "address"
+					},
+					{
+						internalType: "uint256",
+						name: "amountADesired",
+						type: "uint256"
+					},
+					{
+						internalType: "uint256",
+						name: "amountBDesired",
+						type: "uint256"
+					},
+					{
+						internalType: "uint256",
+						name: "amountAMin",
+						type: "uint256"
+					},
+					{
+						internalType: "uint256",
+						name: "amountBMin",
+						type: "uint256"
+					},
+					{
+						internalType: "address",
+						name: "user",
+						type: "address"
+					},
+					{
+						internalType: "uint256",
+						name: "deadline",
+						type: "uint256"
+					}
+				],
+				internalType: "struct ConveyorV2Types.ADDLIQUIDITY_TYPE",
+				name: "al",
+				type: "tuple"
+			}
+		],
+		name: "addLiquidity",
+		outputs: [
+			{
+				internalType: "uint256",
+				name: "amountA",
+				type: "uint256"
+			},
+			{
+				internalType: "uint256",
+				name: "amountB",
+				type: "uint256"
+			},
+			{
+				internalType: "uint256",
+				name: "liquidity",
+				type: "uint256"
+			}
+		],
+		stateMutability: "nonpayable",
+		type: "function"
+	},
+	{
+		inputs: [
+			{
+				components: [
+					{
+						internalType: "address",
+						name: "from",
+						type: "address"
+					},
+					{
+						internalType: "address",
+						name: "feeToken",
+						type: "address"
+					},
+					{
+						internalType: "uint256",
+						name: "maxTokenAmount",
+						type: "uint256"
+					},
+					{
+						internalType: "uint256",
+						name: "deadline",
+						type: "uint256"
+					},
+					{
+						internalType: "uint256",
+						name: "nonce",
+						type: "uint256"
+					},
+					{
+						internalType: "bytes",
+						name: "data",
+						type: "bytes"
+					},
+					{
+						internalType: "bytes32",
+						name: "hashedPayload",
+						type: "bytes32"
+					}
+				],
+				internalType: "struct ERC20Forwarder.MetaTransaction",
+				name: "metatx",
+				type: "tuple"
+			},
+			{
+				internalType: "string",
+				name: "domainName",
+				type: "string"
+			},
+			{
+				internalType: "uint256",
+				name: "tokenPricePerNativeToken",
+				type: "uint256"
+			},
+			{
+				internalType: "uint256",
+				name: "feeOffset",
+				type: "uint256"
+			},
+			{
+				components: [
+					{
+						internalType: "uint8",
+						name: "v",
+						type: "uint8"
+					},
+					{
+						internalType: "bytes32",
+						name: "r",
+						type: "bytes32"
+					},
+					{
+						internalType: "bytes32",
+						name: "s",
+						type: "bytes32"
+					}
+				],
+				internalType: "struct ERC20Forwarder.SIGNATURE_TYPE",
+				name: "sig",
+				type: "tuple"
+			}
+		],
+		name: "executeMetaTx",
+		outputs: [
+			{
+				internalType: "bool",
+				name: "success",
+				type: "bool"
+			},
+			{
+				internalType: "bytes",
+				name: "data",
+				type: "bytes"
+			}
+		],
+		stateMutability: "nonpayable",
+		type: "function"
+	},
+	{
+		inputs: [
+		],
+		name: "factory",
+		outputs: [
+			{
+				internalType: "address",
+				name: "",
+				type: "address"
+			}
+		],
+		stateMutability: "view",
+		type: "function"
+	},
+	{
+		inputs: [
+		],
+		name: "feeHolder",
+		outputs: [
+			{
+				internalType: "address",
+				name: "",
+				type: "address"
+			}
+		],
+		stateMutability: "view",
+		type: "function"
+	},
+	{
+		inputs: [
+			{
+				internalType: "uint256",
+				name: "amountOut",
+				type: "uint256"
+			},
+			{
+				internalType: "uint256",
+				name: "reserveIn",
+				type: "uint256"
+			},
+			{
+				internalType: "uint256",
+				name: "reserveOut",
+				type: "uint256"
+			}
+		],
+		name: "getAmountIn",
+		outputs: [
+			{
+				internalType: "uint256",
+				name: "amountIn",
+				type: "uint256"
+			}
+		],
+		stateMutability: "pure",
+		type: "function"
+	},
+	{
+		inputs: [
+			{
+				internalType: "uint256",
+				name: "amountIn",
+				type: "uint256"
+			},
+			{
+				internalType: "uint256",
+				name: "reserveIn",
+				type: "uint256"
+			},
+			{
+				internalType: "uint256",
+				name: "reserveOut",
+				type: "uint256"
+			}
+		],
+		name: "getAmountOut",
+		outputs: [
+			{
+				internalType: "uint256",
+				name: "amountOut",
+				type: "uint256"
+			}
+		],
+		stateMutability: "pure",
+		type: "function"
+	},
+	{
+		inputs: [
+			{
+				internalType: "uint256",
+				name: "amountOut",
+				type: "uint256"
+			},
+			{
+				internalType: "address[]",
+				name: "path",
+				type: "address[]"
+			}
+		],
+		name: "getAmountsIn",
+		outputs: [
+			{
+				internalType: "uint256[]",
+				name: "amounts",
+				type: "uint256[]"
+			}
+		],
+		stateMutability: "view",
+		type: "function"
+	},
+	{
+		inputs: [
+			{
+				internalType: "uint256",
+				name: "amountIn",
+				type: "uint256"
+			},
+			{
+				internalType: "address[]",
+				name: "path",
+				type: "address[]"
+			}
+		],
+		name: "getAmountsOut",
+		outputs: [
+			{
+				internalType: "uint256[]",
+				name: "amounts",
+				type: "uint256[]"
+			}
+		],
+		stateMutability: "view",
+		type: "function"
+	},
+	{
+		inputs: [
+		],
+		name: "metaEnabled",
+		outputs: [
+			{
+				internalType: "bool",
+				name: "",
+				type: "bool"
+			}
+		],
+		stateMutability: "view",
+		type: "function"
+	},
+	{
+		inputs: [
+		],
+		name: "metaSwitch",
+		outputs: [
+		],
+		stateMutability: "nonpayable",
+		type: "function"
+	},
+	{
+		inputs: [
+			{
+				internalType: "address",
+				name: "",
+				type: "address"
+			}
+		],
+		name: "nonces",
+		outputs: [
+			{
+				internalType: "uint256",
+				name: "",
+				type: "uint256"
+			}
+		],
+		stateMutability: "view",
+		type: "function"
+	},
+	{
+		inputs: [
+		],
+		name: "owner",
+		outputs: [
+			{
+				internalType: "address",
+				name: "",
+				type: "address"
+			}
+		],
+		stateMutability: "view",
+		type: "function"
+	},
+	{
+		inputs: [
+			{
+				internalType: "uint256",
+				name: "amountA",
+				type: "uint256"
+			},
+			{
+				internalType: "uint256",
+				name: "reserveA",
+				type: "uint256"
+			},
+			{
+				internalType: "uint256",
+				name: "reserveB",
+				type: "uint256"
+			}
+		],
+		name: "quote",
+		outputs: [
+			{
+				internalType: "uint256",
+				name: "amountB",
+				type: "uint256"
+			}
+		],
+		stateMutability: "pure",
+		type: "function"
+	},
+	{
+		inputs: [
+			{
+				internalType: "address",
+				name: "",
+				type: "address"
+			}
+		],
+		name: "relayers",
+		outputs: [
+			{
+				internalType: "bool",
+				name: "",
+				type: "bool"
+			}
+		],
+		stateMutability: "view",
+		type: "function"
+	},
+	{
+		inputs: [
+			{
+				components: [
+					{
+						internalType: "address",
+						name: "tokenA",
+						type: "address"
+					},
+					{
+						internalType: "address",
+						name: "tokenB",
+						type: "address"
+					},
+					{
+						internalType: "uint256",
+						name: "liquidity",
+						type: "uint256"
+					},
+					{
+						internalType: "uint256",
+						name: "amountAMin",
+						type: "uint256"
+					},
+					{
+						internalType: "uint256",
+						name: "amountBMin",
+						type: "uint256"
+					},
+					{
+						internalType: "address",
+						name: "user",
+						type: "address"
+					},
+					{
+						internalType: "uint256",
+						name: "deadline",
+						type: "uint256"
+					}
+				],
+				internalType: "struct ConveyorV2Types.REMOVELIQUIDITY_TYPE",
+				name: "rl",
+				type: "tuple"
+			},
+			{
+				components: [
+					{
+						internalType: "uint8",
+						name: "v",
+						type: "uint8"
+					},
+					{
+						internalType: "bytes32",
+						name: "r",
+						type: "bytes32"
+					},
+					{
+						internalType: "bytes32",
+						name: "s",
+						type: "bytes32"
+					}
+				],
+				internalType: "struct ConveyorV2Types.SIGNATURE_TYPE",
+				name: "sig",
+				type: "tuple"
+			}
+		],
+		name: "removeLiquidityWithPermit",
+		outputs: [
+			{
+				internalType: "uint256",
+				name: "amountA",
+				type: "uint256"
+			},
+			{
+				internalType: "uint256",
+				name: "amountB",
+				type: "uint256"
+			}
+		],
+		stateMutability: "nonpayable",
+		type: "function"
+	},
+	{
+		inputs: [
+		],
+		name: "renounceOwnership",
+		outputs: [
+		],
+		stateMutability: "nonpayable",
+		type: "function"
+	},
+	{
+		inputs: [
+			{
+				internalType: "uint256",
+				name: "_newConstantFee",
+				type: "uint256"
+			}
+		],
+		name: "setConstantFee",
+		outputs: [
+		],
+		stateMutability: "nonpayable",
+		type: "function"
+	},
+	{
+		inputs: [
+			{
+				internalType: "address",
+				name: "_feeHolder",
+				type: "address"
+			}
+		],
+		name: "setFeeHolder",
+		outputs: [
+		],
+		stateMutability: "nonpayable",
+		type: "function"
+	},
+	{
+		inputs: [
+			{
+				internalType: "address",
+				name: "_relayer",
+				type: "address"
+			},
+			{
+				internalType: "bool",
+				name: "_trusted",
+				type: "bool"
+			}
+		],
+		name: "setRelayer",
+		outputs: [
+		],
+		stateMutability: "nonpayable",
+		type: "function"
+	},
+	{
+		inputs: [
+			{
+				internalType: "uint256",
+				name: "_newTransferFee",
+				type: "uint256"
+			}
+		],
+		name: "setTransferFee",
+		outputs: [
+		],
+		stateMutability: "nonpayable",
+		type: "function"
+	},
+	{
+		inputs: [
+			{
+				components: [
+					{
+						internalType: "uint256",
+						name: "amount0",
+						type: "uint256"
+					},
+					{
+						internalType: "uint256",
+						name: "amount1",
+						type: "uint256"
+					},
+					{
+						internalType: "address[]",
+						name: "path",
+						type: "address[]"
+					},
+					{
+						internalType: "address",
+						name: "user",
+						type: "address"
+					},
+					{
+						internalType: "uint256",
+						name: "deadline",
+						type: "uint256"
+					}
+				],
+				internalType: "struct ConveyorV2Types.SWAP_TYPE",
+				name: "swap",
+				type: "tuple"
+			}
+		],
+		name: "swapExactTokensForTokens",
+		outputs: [
+			{
+				internalType: "uint256[]",
+				name: "amounts",
+				type: "uint256[]"
+			}
+		],
+		stateMutability: "nonpayable",
+		type: "function"
+	},
+	{
+		inputs: [
+			{
+				components: [
+					{
+						internalType: "uint256",
+						name: "amount0",
+						type: "uint256"
+					},
+					{
+						internalType: "uint256",
+						name: "amount1",
+						type: "uint256"
+					},
+					{
+						internalType: "address[]",
+						name: "path",
+						type: "address[]"
+					},
+					{
+						internalType: "address",
+						name: "user",
+						type: "address"
+					},
+					{
+						internalType: "uint256",
+						name: "deadline",
+						type: "uint256"
+					}
+				],
+				internalType: "struct ConveyorV2Types.SWAP_TYPE",
+				name: "swap",
+				type: "tuple"
+			}
+		],
+		name: "swapTokensForExactTokens",
+		outputs: [
+			{
+				internalType: "uint256[]",
+				name: "amounts",
+				type: "uint256[]"
+			}
+		],
+		stateMutability: "nonpayable",
+		type: "function"
+	},
+	{
+		inputs: [
+			{
+				internalType: "address",
+				name: "newOwner",
+				type: "address"
+			}
+		],
+		name: "transferOwnership",
+		outputs: [
+		],
+		stateMutability: "nonpayable",
+		type: "function"
+	}
+];
+
+var abi$2 = [
+	{
+		inputs: [
+			{
+				internalType: "address",
+				name: "_feeToSetter",
+				type: "address"
+			}
+		],
+		stateMutability: "nonpayable",
+		type: "constructor"
+	},
+	{
+		anonymous: false,
+		inputs: [
+			{
+				indexed: true,
+				internalType: "address",
+				name: "token0",
+				type: "address"
+			},
+			{
+				indexed: true,
+				internalType: "address",
+				name: "token1",
+				type: "address"
+			},
+			{
+				indexed: false,
+				internalType: "address",
+				name: "pair",
+				type: "address"
+			},
+			{
+				indexed: false,
+				internalType: "uint256",
+				name: "",
+				type: "uint256"
+			}
+		],
+		name: "PairCreated",
+		type: "event"
+	},
+	{
+		inputs: [
+			{
+				internalType: "uint256",
+				name: "",
+				type: "uint256"
+			}
+		],
+		name: "allPairs",
+		outputs: [
+			{
+				internalType: "address",
+				name: "",
+				type: "address"
+			}
+		],
+		stateMutability: "view",
+		type: "function"
+	},
+	{
+		inputs: [
+		],
+		name: "allPairsLength",
+		outputs: [
+			{
+				internalType: "uint256",
+				name: "",
+				type: "uint256"
+			}
+		],
+		stateMutability: "view",
+		type: "function"
+	},
+	{
+		inputs: [
+			{
+				internalType: "address",
+				name: "tokenA",
+				type: "address"
+			},
+			{
+				internalType: "address",
+				name: "tokenB",
+				type: "address"
+			}
+		],
+		name: "createPair",
+		outputs: [
+			{
+				internalType: "address",
+				name: "pair",
+				type: "address"
+			}
+		],
+		stateMutability: "nonpayable",
+		type: "function"
+	},
+	{
+		inputs: [
+		],
+		name: "feeTo",
+		outputs: [
+			{
+				internalType: "address",
+				name: "",
+				type: "address"
+			}
+		],
+		stateMutability: "view",
+		type: "function"
+	},
+	{
+		inputs: [
+		],
+		name: "feeToSetter",
+		outputs: [
+			{
+				internalType: "address",
+				name: "",
+				type: "address"
+			}
+		],
+		stateMutability: "view",
+		type: "function"
+	},
+	{
+		inputs: [
+			{
+				internalType: "address",
+				name: "",
+				type: "address"
+			},
+			{
+				internalType: "address",
+				name: "",
+				type: "address"
+			}
+		],
+		name: "getPair",
+		outputs: [
+			{
+				internalType: "address",
+				name: "",
+				type: "address"
+			}
+		],
+		stateMutability: "view",
+		type: "function"
+	},
+	{
+		inputs: [
+		],
+		name: "router",
+		outputs: [
+			{
+				internalType: "address",
+				name: "",
+				type: "address"
+			}
+		],
+		stateMutability: "view",
+		type: "function"
+	},
+	{
+		inputs: [
+			{
+				internalType: "address",
+				name: "_feeTo",
+				type: "address"
+			}
+		],
+		name: "setFeeTo",
+		outputs: [
+		],
+		stateMutability: "nonpayable",
+		type: "function"
+	},
+	{
+		inputs: [
+			{
+				internalType: "address",
+				name: "_feeToSetter",
+				type: "address"
+			}
+		],
+		name: "setFeeToSetter",
+		outputs: [
+		],
+		stateMutability: "nonpayable",
+		type: "function"
+	},
+	{
+		inputs: [
+			{
+				internalType: "address",
+				name: "_router",
+				type: "address"
+			}
+		],
+		name: "setRouter",
+		outputs: [
+		],
+		stateMutability: "nonpayable",
+		type: "function"
+	}
+];
+
+var abi$3 = [
+	{
+		inputs: [
+		],
+		stateMutability: "nonpayable",
+		type: "constructor"
+	},
+	{
+		anonymous: false,
+		inputs: [
+			{
+				indexed: true,
+				internalType: "address",
+				name: "owner",
+				type: "address"
+			},
+			{
+				indexed: true,
+				internalType: "address",
+				name: "spender",
+				type: "address"
+			},
+			{
+				indexed: false,
+				internalType: "uint256",
+				name: "value",
+				type: "uint256"
+			}
+		],
+		name: "Approval",
+		type: "event"
+	},
+	{
+		anonymous: false,
+		inputs: [
+			{
+				indexed: true,
+				internalType: "address",
+				name: "sender",
+				type: "address"
+			},
+			{
+				indexed: false,
+				internalType: "uint256",
+				name: "amount0",
+				type: "uint256"
+			},
+			{
+				indexed: false,
+				internalType: "uint256",
+				name: "amount1",
+				type: "uint256"
+			},
+			{
+				indexed: true,
+				internalType: "address",
+				name: "to",
+				type: "address"
+			}
+		],
+		name: "Burn",
+		type: "event"
+	},
+	{
+		anonymous: false,
+		inputs: [
+			{
+				indexed: true,
+				internalType: "address",
+				name: "sender",
+				type: "address"
+			},
+			{
+				indexed: false,
+				internalType: "uint256",
+				name: "amount0",
+				type: "uint256"
+			},
+			{
+				indexed: false,
+				internalType: "uint256",
+				name: "amount1",
+				type: "uint256"
+			}
+		],
+		name: "Mint",
+		type: "event"
+	},
+	{
+		anonymous: false,
+		inputs: [
+			{
+				indexed: true,
+				internalType: "address",
+				name: "sender",
+				type: "address"
+			},
+			{
+				indexed: false,
+				internalType: "uint256",
+				name: "amount0In",
+				type: "uint256"
+			},
+			{
+				indexed: false,
+				internalType: "uint256",
+				name: "amount1In",
+				type: "uint256"
+			},
+			{
+				indexed: false,
+				internalType: "uint256",
+				name: "amount0Out",
+				type: "uint256"
+			},
+			{
+				indexed: false,
+				internalType: "uint256",
+				name: "amount1Out",
+				type: "uint256"
+			},
+			{
+				indexed: true,
+				internalType: "address",
+				name: "to",
+				type: "address"
+			}
+		],
+		name: "Swap",
+		type: "event"
+	},
+	{
+		anonymous: false,
+		inputs: [
+			{
+				indexed: false,
+				internalType: "uint112",
+				name: "reserve0",
+				type: "uint112"
+			},
+			{
+				indexed: false,
+				internalType: "uint112",
+				name: "reserve1",
+				type: "uint112"
+			}
+		],
+		name: "Sync",
+		type: "event"
+	},
+	{
+		anonymous: false,
+		inputs: [
+			{
+				indexed: true,
+				internalType: "address",
+				name: "from",
+				type: "address"
+			},
+			{
+				indexed: true,
+				internalType: "address",
+				name: "to",
+				type: "address"
+			},
+			{
+				indexed: false,
+				internalType: "uint256",
+				name: "value",
+				type: "uint256"
+			}
+		],
+		name: "Transfer",
+		type: "event"
+	},
+	{
+		inputs: [
+		],
+		name: "DOMAIN_SEPARATOR",
+		outputs: [
+			{
+				internalType: "bytes32",
+				name: "",
+				type: "bytes32"
+			}
+		],
+		stateMutability: "view",
+		type: "function"
+	},
+	{
+		inputs: [
+		],
+		name: "MINIMUM_LIQUIDITY",
+		outputs: [
+			{
+				internalType: "uint256",
+				name: "",
+				type: "uint256"
+			}
+		],
+		stateMutability: "view",
+		type: "function"
+	},
+	{
+		inputs: [
+		],
+		name: "PERMIT_TYPEHASH",
+		outputs: [
+			{
+				internalType: "bytes32",
+				name: "",
+				type: "bytes32"
+			}
+		],
+		stateMutability: "view",
+		type: "function"
+	},
+	{
+		inputs: [
+			{
+				internalType: "address",
+				name: "",
+				type: "address"
+			},
+			{
+				internalType: "address",
+				name: "",
+				type: "address"
+			}
+		],
+		name: "allowance",
+		outputs: [
+			{
+				internalType: "uint256",
+				name: "",
+				type: "uint256"
+			}
+		],
+		stateMutability: "view",
+		type: "function"
+	},
+	{
+		inputs: [
+			{
+				internalType: "address",
+				name: "spender",
+				type: "address"
+			},
+			{
+				internalType: "uint256",
+				name: "value",
+				type: "uint256"
+			}
+		],
+		name: "approve",
+		outputs: [
+			{
+				internalType: "bool",
+				name: "",
+				type: "bool"
+			}
+		],
+		stateMutability: "nonpayable",
+		type: "function"
+	},
+	{
+		inputs: [
+			{
+				internalType: "address",
+				name: "",
+				type: "address"
+			}
+		],
+		name: "balanceOf",
+		outputs: [
+			{
+				internalType: "uint256",
+				name: "",
+				type: "uint256"
+			}
+		],
+		stateMutability: "view",
+		type: "function"
+	},
+	{
+		inputs: [
+			{
+				internalType: "address",
+				name: "to",
+				type: "address"
+			}
+		],
+		name: "burn",
+		outputs: [
+			{
+				internalType: "uint256",
+				name: "amount0",
+				type: "uint256"
+			},
+			{
+				internalType: "uint256",
+				name: "amount1",
+				type: "uint256"
+			}
+		],
+		stateMutability: "nonpayable",
+		type: "function"
+	},
+	{
+		inputs: [
+		],
+		name: "decimals",
+		outputs: [
+			{
+				internalType: "uint8",
+				name: "",
+				type: "uint8"
+			}
+		],
+		stateMutability: "view",
+		type: "function"
+	},
+	{
+		inputs: [
+		],
+		name: "factory",
+		outputs: [
+			{
+				internalType: "address",
+				name: "",
+				type: "address"
+			}
+		],
+		stateMutability: "view",
+		type: "function"
+	},
+	{
+		inputs: [
+		],
+		name: "getReserves",
+		outputs: [
+			{
+				internalType: "uint112",
+				name: "_reserve0",
+				type: "uint112"
+			},
+			{
+				internalType: "uint112",
+				name: "_reserve1",
+				type: "uint112"
+			},
+			{
+				internalType: "uint32",
+				name: "_blockTimestampLast",
+				type: "uint32"
+			}
+		],
+		stateMutability: "view",
+		type: "function"
+	},
+	{
+		inputs: [
+			{
+				internalType: "address",
+				name: "_token0",
+				type: "address"
+			},
+			{
+				internalType: "address",
+				name: "_token1",
+				type: "address"
+			}
+		],
+		name: "initialize",
+		outputs: [
+		],
+		stateMutability: "nonpayable",
+		type: "function"
+	},
+	{
+		inputs: [
+		],
+		name: "kLast",
+		outputs: [
+			{
+				internalType: "uint256",
+				name: "",
+				type: "uint256"
+			}
+		],
+		stateMutability: "view",
+		type: "function"
+	},
+	{
+		inputs: [
+			{
+				internalType: "address",
+				name: "to",
+				type: "address"
+			}
+		],
+		name: "mint",
+		outputs: [
+			{
+				internalType: "uint256",
+				name: "liquidity",
+				type: "uint256"
+			}
+		],
+		stateMutability: "nonpayable",
+		type: "function"
+	},
+	{
+		inputs: [
+		],
+		name: "name",
+		outputs: [
+			{
+				internalType: "string",
+				name: "",
+				type: "string"
+			}
+		],
+		stateMutability: "view",
+		type: "function"
+	},
+	{
+		inputs: [
+			{
+				internalType: "address",
+				name: "",
+				type: "address"
+			}
+		],
+		name: "nonces",
+		outputs: [
+			{
+				internalType: "uint256",
+				name: "",
+				type: "uint256"
+			}
+		],
+		stateMutability: "view",
+		type: "function"
+	},
+	{
+		inputs: [
+			{
+				internalType: "address",
+				name: "owner",
+				type: "address"
+			},
+			{
+				internalType: "address",
+				name: "spender",
+				type: "address"
+			},
+			{
+				internalType: "uint256",
+				name: "value",
+				type: "uint256"
+			},
+			{
+				internalType: "uint256",
+				name: "deadline",
+				type: "uint256"
+			},
+			{
+				internalType: "uint8",
+				name: "v",
+				type: "uint8"
+			},
+			{
+				internalType: "bytes32",
+				name: "r",
+				type: "bytes32"
+			},
+			{
+				internalType: "bytes32",
+				name: "s",
+				type: "bytes32"
+			}
+		],
+		name: "permit",
+		outputs: [
+		],
+		stateMutability: "nonpayable",
+		type: "function"
+	},
+	{
+		inputs: [
+		],
+		name: "price0CumulativeLast",
+		outputs: [
+			{
+				internalType: "uint256",
+				name: "",
+				type: "uint256"
+			}
+		],
+		stateMutability: "view",
+		type: "function"
+	},
+	{
+		inputs: [
+		],
+		name: "price1CumulativeLast",
+		outputs: [
+			{
+				internalType: "uint256",
+				name: "",
+				type: "uint256"
+			}
+		],
+		stateMutability: "view",
+		type: "function"
+	},
+	{
+		inputs: [
+			{
+				internalType: "address",
+				name: "to",
+				type: "address"
+			}
+		],
+		name: "skim",
+		outputs: [
+		],
+		stateMutability: "nonpayable",
+		type: "function"
+	},
+	{
+		inputs: [
+			{
+				internalType: "uint256",
+				name: "amount0Out",
+				type: "uint256"
+			},
+			{
+				internalType: "uint256",
+				name: "amount1Out",
+				type: "uint256"
+			},
+			{
+				internalType: "address",
+				name: "to",
+				type: "address"
+			},
+			{
+				internalType: "bytes",
+				name: "data",
+				type: "bytes"
+			}
+		],
+		name: "swap",
+		outputs: [
+		],
+		stateMutability: "nonpayable",
+		type: "function"
+	},
+	{
+		inputs: [
+		],
+		name: "symbol",
+		outputs: [
+			{
+				internalType: "string",
+				name: "",
+				type: "string"
+			}
+		],
+		stateMutability: "view",
+		type: "function"
+	},
+	{
+		inputs: [
+		],
+		name: "sync",
+		outputs: [
+		],
+		stateMutability: "nonpayable",
+		type: "function"
+	},
+	{
+		inputs: [
+		],
+		name: "token0",
+		outputs: [
+			{
+				internalType: "address",
+				name: "",
+				type: "address"
+			}
+		],
+		stateMutability: "view",
+		type: "function"
+	},
+	{
+		inputs: [
+		],
+		name: "token1",
+		outputs: [
+			{
+				internalType: "address",
+				name: "",
+				type: "address"
+			}
+		],
+		stateMutability: "view",
+		type: "function"
+	},
+	{
+		inputs: [
+		],
+		name: "totalSupply",
+		outputs: [
+			{
+				internalType: "uint256",
+				name: "",
+				type: "uint256"
+			}
+		],
+		stateMutability: "view",
+		type: "function"
+	},
+	{
+		inputs: [
+			{
+				internalType: "address",
+				name: "to",
+				type: "address"
+			},
+			{
+				internalType: "uint256",
+				name: "value",
+				type: "uint256"
+			}
+		],
+		name: "transfer",
+		outputs: [
+			{
+				internalType: "bool",
+				name: "",
+				type: "bool"
+			}
+		],
+		stateMutability: "nonpayable",
+		type: "function"
+	},
+	{
+		inputs: [
+			{
+				internalType: "address",
+				name: "from",
+				type: "address"
+			},
+			{
+				internalType: "address",
+				name: "to",
+				type: "address"
+			},
+			{
+				internalType: "uint256",
+				name: "value",
+				type: "uint256"
+			}
+		],
+		name: "transferFrom",
+		outputs: [
+			{
+				internalType: "bool",
+				name: "",
+				type: "bool"
+			}
+		],
+		stateMutability: "nonpayable",
+		type: "function"
+	}
+];
+
+var abi$4 = [
+	{
+		inputs: [
+			{
+				internalType: "string",
+				name: "name_",
+				type: "string"
+			},
+			{
+				internalType: "string",
+				name: "symbol_",
+				type: "string"
+			}
+		],
+		stateMutability: "nonpayable",
+		type: "constructor"
+	},
+	{
+		anonymous: false,
+		inputs: [
+			{
+				indexed: true,
+				internalType: "address",
+				name: "owner",
+				type: "address"
+			},
+			{
+				indexed: true,
+				internalType: "address",
+				name: "spender",
+				type: "address"
+			},
+			{
+				indexed: false,
+				internalType: "uint256",
+				name: "value",
+				type: "uint256"
+			}
+		],
+		name: "Approval",
+		type: "event"
+	},
+	{
+		anonymous: false,
+		inputs: [
+			{
+				indexed: true,
+				internalType: "address",
+				name: "from",
+				type: "address"
+			},
+			{
+				indexed: true,
+				internalType: "address",
+				name: "to",
+				type: "address"
+			},
+			{
+				indexed: false,
+				internalType: "uint256",
+				name: "value",
+				type: "uint256"
+			}
+		],
+		name: "Transfer",
+		type: "event"
+	},
+	{
+		inputs: [
+			{
+				internalType: "address",
+				name: "owner",
+				type: "address"
+			},
+			{
+				internalType: "address",
+				name: "spender",
+				type: "address"
+			}
+		],
+		name: "allowance",
+		outputs: [
+			{
+				internalType: "uint256",
+				name: "",
+				type: "uint256"
+			}
+		],
+		stateMutability: "view",
+		type: "function"
+	},
+	{
+		inputs: [
+			{
+				internalType: "address",
+				name: "spender",
+				type: "address"
+			},
+			{
+				internalType: "uint256",
+				name: "amount",
+				type: "uint256"
+			}
+		],
+		name: "approve",
+		outputs: [
+			{
+				internalType: "bool",
+				name: "",
+				type: "bool"
+			}
+		],
+		stateMutability: "nonpayable",
+		type: "function"
+	},
+	{
+		inputs: [
+			{
+				internalType: "address",
+				name: "account",
+				type: "address"
+			}
+		],
+		name: "balanceOf",
+		outputs: [
+			{
+				internalType: "uint256",
+				name: "",
+				type: "uint256"
+			}
+		],
+		stateMutability: "view",
+		type: "function"
+	},
+	{
+		inputs: [
+		],
+		name: "decimals",
+		outputs: [
+			{
+				internalType: "uint8",
+				name: "",
+				type: "uint8"
+			}
+		],
+		stateMutability: "view",
+		type: "function"
+	},
+	{
+		inputs: [
+			{
+				internalType: "address",
+				name: "spender",
+				type: "address"
+			},
+			{
+				internalType: "uint256",
+				name: "subtractedValue",
+				type: "uint256"
+			}
+		],
+		name: "decreaseAllowance",
+		outputs: [
+			{
+				internalType: "bool",
+				name: "",
+				type: "bool"
+			}
+		],
+		stateMutability: "nonpayable",
+		type: "function"
+	},
+	{
+		inputs: [
+			{
+				internalType: "address",
+				name: "spender",
+				type: "address"
+			},
+			{
+				internalType: "uint256",
+				name: "addedValue",
+				type: "uint256"
+			}
+		],
+		name: "increaseAllowance",
+		outputs: [
+			{
+				internalType: "bool",
+				name: "",
+				type: "bool"
+			}
+		],
+		stateMutability: "nonpayable",
+		type: "function"
+	},
+	{
+		inputs: [
+		],
+		name: "name",
+		outputs: [
+			{
+				internalType: "string",
+				name: "",
+				type: "string"
+			}
+		],
+		stateMutability: "view",
+		type: "function"
+	},
+	{
+		inputs: [
+		],
+		name: "symbol",
+		outputs: [
+			{
+				internalType: "string",
+				name: "",
+				type: "string"
+			}
+		],
+		stateMutability: "view",
+		type: "function"
+	},
+	{
+		inputs: [
+		],
+		name: "totalSupply",
+		outputs: [
+			{
+				internalType: "uint256",
+				name: "",
+				type: "uint256"
+			}
+		],
+		stateMutability: "view",
+		type: "function"
+	},
+	{
+		inputs: [
+			{
+				internalType: "address",
+				name: "recipient",
+				type: "address"
+			},
+			{
+				internalType: "uint256",
+				name: "amount",
+				type: "uint256"
+			}
+		],
+		name: "transfer",
+		outputs: [
+			{
+				internalType: "bool",
+				name: "",
+				type: "bool"
+			}
+		],
+		stateMutability: "nonpayable",
+		type: "function"
+	},
+	{
+		inputs: [
+			{
+				internalType: "address",
+				name: "sender",
+				type: "address"
+			},
+			{
+				internalType: "address",
+				name: "recipient",
+				type: "address"
+			},
+			{
+				internalType: "uint256",
+				name: "amount",
+				type: "uint256"
+			}
+		],
+		name: "transferFrom",
+		outputs: [
+			{
+				internalType: "bool",
+				name: "",
+				type: "bool"
+			}
+		],
+		stateMutability: "nonpayable",
+		type: "function"
+	}
+];
+
+var _Environment$PRODUCTI$1, _Environment$STAGING$1, _RELAYER_ENDPOINT_MAP;
+var RELAYER_ENDPOINT_MAP = (_RELAYER_ENDPOINT_MAP = {}, _RELAYER_ENDPOINT_MAP[Environment.PRODUCTION] = (_Environment$PRODUCTI$1 = {}, _Environment$PRODUCTI$1[ChainId.MAINNET] = 'https://conveyor-prod-eth.ata.network', _Environment$PRODUCTI$1[ChainId.ROPSTEN] = '', _Environment$PRODUCTI$1[ChainId.RINKEBY] = '', _Environment$PRODUCTI$1[ChainId.GÖRLI] = '', _Environment$PRODUCTI$1[ChainId.KOVAN] = '', _Environment$PRODUCTI$1[ChainId.FANTOM] = '', _Environment$PRODUCTI$1[ChainId.FANTOM_TESTNET] = '', _Environment$PRODUCTI$1[ChainId.MATIC] = 'https://conveyor-prod-matic.ata.network', _Environment$PRODUCTI$1[ChainId.MATIC_TESTNET] = '', _Environment$PRODUCTI$1[ChainId.XDAI] = '', _Environment$PRODUCTI$1[ChainId.BSC] = 'https://conveyor-prod-bsc.ata.network', _Environment$PRODUCTI$1[ChainId.BSC_TESTNET] = '', _Environment$PRODUCTI$1[ChainId.ARBITRUM] = '', _Environment$PRODUCTI$1[ChainId.ARBITRUM_TESTNET] = '', _Environment$PRODUCTI$1[ChainId.MOONBEAM_TESTNET] = '', _Environment$PRODUCTI$1[ChainId.AVALANCHE] = '', _Environment$PRODUCTI$1[ChainId.AVALANCHE_TESTNET] = '', _Environment$PRODUCTI$1[ChainId.HECO] = '', _Environment$PRODUCTI$1[ChainId.HECO_TESTNET] = '', _Environment$PRODUCTI$1[ChainId.HARMONY] = '', _Environment$PRODUCTI$1[ChainId.HARMONY_TESTNET] = '', _Environment$PRODUCTI$1[ChainId.OKEX] = '', _Environment$PRODUCTI$1[ChainId.OKEX_TESTNET] = '', _Environment$PRODUCTI$1[ChainId.CELO] = '', _Environment$PRODUCTI$1[ChainId.PALM] = '', _Environment$PRODUCTI$1[ChainId.PALM_TESTNET] = '', _Environment$PRODUCTI$1), _RELAYER_ENDPOINT_MAP[Environment.STAGING] = (_Environment$STAGING$1 = {}, _Environment$STAGING$1[ChainId.MAINNET] = 'https://gtoken-geode-staging.ata.network', _Environment$STAGING$1[ChainId.ROPSTEN] = '', _Environment$STAGING$1[ChainId.RINKEBY] = '', _Environment$STAGING$1[ChainId.GÖRLI] = '', _Environment$STAGING$1[ChainId.KOVAN] = '', _Environment$STAGING$1[ChainId.FANTOM] = '', _Environment$STAGING$1[ChainId.FANTOM_TESTNET] = '', _Environment$STAGING$1[ChainId.MATIC] = 'https://gtoken-geode-staging.ata.network', _Environment$STAGING$1[ChainId.MATIC_TESTNET] = '', _Environment$STAGING$1[ChainId.XDAI] = '', _Environment$STAGING$1[ChainId.BSC] = 'https://gtoken-geode-staging.ata.network', _Environment$STAGING$1[ChainId.BSC_TESTNET] = 'https://gtoken-geode-staging.ata.network', _Environment$STAGING$1[ChainId.ARBITRUM] = '', _Environment$STAGING$1[ChainId.ARBITRUM_TESTNET] = '', _Environment$STAGING$1[ChainId.MOONBEAM_TESTNET] = '', _Environment$STAGING$1[ChainId.AVALANCHE] = '', _Environment$STAGING$1[ChainId.AVALANCHE_TESTNET] = '', _Environment$STAGING$1[ChainId.HECO] = '', _Environment$STAGING$1[ChainId.HECO_TESTNET] = '', _Environment$STAGING$1[ChainId.HARMONY] = '', _Environment$STAGING$1[ChainId.HARMONY_TESTNET] = '', _Environment$STAGING$1[ChainId.OKEX] = '', _Environment$STAGING$1[ChainId.OKEX_TESTNET] = '', _Environment$STAGING$1[ChainId.CELO] = '', _Environment$STAGING$1[ChainId.PALM] = '', _Environment$STAGING$1[ChainId.PALM_TESTNET] = '', _Environment$STAGING$1), _RELAYER_ENDPOINT_MAP);
+
+var splitSignature = utils.splitSignature,
+    verifyTypedData = utils.verifyTypedData;
+var zeroAddress = constants.AddressZero;
+
+var XATA = /*#__PURE__*/function () {
+  function XATA() {
+    this.chainId = -1;
+    this.geodeEndpoint = '';
+    this.provider = new ethers.providers.JsonRpcProvider(); // defaults to localhost
+
+    this.feeToken = new ethers.Contract(zeroAddress, abi$4, this.provider); // NULL contract
+
+    this.routerContract = new ethers.Contract(zeroAddress, abi$1, this.provider); // NULL contract
+
+    this.factoryContract = new ethers.Contract(zeroAddress, abi$2, this.provider); // NULL contract
+  } // Must be called immediately after instantiating the class
+
+
+  var _proto = XATA.prototype;
+
+  _proto.init =
+  /*#__PURE__*/
+  function () {
+    var _init = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/runtime_1.mark(function _callee(provider, feeTokenAddr, env) {
+      return runtime_1.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              if (env === void 0) {
+                env = Environment.PRODUCTION;
+              }
+
+              _context.next = 3;
+              return provider.getNetwork();
+
+            case 3:
+              this.chainId = _context.sent.chainId;
+              this.provider = provider;
+              this.feeToken = new ethers.Contract(feeTokenAddr, abi$4, provider);
+              this.factoryContract = new ethers.Contract(FACTORY_ADDRESS$1, abi$2, provider);
+              this.routerContract = new ethers.Contract(ROUTER_ADDRESS$1, abi$1, provider);
+              this.geodeEndpoint = RELAYER_ENDPOINT_MAP[env][this.chainId];
+
+              if (!(this.geodeEndpoint.length == 0)) {
+                _context.next = 11;
+                break;
+              }
+
+              throw new Error("Chain ID " + this.chainId + " not supported");
+
+            case 11:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee, this);
+    }));
+
+    function init(_x, _x2, _x3) {
+      return _init.apply(this, arguments);
+    }
+
+    return init;
+  }();
+
+  _proto._checkInit = function _checkInit() {
+    var notInit = this.chainId === -1 || this.feeToken.address === zeroAddress || this.geodeEndpoint === '' || this.factoryContract.address === zeroAddress || this.routerContract.address === zeroAddress;
+
+    if (notInit) {
+      throw new Error('Error: XATA API has not been initialized yet!');
+    }
+  };
+
+  _proto._pathExists = /*#__PURE__*/function () {
+    var _pathExists2 = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/runtime_1.mark(function _callee2(path) {
+      var factory, i, addr;
+      return runtime_1.wrap(function _callee2$(_context2) {
+        while (1) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
+              factory = this.factoryContract;
+              i = 0;
+
+            case 2:
+              if (!(i < path.length - 2)) {
+                _context2.next = 11;
+                break;
+              }
+
+              _context2.next = 5;
+              return factory.getPair(path[i], path[i + 1]);
+
+            case 5:
+              addr = _context2.sent;
+
+              if (!(addr === zeroAddress)) {
+                _context2.next = 8;
+                break;
+              }
+
+              return _context2.abrupt("return", false);
+
+            case 8:
+              i++;
+              _context2.next = 2;
+              break;
+
+            case 11:
+              return _context2.abrupt("return", true);
+
+            case 12:
+            case "end":
+              return _context2.stop();
+          }
+        }
+      }, _callee2, this);
+    }));
+
+    function _pathExists(_x4) {
+      return _pathExists2.apply(this, arguments);
+    }
+
+    return _pathExists;
+  }();
+
+  _proto._verifySignature = function _verifySignature(domain, message, signature, signerAddress) {
+    var recovered = verifyTypedData(domain, {
+      'Forwarder': ForwarderType
+    }, message, signature);
+    return recovered === signerAddress;
+  };
+
+  _proto.setFeeToken = function setFeeToken(feeTokenAddr) {
+    this.feeToken = new ethers.Contract(feeTokenAddr, abi$4, this.provider);
+  };
+
+  _proto.sendRequest = /*#__PURE__*/function () {
+    var _sendRequest = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/runtime_1.mark(function _callee3(args, method, gasLimit, gasPrice) {
+      var price, txnFee, maxTokenFee, provider, signer, user, router, nonce, message, domain, EIP712Content, sigParams, metaIsEnabled, sig, _splitSignature, v, r, s, params, jsonRpcRequest, requestOptions, jsonRpcResponse, _yield$jsonRpcRespons, result, tx;
+
+      return runtime_1.wrap(function _callee3$(_context3) {
+        while (1) {
+          switch (_context3.prev = _context3.next) {
+            case 0:
+              this._checkInit();
+
+              _context3.t0 = gasPrice;
+
+              if (_context3.t0) {
+                _context3.next = 6;
+                break;
+              }
+
+              _context3.next = 5;
+              return this.provider.getGasPrice();
+
+            case 5:
+              _context3.t0 = _context3.sent;
+
+            case 6:
+              price = _context3.t0;
+              // WEI per gas
+              txnFee = gasLimit.mul(price); // determine token gas price
+
+              maxTokenFee = BigNumber$1.from(0);
+              _context3.t1 = this.chainId;
+              _context3.next = _context3.t1 === ChainId.MATIC ? 12 : _context3.t1 === ChainId.MAINNET ? 22 : _context3.t1 === ChainId.BSC ? 33 : 44;
+              break;
+
+            case 12:
+              _context3.t2 = calculateFeeOnMatic;
+              _context3.t3 = this.feeToken.address;
+              _context3.next = 16;
+              return this.feeToken.decimals();
+
+            case 16:
+              _context3.t4 = _context3.sent;
+              _context3.t5 = txnFee;
+              _context3.next = 20;
+              return (0, _context3.t2)(_context3.t3, _context3.t4, _context3.t5);
+
+            case 20:
+              maxTokenFee = _context3.sent;
+              return _context3.abrupt("break", 44);
+
+            case 22:
+              _context3.t6 = calculateFee;
+              _context3.t7 = this.chainId;
+              _context3.t8 = this.feeToken.address;
+              _context3.next = 27;
+              return this.feeToken.decimals();
+
+            case 27:
+              _context3.t9 = _context3.sent;
+              _context3.t10 = txnFee;
+              _context3.next = 31;
+              return (0, _context3.t6)(_context3.t7, _context3.t8, _context3.t9, _context3.t10, 'eth');
+
+            case 31:
+              maxTokenFee = _context3.sent;
+              return _context3.abrupt("break", 44);
+
+            case 33:
+              _context3.t11 = calculateFee;
+              _context3.t12 = this.chainId;
+              _context3.t13 = this.feeToken.address;
+              _context3.next = 38;
+              return this.feeToken.decimals();
+
+            case 38:
+              _context3.t14 = _context3.sent;
+              _context3.t15 = txnFee;
+              _context3.next = 42;
+              return (0, _context3.t11)(_context3.t12, _context3.t13, _context3.t14, _context3.t15, 'bnb');
+
+            case 42:
+              maxTokenFee = _context3.sent;
+              return _context3.abrupt("break", 44);
+
+            case 44:
+              // fetch router info
+              provider = this.provider;
+              signer = provider.getSigner();
+              _context3.next = 48;
+              return signer.getAddress();
+
+            case 48:
+              user = _context3.sent;
+              router = this.routerContract;
+              _context3.next = 52;
+              return router.nonces(user);
+
+            case 52:
+              nonce = _context3.sent;
+              // construct EIP712
+              message = buildMessage(args, method, this.feeToken.address, maxTokenFee, nonce);
+              domain = getDomain(router.address, this.chainId, 'ConveyorV2');
+              EIP712Content = {
+                types: {
+                  EIP712Domain: DomainType,
+                  Forwarder: ForwarderType
+                },
+                domain: domain,
+                primaryType: 'Forwarder',
+                message: message
+              };
+              sigParams = [user, JSON.stringify(EIP712Content)];
+              _context3.next = 59;
+              return router.metaEnabled();
+
+            case 59:
+              metaIsEnabled = _context3.sent;
+
+              if (!metaIsEnabled) {
+                _context3.next = 81;
+                break;
+              }
+
+              _context3.next = 63;
+              return provider.send('eth_signTypedData_v4', sigParams);
+
+            case 63:
+              sig = _context3.sent;
+              _splitSignature = splitSignature(sig), v = _splitSignature.v, r = _splitSignature.r, s = _splitSignature.s;
+              params = [this.chainId.toString(), EIP712Content, v.toString(), r, s];
+
+              if (this._verifySignature(domain, message, sig, user)) {
+                _context3.next = 68;
+                break;
+              }
+
+              throw new Error('Error: Invalid signature');
+
+            case 68:
+              jsonRpcRequest = {
+                jsonrpc: '2.0',
+                method: "/v2/metaTx/" + method,
+                id: 1,
+                params: params
+              };
+              requestOptions = {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(jsonRpcRequest)
+              }; // send request
+
+              console.log(requestOptions);
+              _context3.next = 73;
+              return fetch$1(this.geodeEndpoint, requestOptions);
+
+            case 73:
+              jsonRpcResponse = _context3.sent;
+              _context3.next = 76;
+              return jsonRpcResponse.json();
+
+            case 76:
+              _yield$jsonRpcRespons = _context3.sent;
+              result = _yield$jsonRpcRespons.result;
+              return _context3.abrupt("return", result);
+
+            case 81:
+              _context3.next = 83;
+              return signer.sendTransaction({
+                to: router.address,
+                data: message.data,
+                gasLimit: gasLimit,
+                gasPrice: price
+              });
+
+            case 83:
+              tx = _context3.sent;
+              return _context3.abrupt("return", tx);
+
+            case 85:
+            case "end":
+              return _context3.stop();
+          }
+        }
+      }, _callee3, this);
+    }));
+
+    function sendRequest(_x5, _x6, _x7, _x8) {
+      return _sendRequest.apply(this, arguments);
+    }
+
+    return sendRequest;
+  }();
+
+  _proto.addLiquidity = /*#__PURE__*/function () {
+    var _addLiquidity = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/runtime_1.mark(function _callee4(_tokenA, _tokenB, _amountADesired, _amountBDesired, _amountAMin, _amountBMin, _user, _deadline, gasLimit, gasPrice) {
+      var pairExists,
+          limit,
+          args,
+          _args4 = arguments;
+      return runtime_1.wrap(function _callee4$(_context4) {
+        while (1) {
+          switch (_context4.prev = _context4.next) {
+            case 0:
+              this._checkInit(); // check if a pair exists
+
+
+              _context4.next = 3;
+              return this.factoryContract.getPair(_tokenA, _tokenB);
+
+            case 3:
+              _context4.t0 = _context4.sent;
+              _context4.t1 = zeroAddress;
+              pairExists = _context4.t0 !== _context4.t1;
+
+              if (gasLimit) {
+                limit = gasLimit;
+              } else if (pairExists) {
+                limit = BigNumber$1.from(ADD_LIQUIDITY_GAS_LIMIT);
+              } else {
+                limit = BigNumber$1.from(CREATE_PAIR_GAS_LIMIT);
+              } // trim gas price and gas limit
+
+
+              args = Array.prototype.slice.call(_args4);
+
+              if (gasPrice) {
+                args = args.slice(0, args.length - 1);
+              } else if (gasPrice && gasLimit) {
+                args = args.slice(0, args.length - 2);
+              }
+
+              _context4.next = 11;
+              return this.sendRequest(args, 'addLiquidity', limit, gasPrice);
+
+            case 11:
+              return _context4.abrupt("return", _context4.sent);
+
+            case 12:
+            case "end":
+              return _context4.stop();
+          }
+        }
+      }, _callee4, this);
+    }));
+
+    function addLiquidity(_x9, _x10, _x11, _x12, _x13, _x14, _x15, _x16, _x17, _x18) {
+      return _addLiquidity.apply(this, arguments);
+    }
+
+    return addLiquidity;
+  }();
+
+  _proto.swapExactTokensForTokens = /*#__PURE__*/function () {
+    var _swapExactTokensForTokens = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/runtime_1.mark(function _callee5(_amountIn, _amountOutMin, _path, _user, _deadline, gasLimit, gasPrice) {
+      var pathExists,
+          limit,
+          args,
+          _args5 = arguments;
+      return runtime_1.wrap(function _callee5$(_context5) {
+        while (1) {
+          switch (_context5.prev = _context5.next) {
+            case 0:
+              this._checkInit();
+
+              _context5.next = 3;
+              return this._pathExists(_path);
+
+            case 3:
+              _context5.t0 = _context5.sent;
+
+              if (!_context5.t0) {
+                _context5.next = 6;
+                break;
+              }
+
+              _context5.t0 = _path.length >= 2;
+
+            case 6:
+              pathExists = _context5.t0;
+
+              if (pathExists) {
+                _context5.next = 11;
+                break;
+              }
+
+              throw new Error("Trade path does not exist.");
+
+            case 11:
+              if (gasLimit) {
+                limit = gasLimit;
+              } else {
+                limit = BigNumber$1.from(SWAP_GAS_LIMIT);
+
+                if (_path.length >= 2) {
+                  limit = limit.add(BigNumber$1.from(HOP_ADDITIONAL_GAS * (_path.length - 2)));
+                }
+              }
+
+            case 12:
+              // trim gas price and gas limit
+              args = Array.prototype.slice.call(_args5);
+
+              if (gasPrice) {
+                args = args.slice(0, args.length - 1);
+              } else if (gasPrice && gasLimit) {
+                args = args.slice(0, args.length - 2);
+              }
+
+              _context5.next = 16;
+              return this.sendRequest(args, 'swapExactTokensForTokens', limit, gasPrice);
+
+            case 16:
+              return _context5.abrupt("return", _context5.sent);
+
+            case 17:
+            case "end":
+              return _context5.stop();
+          }
+        }
+      }, _callee5, this);
+    }));
+
+    function swapExactTokensForTokens(_x19, _x20, _x21, _x22, _x23, _x24, _x25) {
+      return _swapExactTokensForTokens.apply(this, arguments);
+    }
+
+    return swapExactTokensForTokens;
+  }();
+
+  _proto.removeLiquidity = /*#__PURE__*/function () {
+    var _removeLiquidity = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/runtime_1.mark(function _callee6(_tokenA, _tokenB, _liquidity, _amountAMin, _amountBMin, _user, _deadline, gasLimit, gasPrice) {
+      var pairAddr,
+          pairExists,
+          limit,
+          pairErc20,
+          permitDomain,
+          pairNonce,
+          permitMessage,
+          EIP712Permit,
+          permitSigParams,
+          permitSig,
+          _splitSignature2,
+          v,
+          r,
+          s,
+          args,
+          sigStruct,
+          _args6 = arguments;
+
+      return runtime_1.wrap(function _callee6$(_context6) {
+        while (1) {
+          switch (_context6.prev = _context6.next) {
+            case 0:
+              this._checkInit(); // check if a pair exists
+
+
+              _context6.next = 3;
+              return this.factoryContract.getPair(_tokenA, _tokenB);
+
+            case 3:
+              pairAddr = _context6.sent;
+              pairExists = pairAddr !== zeroAddress; // determine gas limit
+
+              if (!pairExists) {
+                _context6.next = 9;
+                break;
+              }
+
+              if (gasLimit) {
+                limit = gasLimit;
+              } else {
+                limit = BigNumber$1.from(REMOVE_LIQUIDITY_GAS_LIMIT);
+              }
+
+              _context6.next = 10;
+              break;
+
+            case 9:
+              throw new Error("Pair does not exist.");
+
+            case 10:
+              // sign the permit message
+              pairErc20 = new ethers.Contract(pairAddr, abi$3, this.provider);
+              permitDomain = getDomain(pairAddr, this.chainId, 'Conveyor V2');
+              _context6.next = 14;
+              return pairErc20.nonces(_user);
+
+            case 14:
+              pairNonce = _context6.sent;
+              permitMessage = {
+                owner: _user,
+                spender: this.routerContract.address,
+                value: _liquidity.toHexString(),
+                nonce: pairNonce.toHexString(),
+                deadline: _deadline.toHexString()
+              };
+              EIP712Permit = {
+                types: {
+                  EIP712Domain: DomainType,
+                  Permit: PermitType
+                },
+                domain: permitDomain,
+                primaryType: 'Permit',
+                message: permitMessage
+              };
+              permitSigParams = [_user, JSON.stringify(EIP712Permit)];
+              _context6.next = 20;
+              return this.provider.send('eth_signTypedData_v4', permitSigParams);
+
+            case 20:
+              permitSig = _context6.sent;
+              _splitSignature2 = splitSignature(permitSig), v = _splitSignature2.v, r = _splitSignature2.r, s = _splitSignature2.s; // trim gas price and gas limit
+
+              args = Array.prototype.slice.call(_args6);
+
+              if (gasPrice) {
+                args = args.slice(0, args.length - 1);
+              } else if (gasPrice && gasLimit) {
+                args = args.slice(0, args.length - 2);
+              }
+
+              sigStruct = {
+                v: v,
+                r: r,
+                s: s
+              }; // append sig to args
+
+              args.push(sigStruct);
+              _context6.next = 28;
+              return this.sendRequest(args, 'removeLiquidity', limit, gasPrice);
+
+            case 28:
+              return _context6.abrupt("return", _context6.sent);
+
+            case 29:
+            case "end":
+              return _context6.stop();
+          }
+        }
+      }, _callee6, this);
+    }));
+
+    function removeLiquidity(_x26, _x27, _x28, _x29, _x30, _x31, _x32, _x33, _x34) {
+      return _removeLiquidity.apply(this, arguments);
+    }
+
+    return removeLiquidity;
+  }();
+
+  return XATA;
+}();
+
+export { ACTION_ACCRUE, ACTION_ADD_ASSET, ACTION_ADD_COLLATERAL, ACTION_BENTO_DEPOSIT, ACTION_BENTO_SETAPPROVAL, ACTION_BENTO_TRANSFER, ACTION_BENTO_TRANSFER_MULTIPLE, ACTION_BENTO_WITHDRAW, ACTION_BORROW, ACTION_CALL, ACTION_GET_REPAY_PART, ACTION_GET_REPAY_SHARE, ACTION_REMOVE_ASSET, ACTION_REMOVE_COLLATERAL, ACTION_REPAY, ACTION_UPDATE_EXCHANGE_RATE, ARCHER_ROUTER_ADDRESS, ASSERT, AbstractCurrency, Avalanche, BAR_ADDRESS, BENTOBOX_ADDRESS, BORING_HELPER_ADDRESS, Binance, CHAINLINK_ORACLE_ADDRESS, CL_MAX_TICK, CL_MIN_TICK, Celo, ChainId, ConcentratedLiquidityPool, ConstantProductPool, CurrencyAmount, ENS_REGISTRAR_ADDRESS, Environment, Ether, Exchanger, FACTORY_ADDRESS, FACTOR_PRECISION, FIVE, FULL_UTILIZATION, FULL_UTILIZATION_MINUS_MAX, Fantom, Fee, Fetcher, FillLimitOrder, Fraction, Harmony, Heco, HybridComputeLiquidity, HybridPool, HybridgetY, INIT_CODE_HASH, INTEREST_ELASTICITY, InsufficientInputAmountError, InsufficientReservesError, KASHI_ADDRESS, KashiAction, LAMBDA_URL, LIQUIDITY_TOKEN_IDENTITY, LimitOrder, MAKER_ADDRESS, MASTERCHEF_ADDRESS, MASTERCHEF_V2_ADDRESS, MAXIMUM_INTEREST_PER_YEAR, MAXIMUM_TARGET_UTILIZATION, MERKLE_DISTRIBUTOR_ADDRESS, MINICHEF_ADDRESS, MINIMUM_INTEREST_PER_YEAR, MINIMUM_LIQUIDITY, MINIMUM_TARGET_UTILIZATION, MULTICALL2_ADDRESS, Matic, MaxUint256, NATIVE, NativeCurrency, ONE, Okex, OrderStatus, OutOfLiquidity, PEGGED_ORACLE_ADDRESS, PROTOCOL_FEE, PROTOCOL_FEE_DIVISOR, Pair, Palm, Percent, Pool, PoolType, Price, ROUTER_ADDRESS, Rounding, Route, RouteStatus, Router, SOCKET_URL, SOLIDITY_TYPE_MAXIMA, STARTING_INTEREST_PER_YEAR, STOP_LIMIT_ORDER_ADDRESS, SUSHISWAP_MULTISWAPPER_ADDRESS, SUSHISWAP_MULTI_EXACT_SWAPPER_ADDRESS, SUSHISWAP_SWAPPER_ADDRESS, SUSHISWAP_TWAP_0_ORACLE_ADDRESS, SUSHISWAP_TWAP_1_ORACLE_ADDRESS, SUSHI_ADDRESS, SolidityType, TEN, THREE, TIMELOCK_ADDRESS, TWO, Token, TokenType, Trade, TradeType, USDC, USDC_ADDRESS, UTILIZATION_PRECISION, WETH9, WETH9_ADDRESS, WNATIVE, WNATIVE_ADDRESS, WeightedPool, XATA, ZAPPER_ADDRESS, ZERO, _100, _1000, _997, bentoTypes, calcInByOut, calcInputByPrice, calcOutByIn, calcPrice, calcSquareEquation, closeValues, computePairAddress, computePriceImpact, currencyEquals, getBigNumber, getSignature, getSignatureBento, getSignatureWithProvider, getSignatureWithProviderBentobox, getTypeHash, getTypedData, getTypedDataBento, inputOutputComparator, name, revertPositive, sortedInsert, sqrt, toHex, tradeComparator, types, validateAndParseAddress, validateSolidityTypeInstance, xDai };
 //# sourceMappingURL=sdk.esm.js.map
