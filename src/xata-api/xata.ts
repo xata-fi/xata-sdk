@@ -8,7 +8,7 @@ import { abi as RouterAbi } from '../abis/ConveyorV2Router01.json';
 import { abi as FactoryAbi } from '../abis/ConveyorV2Factory.json';
 import { abi as PairAbi } from '../abis/ConveyorV2Pair.json';
 import { abi as ERC20Abi } from '../abis/ERC20.json';
-import { ChainId, Environment } from '../enums';
+import { Environment, ChainId } from '../enums';
 import fetch from 'cross-fetch';
 import { RELAYER_ENDPOINT_MAP } from './lib/relayer';
 
@@ -84,22 +84,23 @@ export default class XATA {
         gasPrice?: BigNumber,
     ): Promise<Response> {
         this._checkInit();
-
-        const price: BigNumber = gasPrice || await this.provider.getGasPrice(); // WEI per gas
+        const price: BigNumber = gasPrice ? gasPrice : await this.provider.getGasPrice(); // WEI per gas
         const txnFee = gasLimit.mul(price);
+        const tokenDecimals = await this.feeToken.decimals();
 
         // determine token gas price
+        // let maxTokenFee = parseUnits('10', tokenDecimals);
         let maxTokenFee = BigNumber.from(0);
 
         switch (this.chainId) {
             case ChainId.MATIC:
-                maxTokenFee = await calculateFeeOnMatic(this.feeToken.address, (await this.feeToken.decimals()), txnFee);
+                maxTokenFee = await calculateFeeOnMatic(this.feeToken.address, tokenDecimals, txnFee);
                 break;
             case ChainId.MAINNET:
-                maxTokenFee = await calculateFee(this.chainId, this.feeToken.address, (await this.feeToken.decimals()), txnFee, 'eth');
+                maxTokenFee = await calculateFee(this.chainId, this.feeToken.address, tokenDecimals, txnFee, 'eth');
                 break;
             case ChainId.BSC:
-                maxTokenFee = await calculateFee(this.chainId, this.feeToken.address, (await this.feeToken.decimals()), txnFee, 'bnb');
+                maxTokenFee = await calculateFee(this.chainId, this.feeToken.address, tokenDecimals, txnFee, 'bnb');
                 break;
         }
 
@@ -226,10 +227,10 @@ export default class XATA {
 
         // trim gas price and gas limit
         let args: Array<any> = [...arguments];
-        if (gasPrice) {
-            args = args.slice(0, args.length - 1);
-        } else if (gasPrice && gasLimit) {
-            args = args.slice(0, args.length - 2);
+        if (gasLimit && gasPrice) {
+            args = args.slice(0, -2);
+        } else if (gasLimit) {
+            args = args.slice(0, -1);
         }
 
         return (await this.sendRequest(args, 'addLiquidity', limit, gasPrice));
@@ -265,10 +266,10 @@ export default class XATA {
 
         // trim gas price and gas limit
         let args: Array<any> = [...arguments];
-        if (gasPrice) {
-            args = args.slice(0, args.length - 1);
-        } else if (gasPrice && gasLimit) {
-            args = args.slice(0, args.length - 2);
+        if (gasLimit && gasPrice) {
+            args = args.slice(0, -2);
+        } else if (gasLimit) {
+            args = args.slice(0, -1);
         }
 
         return (await this.sendRequest(args, 'swapExactTokensForTokens', limit, gasPrice));
@@ -334,10 +335,10 @@ export default class XATA {
 
         // trim gas price and gas limit
         let args: Array<any> = [...arguments];
-        if (gasPrice) {
-            args = args.slice(0, args.length - 1);
-        } else if (gasPrice && gasLimit) {
-            args = args.slice(0, args.length - 2);
+        if (gasLimit && gasPrice) {
+            args = args.slice(0, -2);
+        } else if (gasLimit) {
+            args = args.slice(0, -1);
         }
 
         const sigStruct = {

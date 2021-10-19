@@ -5127,7 +5127,7 @@ function buildMessage(args, method, feeToken, maxTokenAmount, nonce) {
 }
 
 var FACTORY_ADDRESS$1 = '0x5f8017621825BC10D63d15C3e863f893946781F7';
-var ROUTER_ADDRESS$1 = '0x838309Bc4C6769050A23007742CF8f9F305DcE13';
+var ROUTER_ADDRESS$1 = '0xe4C5Cf259351d7877039CBaE0e7f92EB2Ab017EB';
 var SWAP_GAS_LIMIT = 512500;
 var ADD_LIQUIDITY_GAS_LIMIT = 662500;
 var CREATE_PAIR_GAS_LIMIT = 5125000;
@@ -5160,7 +5160,7 @@ function calculateFee(_x, _x2, _x3, _x4, _x5, _x6) {
 
 function _calculateFee() {
   _calculateFee = _asyncToGenerator( /*#__PURE__*/runtime_1.mark(function _callee(chainId, token, tokenDecimals, gasFee, nativeToken, nativeTokenDecimals) {
-    var priceApiPrefix, response, data, ethPerToken, _yield$data, eth, _yield$data2, bnb, factor, adjustedPrice, fee;
+    var priceApiPrefix, response, data, ethPerToken, _yield$data, eth, _yield$data2, bnb, factor, adjustedPrice, fee, roundedFee, max;
 
     return runtime_1.wrap(function _callee$(_context) {
       while (1) {
@@ -5232,9 +5232,11 @@ function _calculateFee() {
             adjustedPrice = new BigNumber$2(ethPerToken).multipliedBy(factor); // WEI per token - adjusted for the token decimals
 
             fee = new BigNumber$2(gasFee.toString()).div(adjustedPrice);
-            return _context.abrupt("return", BigNumber.from(fee.toFixed(0)));
+            roundedFee = fee.toFixed(0, 2);
+            max = parseInt(roundedFee) < 1 ? '1' : roundedFee;
+            return _context.abrupt("return", BigNumber.from(max));
 
-          case 29:
+          case 31:
           case "end":
             return _context.stop();
         }
@@ -5250,7 +5252,7 @@ function calculateFeeOnMatic(_x7, _x8, _x9) {
 
 function _calculateFeeOnMatic() {
   _calculateFeeOnMatic = _asyncToGenerator( /*#__PURE__*/runtime_1.mark(function _callee2(token, tokenDecimals, gasFee) {
-    var priceApiPrefix, response, data, _yield$data3, bnb, adjustedBnbPerToken, maticBnbRatioApi, maticResponse, maticResponseMap, maticData, maticBnb, bnbPerMatic, fee;
+    var priceApiPrefix, response, data, _yield$data3, bnb, adjustedBnbPerToken, maticBnbRatioApi, maticResponse, maticResponseMap, maticData, maticBnb, bnbPerMatic, fee, roundedFee, max;
 
     return runtime_1.wrap(function _callee2$(_context2) {
       while (1) {
@@ -5267,7 +5269,7 @@ function _calculateFeeOnMatic() {
                 throw new Error('Error: Unsupported fee token.');
               }
 
-              return res;
+              return Object.values(res)[0];
             });
             _context2.next = 7;
             return data;
@@ -5291,9 +5293,11 @@ function _calculateFeeOnMatic() {
             maticBnb = maticData['bnb'];
             bnbPerMatic = new BigNumber$2(maticBnb);
             fee = new BigNumber$2(gasFee.toString()).div(adjustedBnbPerToken.div(bnbPerMatic));
-            return _context2.abrupt("return", BigNumber.from(fee.toFixed(0)));
+            roundedFee = fee.toFixed(0, 2);
+            max = parseInt(roundedFee) < 1 ? '1' : roundedFee;
+            return _context2.abrupt("return", BigNumber.from(max));
 
-          case 22:
+          case 24:
           case "end":
             return _context2.stop();
         }
@@ -7379,7 +7383,7 @@ var XATA = /*#__PURE__*/function () {
 
   _proto.sendRequest = /*#__PURE__*/function () {
     var _sendRequest = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/runtime_1.mark(function _callee3(args, method, gasLimit, gasPrice) {
-      var price, txnFee, maxTokenFee, provider, signer, user, router, nonce, message, domain, EIP712Content, sigParams, metaIsEnabled, sig, _splitSignature, v, r, s, params, jsonRpcRequest, requestOptions, jsonRpcResponse, result, res, tx, err;
+      var price, txnFee, tokenDecimals, maxTokenFee, provider, signer, user, router, nonce, message, domain, EIP712Content, sigParams, metaIsEnabled, sig, _splitSignature, v, r, s, params, jsonRpcRequest, requestOptions, jsonRpcResponse, result, res, tx, err;
 
       return runtime_1.wrap(function _callee3$(_context3) {
         while (1) {
@@ -7387,93 +7391,76 @@ var XATA = /*#__PURE__*/function () {
             case 0:
               this._checkInit();
 
-              _context3.t0 = gasPrice;
-
-              if (_context3.t0) {
-                _context3.next = 6;
+              if (!gasPrice) {
+                _context3.next = 5;
                 break;
               }
 
-              _context3.next = 5;
-              return this.provider.getGasPrice();
-
-            case 5:
-              _context3.t0 = _context3.sent;
-
-            case 6:
-              price = _context3.t0;
-              // WEI per gas
-              txnFee = gasLimit.mul(price); // determine token gas price
-
-              maxTokenFee = BigNumber$1.from(0);
-              _context3.t1 = this.chainId;
-              _context3.next = _context3.t1 === ChainId.MATIC ? 12 : _context3.t1 === ChainId.MAINNET ? 22 : _context3.t1 === ChainId.BSC ? 33 : 44;
+              _context3.t0 = gasPrice;
+              _context3.next = 8;
               break;
 
+            case 5:
+              _context3.next = 7;
+              return this.provider.getGasPrice();
+
+            case 7:
+              _context3.t0 = _context3.sent;
+
+            case 8:
+              price = _context3.t0;
+              // WEI per gas
+              txnFee = gasLimit.mul(price);
+              _context3.next = 12;
+              return this.feeToken.decimals();
+
             case 12:
-              _context3.t2 = calculateFeeOnMatic;
-              _context3.t3 = this.feeToken.address;
-              _context3.next = 16;
-              return this.feeToken.decimals();
+              tokenDecimals = _context3.sent;
+              // determine token gas price
+              // let maxTokenFee = parseUnits('10', tokenDecimals);
+              maxTokenFee = BigNumber$1.from(0);
+              _context3.t1 = this.chainId;
+              _context3.next = _context3.t1 === ChainId.MATIC ? 17 : _context3.t1 === ChainId.MAINNET ? 21 : _context3.t1 === ChainId.BSC ? 25 : 29;
+              break;
 
-            case 16:
-              _context3.t4 = _context3.sent;
-              _context3.t5 = txnFee;
-              _context3.next = 20;
-              return (0, _context3.t2)(_context3.t3, _context3.t4, _context3.t5);
+            case 17:
+              _context3.next = 19;
+              return calculateFeeOnMatic(this.feeToken.address, tokenDecimals, txnFee);
 
-            case 20:
+            case 19:
               maxTokenFee = _context3.sent;
-              return _context3.abrupt("break", 44);
+              return _context3.abrupt("break", 29);
 
-            case 22:
-              _context3.t6 = calculateFee;
-              _context3.t7 = this.chainId;
-              _context3.t8 = this.feeToken.address;
+            case 21:
+              _context3.next = 23;
+              return calculateFee(this.chainId, this.feeToken.address, tokenDecimals, txnFee, 'eth');
+
+            case 23:
+              maxTokenFee = _context3.sent;
+              return _context3.abrupt("break", 29);
+
+            case 25:
               _context3.next = 27;
-              return this.feeToken.decimals();
+              return calculateFee(this.chainId, this.feeToken.address, tokenDecimals, txnFee, 'bnb');
 
             case 27:
-              _context3.t9 = _context3.sent;
-              _context3.t10 = txnFee;
-              _context3.next = 31;
-              return (0, _context3.t6)(_context3.t7, _context3.t8, _context3.t9, _context3.t10, 'eth');
-
-            case 31:
               maxTokenFee = _context3.sent;
-              return _context3.abrupt("break", 44);
+              return _context3.abrupt("break", 29);
 
-            case 33:
-              _context3.t11 = calculateFee;
-              _context3.t12 = this.chainId;
-              _context3.t13 = this.feeToken.address;
-              _context3.next = 38;
-              return this.feeToken.decimals();
-
-            case 38:
-              _context3.t14 = _context3.sent;
-              _context3.t15 = txnFee;
-              _context3.next = 42;
-              return (0, _context3.t11)(_context3.t12, _context3.t13, _context3.t14, _context3.t15, 'bnb');
-
-            case 42:
-              maxTokenFee = _context3.sent;
-              return _context3.abrupt("break", 44);
-
-            case 44:
+            case 29:
               // fetch router info
               provider = this.provider;
               signer = provider.getSigner();
-              _context3.next = 48;
+              _context3.next = 33;
               return signer.getAddress();
 
-            case 48:
+            case 33:
               user = _context3.sent;
               router = this.routerContract;
-              _context3.next = 52;
+              _context3.next = 37;
               return router.nonces(user);
 
-            case 52:
+            case 37:
               nonce = _context3.sent;
               // construct EIP712
               message = buildMessage(args, method, this.feeToken.address, maxTokenFee, nonce);
@@ -7488,33 +7475,33 @@ var XATA = /*#__PURE__*/function () {
                 message: message
               };
               sigParams = [user, JSON.stringify(EIP712Content)];
-              _context3.next = 59;
+              _context3.next = 44;
               return router.metaEnabled();
 
-            case 59:
+            case 44:
               metaIsEnabled = _context3.sent;
 
               if (!metaIsEnabled) {
-                _context3.next = 80;
+                _context3.next = 65;
                 break;
               }
 
-              _context3.next = 63;
+              _context3.next = 48;
               return provider.send('eth_signTypedData_v4', sigParams);
 
-            case 63:
+            case 48:
               sig = _context3.sent;
               _splitSignature = splitSignature(sig), v = _splitSignature.v, r = _splitSignature.r, s = _splitSignature.s;
               params = [this.chainId.toString(), EIP712Content, v.toString(), r, s];
 
               if (this._verifySignature(domain, message, sig, user)) {
-                _context3.next = 68;
+                _context3.next = 53;
                 break;
               }
 
               throw new Error('Error: Invalid signature');
 
-            case 68:
+            case 53:
               jsonRpcRequest = {
                 jsonrpc: '2.0',
                 method: "/v2/metaTx/" + method,
@@ -7530,21 +7517,21 @@ var XATA = /*#__PURE__*/function () {
               }; // send request
 
               console.log(requestOptions);
-              _context3.next = 73;
+              _context3.next = 58;
               return fetch$1(this.geodeEndpoint, requestOptions);
 
-            case 73:
+            case 58:
               jsonRpcResponse = _context3.sent;
-              _context3.next = 76;
+              _context3.next = 61;
               return jsonRpcResponse.json();
 
-            case 76:
+            case 61:
               result = _context3.sent;
               return _context3.abrupt("return", result);
 
-            case 80:
-              _context3.prev = 80;
-              _context3.next = 83;
+            case 65:
+              _context3.prev = 65;
+              _context3.next = 68;
               return signer.sendTransaction({
                 to: router.address,
                 data: message.data,
@@ -7552,12 +7539,12 @@ var XATA = /*#__PURE__*/function () {
                 gasPrice: price
               });
 
-            case 83:
+            case 68:
               tx = _context3.sent;
-              _context3.next = 86;
+              _context3.next = 71;
               return tx.wait();
 
-            case 86:
+            case 71:
               res = {
                 id: 1,
                 jsonrpc: '2.0',
@@ -7567,13 +7554,13 @@ var XATA = /*#__PURE__*/function () {
                   txnHash: tx.hash
                 }
               };
-              _context3.next = 93;
+              _context3.next = 78;
               break;
 
-            case 89:
-              _context3.prev = 89;
-              _context3.t16 = _context3["catch"](80);
-              err = _context3.t16;
+            case 74:
+              _context3.prev = 74;
+              _context3.t2 = _context3["catch"](65);
+              err = _context3.t2;
               res = {
                 id: 1,
                 jsonrpc: '2.0',
@@ -7584,15 +7571,15 @@ var XATA = /*#__PURE__*/function () {
                 }
               };
 
-            case 93:
+            case 78:
               return _context3.abrupt("return", res);
 
-            case 94:
+            case 79:
             case "end":
               return _context3.stop();
           }
         }
-      }, _callee3, this, [[80, 89]]);
+      }, _callee3, this, [[65, 74]]);
     }));
 
     function sendRequest(_x5, _x6, _x7, _x8) {
@@ -7634,10 +7621,10 @@ var XATA = /*#__PURE__*/function () {
 
               args = Array.prototype.slice.call(_args4);
 
-              if (gasPrice) {
-                args = args.slice(0, args.length - 1);
-              } else if (gasPrice && gasLimit) {
-                args = args.slice(0, args.length - 2);
+              if (gasLimit && gasPrice) {
+                args = args.slice(0, -2);
+              } else if (gasLimit) {
+                args = args.slice(0, -1);
               }
 
               _context4.next = 11;
@@ -7711,10 +7698,10 @@ var XATA = /*#__PURE__*/function () {
               // trim gas price and gas limit
               args = Array.prototype.slice.call(_args5);
 
-              if (gasPrice) {
-                args = args.slice(0, args.length - 1);
-              } else if (gasPrice && gasLimit) {
-                args = args.slice(0, args.length - 2);
+              if (gasLimit && gasPrice) {
+                args = args.slice(0, -2);
+              } else if (gasLimit) {
+                args = args.slice(0, -1);
               }
 
               _context5.next = 16;
@@ -7824,10 +7811,10 @@ var XATA = /*#__PURE__*/function () {
 
               args = Array.prototype.slice.call(_args6);
 
-              if (gasPrice) {
-                args = args.slice(0, args.length - 1);
-              } else if (gasPrice && gasLimit) {
-                args = args.slice(0, args.length - 2);
+              if (gasLimit && gasPrice) {
+                args = args.slice(0, -2);
+              } else if (gasLimit) {
+                args = args.slice(0, -1);
               }
 
               sigStruct = {

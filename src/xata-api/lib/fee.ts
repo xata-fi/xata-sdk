@@ -52,7 +52,9 @@ export async function calculateFee(
     const factor = (new JSBigNumber(10).pow(nativeTokenDecimals)).div(new JSBigNumber(10).pow(tokenDecimals));
     const adjustedPrice = new JSBigNumber(ethPerToken).multipliedBy(factor); // WEI per token - adjusted for the token decimals
     const fee = new JSBigNumber(gasFee.toString()).div(adjustedPrice);
-    return BigNumber.from(fee.toFixed(0));
+    const roundedFee = fee.toFixed(0, 2);
+    const max = parseInt(roundedFee) < 1 ? '1' : roundedFee;
+    return BigNumber.from(max);
 }
 
 /**
@@ -69,11 +71,11 @@ export async function calculateFeeOnMatic(
 ): Promise<BigNumber> {
     const priceApiPrefix = PRICE_API_PREFIX[ChainId.MATIC];
     const response = await fetch(`${priceApiPrefix}contract_addresses=${token}&vs_currencies=bnb`);
-    const data = response.json().then((res) => {
+    const data: Promise<any> = response.json().then((res) => {
         if (Object.keys(res).length === 0) {
             throw new Error('Error: Unsupported fee token.');
         }
-        return res;
+        return Object.values(res)[0];
     });
     const { bnb } = await data;
     const adjustedBnbPerToken = new JSBigNumber(bnb).multipliedBy(new JSBigNumber(10).pow(18)).div(new JSBigNumber(10).pow(tokenDecimals))
@@ -85,5 +87,7 @@ export async function calculateFeeOnMatic(
     const bnbPerMatic = new JSBigNumber(maticBnb);
     
     const fee = new JSBigNumber(gasFee.toString()).div(adjustedBnbPerToken.div(bnbPerMatic));
-    return BigNumber.from(fee.toFixed(0));
+    const roundedFee = fee.toFixed(0, 2);
+    const max = parseInt(roundedFee) < 1 ? '1' : roundedFee;
+    return BigNumber.from(max);
 }
