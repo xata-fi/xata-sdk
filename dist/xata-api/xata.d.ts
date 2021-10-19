@@ -11,7 +11,7 @@ interface Response {
         txnHash: string;
     };
 }
-export default class XATA {
+export default class Xata {
     chainId: number;
     geodeEndpoint: string;
     provider: JsonRpcProvider;

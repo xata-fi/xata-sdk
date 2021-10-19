@@ -24,7 +24,7 @@ interface Response {
     }
 }
 
-export default class XATA {
+export default class Xata {
     chainId: number = -1;
     geodeEndpoint: string = '';
     provider: JsonRpcProvider = new ethers.providers.JsonRpcProvider(); // defaults to localhost

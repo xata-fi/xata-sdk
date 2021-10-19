@@ -11,5 +11,5 @@ export * from './types';
 export * from './utils/MultiRouterMath';
 export * from './limitorder';
 export * from './fetcher';
-import XATA from './xata-api/xata';
-export { XATA };
+import Xata from './xata-api/xata';
+export { Xata };

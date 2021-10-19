@@ -1,4 +1,4 @@
-import XATA from '../xata';
+import Xata from '../xata';
 import { BigNumber, ethers, utils } from 'ethers';
 
 const { parseUnits } = utils;
@@ -14,7 +14,7 @@ async function main() {
     // instantiate a XATA instance for mainnet
 
     // rpcProvider = localhost, feeToken = USD Coin, isLocalHostProvider = true <- defaults at false.
-    const mainnetXata = new XATA();
+    const mainnetXata = new Xata();
     await mainnetXata.init(provider, '0xdAC17F958D2ee523a2206206994597C13D831ec7');
 
     // // switch fee token to DAI

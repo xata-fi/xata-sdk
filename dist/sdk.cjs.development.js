@@ -7233,8 +7233,8 @@ var splitSignature = ethers.utils.splitSignature,
     verifyTypedData = ethers.utils.verifyTypedData;
 var zeroAddress = ethers.constants.AddressZero;
 
-var XATA = /*#__PURE__*/function () {
-  function XATA() {
+var Xata = /*#__PURE__*/function () {
+  function Xata() {
     this.chainId = -1;
     this.geodeEndpoint = '';
     this.provider = new ethers.ethers.providers.JsonRpcProvider(); // defaults to localhost
@@ -7247,7 +7247,7 @@ var XATA = /*#__PURE__*/function () {
   } // Must be called immediately after instantiating the class
 
 
-  var _proto = XATA.prototype;
+  var _proto = Xata.prototype;
 
   _proto.init =
   /*#__PURE__*/
@@ -7829,7 +7829,7 @@ var XATA = /*#__PURE__*/function () {
     return removeLiquidity;
   }();
 
-  return XATA;
+  return Xata;
 }();
 
 exports.JSBI = JSBI;
@@ -7941,7 +7941,7 @@ exports.WETH9_ADDRESS = WETH9_ADDRESS;
 exports.WNATIVE = WNATIVE;
 exports.WNATIVE_ADDRESS = WNATIVE_ADDRESS;
 exports.WeightedPool = WeightedPool;
-exports.XATA = XATA;
+exports.Xata = Xata;
 exports.ZAPPER_ADDRESS = ZAPPER_ADDRESS;
 exports.ZERO = ZERO;
 exports._100 = _100;
