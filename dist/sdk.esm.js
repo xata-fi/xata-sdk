@@ -13,13 +13,12 @@ import { getMessage } from 'eip-712';
 import { splitSignature as splitSignature$1 } from '@ethersproject/bytes';
 import { Contract } from '@ethersproject/contracts';
 import { defaultAbiCoder as defaultAbiCoder$1 } from '@ethersproject/abi';
-import fetch from 'isomorphic-unfetch';
+import fetch$1 from 'isomorphic-unfetch';
 import { getNetwork } from '@ethersproject/networks';
 import { getDefaultProvider } from '@ethersproject/providers';
 import UniswapV2Pair from '@sushiswap/core/artifacts/contracts/uniswapv2/UniswapV2Pair.sol/UniswapV2Pair.json';
 import { utils, BigNumber as BigNumber$1, ethers, constants } from 'ethers';
 import { BigNumber as BigNumber$2 } from 'bignumber.js';
-import fetch$1 from 'cross-fetch';
 
 var Exchanger;
 
@@ -4718,7 +4717,7 @@ var LimitOrder = /*#__PURE__*/function () {
           switch (_context2.prev = _context2.next) {
             case 0:
               _context2.next = 2;
-              return fetch(LAMBDA_URL + "/orders/create", {
+              return fetch$1(LAMBDA_URL + "/orders/create", {
                 method: 'POST',
                 body: JSON.stringify({
                   maker: this.maker,
@@ -5181,7 +5180,7 @@ function _calculateFee() {
 
           case 4:
             _context.next = 6;
-            return fetch$1(priceApiPrefix + "contract_addresses=" + token + "&vs_currencies=" + nativeToken);
+            return fetch(priceApiPrefix + "contract_addresses=" + token + "&vs_currencies=" + nativeToken);
 
           case 6:
             response = _context.sent;
@@ -5260,7 +5259,7 @@ function _calculateFeeOnMatic() {
           case 0:
             priceApiPrefix = PRICE_API_PREFIX[ChainId.MATIC];
             _context2.next = 3;
-            return fetch$1(priceApiPrefix + "contract_addresses=" + token + "&vs_currencies=bnb");
+            return fetch(priceApiPrefix + "contract_addresses=" + token + "&vs_currencies=bnb");
 
           case 3:
             response = _context2.sent;
@@ -5280,7 +5279,7 @@ function _calculateFeeOnMatic() {
             adjustedBnbPerToken = new BigNumber$2(bnb).multipliedBy(new BigNumber$2(10).pow(18)).div(new BigNumber$2(10).pow(tokenDecimals));
             maticBnbRatioApi = 'https://api.coingecko.com/api/v3/simple/price?ids=matic-network&vs_currencies=bnb';
             _context2.next = 13;
-            return fetch$1(maticBnbRatioApi);
+            return fetch(maticBnbRatioApi);
 
           case 13:
             maticResponse = _context2.sent;
@@ -7253,13 +7252,6 @@ var Xata = /*#__PURE__*/function () {
   function Xata() {
     this.chainId = -1;
     this.geodeEndpoint = '';
-    this.provider = new ethers.providers.JsonRpcProvider(); // defaults to localhost
-
-    this.feeToken = new ethers.Contract(zeroAddress, abi$4, this.provider); // NULL contract
-
-    this.routerContract = new ethers.Contract(zeroAddress, abi$1, this.provider); // NULL contract
-
-    this.factoryContract = new ethers.Contract(zeroAddress, abi$2, this.provider); // NULL contract
   } // Must be called immediately after instantiating the class
 
 
@@ -7311,7 +7303,7 @@ var Xata = /*#__PURE__*/function () {
   }();
 
   _proto._checkInit = function _checkInit() {
-    var notInit = this.chainId === -1 || this.feeToken.address === zeroAddress || this.geodeEndpoint === '' || this.factoryContract.address === zeroAddress || this.routerContract.address === zeroAddress;
+    var notInit = this.chainId === -1 || this.feeToken === undefined || this.geodeEndpoint === '' || !this.factoryContract === undefined || this.routerContract === undefined || this.provider === undefined;
 
     if (notInit) {
       throw new Error('Error: XATA API has not been initialized yet!');
@@ -7518,7 +7510,7 @@ var Xata = /*#__PURE__*/function () {
 
               console.log(requestOptions);
               _context3.next = 58;
-              return fetch$1(this.geodeEndpoint, requestOptions);
+              return fetch(this.geodeEndpoint, requestOptions);
 
             case 58:
               jsonRpcResponse = _context3.sent;

@@ -9,7 +9,6 @@ import { abi as FactoryAbi } from '../abis/ConveyorV2Factory.json';
 import { abi as PairAbi } from '../abis/ConveyorV2Pair.json';
 import { abi as ERC20Abi } from '../abis/ERC20.json';
 import { Environment, ChainId } from '../enums';
-import fetch from 'cross-fetch';
 import { RELAYER_ENDPOINT_MAP } from './lib/relayer';
 
 const zeroAddress = ethersConstants.AddressZero;
@@ -27,10 +26,10 @@ interface Response {
 export default class Xata {
     chainId: number = -1;
     geodeEndpoint: string = '';
-    provider: JsonRpcProvider = new ethers.providers.JsonRpcProvider(); // defaults to localhost
-    feeToken = new ethers.Contract(zeroAddress, ERC20Abi, this.provider); // NULL contract
-    routerContract = new ethers.Contract(zeroAddress, RouterAbi, this.provider); // NULL contract
-    factoryContract = new ethers.Contract(zeroAddress, FactoryAbi, this.provider); // NULL contract
+    provider?: JsonRpcProvider;
+    feeToken?: ethers.Contract;
+    routerContract?: ethers.Contract;
+    factoryContract?: ethers.Contract;
 
     // Must be called immediately after instantiating the class
     async init(provider: JsonRpcProvider, feeTokenAddr: string, env: Environment = Environment.PRODUCTION) {
@@ -47,10 +46,11 @@ export default class Xata {
 
     _checkInit() {
         const notInit = this.chainId === -1 
-        || this.feeToken.address === zeroAddress 
+        || this.feeToken === undefined
         || this.geodeEndpoint === '' 
-        || this.factoryContract.address === zeroAddress 
-        || this.routerContract.address === zeroAddress;
+        || !this.factoryContract === undefined
+        || this.routerContract === undefined
+        || this.provider === undefined;
 
         if (notInit) {
             throw new Error('Error: XATA API has not been initialized yet!');
@@ -60,7 +60,7 @@ export default class Xata {
     async _pathExists(path: string[]): Promise<boolean> {
         const factory = this.factoryContract;
         for (let i = 0; i < path.length - 2; i++) {
-            const addr = await factory.getPair(path[i], path[i + 1]);
+            const addr = await factory!.getPair(path[i], path[i + 1]);
             if (addr === zeroAddress) {
                 return false;
             }
@@ -84,9 +84,9 @@ export default class Xata {
         gasPrice?: BigNumber,
     ): Promise<Response> {
         this._checkInit();
-        const price: BigNumber = gasPrice ? gasPrice : await this.provider.getGasPrice(); // WEI per gas
+        const price: BigNumber = gasPrice ? gasPrice : await this.provider!.getGasPrice(); // WEI per gas
         const txnFee = gasLimit.mul(price);
-        const tokenDecimals = await this.feeToken.decimals();
+        const tokenDecimals = await this.feeToken!.decimals();
 
         // determine token gas price
         // let maxTokenFee = parseUnits('10', tokenDecimals);
@@ -94,27 +94,27 @@ export default class Xata {
 
         switch (this.chainId) {
             case ChainId.MATIC:
-                maxTokenFee = await calculateFeeOnMatic(this.feeToken.address, tokenDecimals, txnFee);
+                maxTokenFee = await calculateFeeOnMatic(this.feeToken!.address, tokenDecimals, txnFee);
                 break;
             case ChainId.MAINNET:
-                maxTokenFee = await calculateFee(this.chainId, this.feeToken.address, tokenDecimals, txnFee, 'eth');
+                maxTokenFee = await calculateFee(this.chainId, this.feeToken!.address, tokenDecimals, txnFee, 'eth');
                 break;
             case ChainId.BSC:
-                maxTokenFee = await calculateFee(this.chainId, this.feeToken.address, tokenDecimals, txnFee, 'bnb');
+                maxTokenFee = await calculateFee(this.chainId, this.feeToken!.address, tokenDecimals, txnFee, 'bnb');
                 break;
         }
 
         // fetch router info
         const provider = this.provider;
-        const signer = provider.getSigner();
+        const signer = provider!.getSigner();
 
         const user = await signer.getAddress();
         const router = this.routerContract;
-        const nonce = await router.nonces(user);
+        const nonce = await router!.nonces(user);
 
         // construct EIP712
-        const message = eip712.buildMessage(args, method, this.feeToken.address, maxTokenFee, nonce);
-        const domain = eip712.getDomain(router.address, this.chainId, 'ConveyorV2');
+        const message = eip712.buildMessage(args, method, this.feeToken!.address, maxTokenFee, nonce);
+        const domain = eip712.getDomain(router!.address, this.chainId, 'ConveyorV2');
         const EIP712Content = {
             types: {
                 EIP712Domain: eip712.DomainType,
@@ -126,11 +126,11 @@ export default class Xata {
         }
         const sigParams = [user, JSON.stringify(EIP712Content)];
 
-        const metaIsEnabled = await router.metaEnabled();
+        const metaIsEnabled = await router!.metaEnabled();
 
         if (metaIsEnabled) {
             // sign message
-            const sig: Signature = await provider.send(
+            const sig: Signature = await provider!.send(
                 'eth_signTypedData_v4',
                 sigParams
             )
@@ -167,7 +167,7 @@ export default class Xata {
             let res: Response;
             try {
                 const tx = await signer.sendTransaction({
-                    to: router.address,
+                    to: router!.address,
                     data: message.data,
                     gasLimit: gasLimit,
                     gasPrice: price,
@@ -213,7 +213,7 @@ export default class Xata {
         this._checkInit();
 
         // check if a pair exists
-        const pairExists: boolean = (await this.factoryContract.getPair(_tokenA, _tokenB)) !== zeroAddress;
+        const pairExists: boolean = (await this.factoryContract!.getPair(_tokenA, _tokenB)) !== zeroAddress;
 
         // get gas limit if not provided
         let limit: BigNumber;
@@ -289,7 +289,7 @@ export default class Xata {
         this._checkInit();
 
         // check if a pair exists
-        const pairAddr = await this.factoryContract.getPair(_tokenA, _tokenB);
+        const pairAddr = await this.factoryContract!.getPair(_tokenA, _tokenB);
         const pairExists: boolean = pairAddr !== zeroAddress;
 
         // determine gas limit
@@ -310,7 +310,7 @@ export default class Xata {
         const pairNonce = await pairErc20.nonces(_user);
         const permitMessage = {
             owner: _user,
-            spender: this.routerContract.address,
+            spender: this.routerContract!.address,
             value: _liquidity.toHexString(),
             nonce: pairNonce.toHexString(),
             deadline: _deadline.toHexString(),
@@ -326,7 +326,7 @@ export default class Xata {
         }
         const permitSigParams = [_user, JSON.stringify(EIP712Permit)];
 
-        const permitSig: Signature = await this.provider.send(
+        const permitSig: Signature = await this.provider!.send(
             'eth_signTypedData_v4',
             permitSigParams
         )

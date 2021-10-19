@@ -2,8 +2,6 @@ import { BigNumber } from "@ethersproject/bignumber";
 import { ChainId } from '../../enums';
 import { BigNumber as JSBigNumber } from "bignumber.js";
 
-import fetch from 'cross-fetch';
-
 export const PRICE_API_PREFIX: { [chainId in ChainId]?: string} = {
     [ChainId.BSC]: 'https://api.coingecko.com/api/v3/simple/token_price/binance-smart-chain?',
     [ChainId.MATIC]: 'https://api.coingecko.com/api/v3/simple/token_price/polygon-pos?',

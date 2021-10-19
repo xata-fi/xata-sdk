@@ -14,10 +14,10 @@ interface Response {
 export default class Xata {
     chainId: number;
     geodeEndpoint: string;
-    provider: JsonRpcProvider;
-    feeToken: ethers.Contract;
-    routerContract: ethers.Contract;
-    factoryContract: ethers.Contract;
+    provider?: JsonRpcProvider;
+    feeToken?: ethers.Contract;
+    routerContract?: ethers.Contract;
+    factoryContract?: ethers.Contract;
     init(provider: JsonRpcProvider, feeTokenAddr: string, env?: Environment): Promise<void>;
     _checkInit(): void;
     _pathExists(path: string[]): Promise<boolean>;

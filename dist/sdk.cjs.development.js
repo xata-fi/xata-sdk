@@ -18,13 +18,12 @@ var eip712 = require('eip-712');
 var bytes = require('@ethersproject/bytes');
 var contracts = require('@ethersproject/contracts');
 var abi$5 = require('@ethersproject/abi');
-var fetch = _interopDefault(require('isomorphic-unfetch'));
+var fetch$1 = _interopDefault(require('isomorphic-unfetch'));
 var networks = require('@ethersproject/networks');
 var providers = require('@ethersproject/providers');
 var UniswapV2Pair = _interopDefault(require('@sushiswap/core/artifacts/contracts/uniswapv2/UniswapV2Pair.sol/UniswapV2Pair.json'));
 var ethers = require('ethers');
 var bignumber_js = require('bignumber.js');
-var fetch$1 = _interopDefault(require('cross-fetch'));
 
 (function (Exchanger) {
   Exchanger[Exchanger["SUSHI"] = 0] = "SUSHI";
@@ -4702,7 +4701,7 @@ var LimitOrder = /*#__PURE__*/function () {
           switch (_context2.prev = _context2.next) {
             case 0:
               _context2.next = 2;
-              return fetch(LAMBDA_URL + "/orders/create", {
+              return fetch$1(LAMBDA_URL + "/orders/create", {
                 method: 'POST',
                 body: JSON.stringify({
                   maker: this.maker,
@@ -5165,7 +5164,7 @@ function _calculateFee() {
 
           case 4:
             _context.next = 6;
-            return fetch$1(priceApiPrefix + "contract_addresses=" + token + "&vs_currencies=" + nativeToken);
+            return fetch(priceApiPrefix + "contract_addresses=" + token + "&vs_currencies=" + nativeToken);
 
           case 6:
             response = _context.sent;
@@ -5244,7 +5243,7 @@ function _calculateFeeOnMatic() {
           case 0:
             priceApiPrefix = PRICE_API_PREFIX[exports.ChainId.MATIC];
             _context2.next = 3;
-            return fetch$1(priceApiPrefix + "contract_addresses=" + token + "&vs_currencies=bnb");
+            return fetch(priceApiPrefix + "contract_addresses=" + token + "&vs_currencies=bnb");
 
           case 3:
             response = _context2.sent;
@@ -5264,7 +5263,7 @@ function _calculateFeeOnMatic() {
             adjustedBnbPerToken = new bignumber_js.BigNumber(bnb).multipliedBy(new bignumber_js.BigNumber(10).pow(18)).div(new bignumber_js.BigNumber(10).pow(tokenDecimals));
             maticBnbRatioApi = 'https://api.coingecko.com/api/v3/simple/price?ids=matic-network&vs_currencies=bnb';
             _context2.next = 13;
-            return fetch$1(maticBnbRatioApi);
+            return fetch(maticBnbRatioApi);
 
           case 13:
             maticResponse = _context2.sent;
@@ -7237,13 +7236,6 @@ var Xata = /*#__PURE__*/function () {
   function Xata() {
     this.chainId = -1;
     this.geodeEndpoint = '';
-    this.provider = new ethers.ethers.providers.JsonRpcProvider(); // defaults to localhost
-
-    this.feeToken = new ethers.ethers.Contract(zeroAddress, abi$4, this.provider); // NULL contract
-
-    this.routerContract = new ethers.ethers.Contract(zeroAddress, abi$1, this.provider); // NULL contract
-
-    this.factoryContract = new ethers.ethers.Contract(zeroAddress, abi$2, this.provider); // NULL contract
   } // Must be called immediately after instantiating the class
 
 
@@ -7295,7 +7287,7 @@ var Xata = /*#__PURE__*/function () {
   }();
 
   _proto._checkInit = function _checkInit() {
-    var notInit = this.chainId === -1 || this.feeToken.address === zeroAddress || this.geodeEndpoint === '' || this.factoryContract.address === zeroAddress || this.routerContract.address === zeroAddress;
+    var notInit = this.chainId === -1 || this.feeToken === undefined || this.geodeEndpoint === '' || !this.factoryContract === undefined || this.routerContract === undefined || this.provider === undefined;
 
     if (notInit) {
       throw new Error('Error: XATA API has not been initialized yet!');
@@ -7502,7 +7494,7 @@ var Xata = /*#__PURE__*/function () {
 
               console.log(requestOptions);
               _context3.next = 58;
-              return fetch$1(this.geodeEndpoint, requestOptions);
+              return fetch(this.geodeEndpoint, requestOptions);
 
             case 58:
               jsonRpcResponse = _context3.sent;
