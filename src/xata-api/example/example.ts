@@ -48,18 +48,18 @@ async function main() {
     console.log(swapResponse);
 
     // attempts to remove liquidity
-    console.log('removing liquidity...');
-    const removeResponse = await mainnetXata.removeLiquidity(
-        '0xdAC17F958D2ee523a2206206994597C13D831ec7', // tokenA <- USDT
-        '0x6B175474E89094C44Da98b954EedeAC495271d0F', // tokenB <- DAI
-        BigNumber.from('50000000000000'), // 10% of liquidity
-        parseUnits('40', 6),
-        parseUnits('40', 18),
-        '0x276768c9f87e68a03d8e0690766ff98c3a607efe', // user
-        BigNumber.from(Math.ceil((Date.now()) / 1000) + 10), // deadline
-    );
+    // console.log('removing liquidity...');
+    // const removeResponse = await mainnetXata.removeLiquidity(
+    //     '0xdAC17F958D2ee523a2206206994597C13D831ec7', // tokenA <- USDT
+    //     '0x6B175474E89094C44Da98b954EedeAC495271d0F', // tokenB <- DAI
+    //     BigNumber.from('50000000000000'), // 10% of liquidity
+    //     parseUnits('40', 6),
+    //     parseUnits('40', 18),
+    //     '0x276768c9f87e68a03d8e0690766ff98c3a607efe', // user
+    //     BigNumber.from(Math.ceil((Date.now()) / 1000) + 10), // deadline
+    // );
 
-    console.log(removeResponse);
+    // console.log(removeResponse);
 }
 
 main()

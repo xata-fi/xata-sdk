@@ -7721,72 +7721,99 @@ var Xata = /*#__PURE__*/function () {
     }
 
     return swapExactTokensForTokens;
-  }();
+  }() // async removeLiquidity(
+  //     _tokenA: string,
+  //     _tokenB: string,
+  //     _liquidity: BigNumber,
+  //     _amountAMin: BigNumber,
+  //     _amountBMin: BigNumber,
+  //     _user: string,
+  //     _deadline: BigNumber,
+  //     gasLimit?: BigNumber,
+  //     gasPrice?: BigNumber
+  // ): Promise<Response> {
+  //     this._checkInit();
+  //     // check if a pair exists
+  //     const pairAddr = await this.factoryContract!.getPair(_tokenA, _tokenB);
+  //     const pairExists: boolean = pairAddr !== zeroAddress;
+  //     // determine gas limit
+  //     let limit: BigNumber;
+  //     if (pairExists) {
+  //         if (gasLimit) {
+  //             limit = gasLimit;
+  //         } else {
+  //             limit = BigNumber.from(constants.REMOVE_LIQUIDITY_GAS_LIMIT);
+  //         }
+  //     } else {
+  //         throw new Error("Pair does not exist.");
+  //     }
+  //     // sign the permit message
+  //     const pairErc20 = new ethers.Contract(pairAddr, PairAbi, this.provider);
+  //     const permitDomain = eip712.getDomain(pairAddr, this.chainId, 'Conveyor V2');
+  //     const pairNonce = await pairErc20.nonces(_user);
+  //     const permitMessage = {
+  //         owner: _user,
+  //         spender: this.routerContract!.address,
+  //         value: _liquidity.toHexString(),
+  //         nonce: pairNonce.toHexString(),
+  //         deadline: _deadline.toHexString(),
+  //     }
+  //     const EIP712Permit = {
+  //         types: {
+  //             EIP712Domain: eip712.DomainType,
+  //             Permit: eip712.PermitType
+  //         },
+  //         domain: permitDomain,
+  //         primaryType: 'Permit',
+  //         message: permitMessage
+  //     }
+  //     const permitSigParams = [_user, JSON.stringify(EIP712Permit)];
+  //     const permitSig: Signature = await this.provider!.send(
+  //         'eth_signTypedData_v4',
+  //         permitSigParams
+  //     )
+  //     const { v, r, s } = splitSignature(permitSig);
+  //     // trim gas price and gas limit
+  //     let args: Array<any> = [...arguments];
+  //     if (gasLimit && gasPrice) {
+  //         args = args.slice(0, -2);
+  //     } else if (gasLimit) {
+  //         args = args.slice(0, -1);
+  //     }
+  //     args = args.filter((x) => x !== undefined);
+  //     const sigStruct = {
+  //         v: v,
+  //         r: r,
+  //         s: s,
+  //     }
+  //     // append sig to args
+  //     args.push(sigStruct);
+  //     return (await this.sendRequest(args, 'removeLiquidity', limit, gasPrice));
+  // }
+  ;
 
-  _proto.removeLiquidity = /*#__PURE__*/function () {
-    var _removeLiquidity = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/runtime_1.mark(function _callee6(_tokenA, _tokenB, _liquidity, _amountAMin, _amountBMin, _user, _deadline, gasLimit, gasPrice) {
-      var pairAddr,
-          pairExists,
-          limit,
-          pairErc20,
-          permitDomain,
-          pairNonce,
-          permitMessage,
-          EIP712Permit,
-          permitSigParams,
-          permitSig,
-          _splitSignature2,
-          v,
-          r,
-          s,
-          args,
-          sigStruct,
-          _args6 = arguments;
+  _proto.permitLP =
+  /*#__PURE__*/
+  function () {
+    var _permitLP = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/runtime_1.mark(function _callee6(_pairAddr, _owner, _spender, _value, _nonce, _deadline) {
+      var pairErc20, permitDomain, pairNonce, permitMessage, EIP712Permit, permitSigParams, permitSig, _splitSignature2, v, r, s, sigStruct;
 
       return runtime_1.wrap(function _callee6$(_context6) {
         while (1) {
           switch (_context6.prev = _context6.next) {
             case 0:
-              this._checkInit(); // check if a pair exists
-
-
-              _context6.next = 3;
-              return this.factoryContract.getPair(_tokenA, _tokenB);
-
-            case 3:
-              pairAddr = _context6.sent;
-              pairExists = pairAddr !== zeroAddress; // determine gas limit
-
-              if (!pairExists) {
-                _context6.next = 9;
-                break;
-              }
-
-              if (gasLimit) {
-                limit = gasLimit;
-              } else {
-                limit = BigNumber$1.from(REMOVE_LIQUIDITY_GAS_LIMIT);
-              }
-
-              _context6.next = 10;
-              break;
-
-            case 9:
-              throw new Error("Pair does not exist.");
-
-            case 10:
               // sign the permit message
-              pairErc20 = new ethers.Contract(pairAddr, abi$3, this.provider);
-              permitDomain = getDomain(pairAddr, this.chainId, 'Conveyor V2');
-              _context6.next = 14;
-              return pairErc20.nonces(_user);
+              pairErc20 = new ethers.Contract(_pairAddr, abi$3, this.provider);
+              permitDomain = getDomain(_pairAddr, this.chainId, 'Conveyor V2');
+              _context6.next = 4;
+              return pairErc20.nonces(_owner);
 
-            case 14:
+            case 4:
               pairNonce = _context6.sent;
               permitMessage = {
-                owner: _user,
-                spender: this.routerContract.address,
-                value: _liquidity.toHexString(),
+                owner: _owner,
+                spender: _spender,
+                value: _value.toHexString(),
                 nonce: pairNonce.toHexString(),
                 deadline: _deadline.toHexString()
               };
@@ -7799,15 +7826,76 @@ var Xata = /*#__PURE__*/function () {
                 primaryType: 'Permit',
                 message: permitMessage
               };
-              permitSigParams = [_user, JSON.stringify(EIP712Permit)];
-              _context6.next = 20;
+              permitSigParams = [_owner, JSON.stringify(EIP712Permit)];
+              _context6.next = 10;
               return this.provider.send('eth_signTypedData_v4', permitSigParams);
 
-            case 20:
+            case 10:
               permitSig = _context6.sent;
-              _splitSignature2 = splitSignature(permitSig), v = _splitSignature2.v, r = _splitSignature2.r, s = _splitSignature2.s; // trim gas price and gas limit
+              _splitSignature2 = splitSignature(permitSig), v = _splitSignature2.v, r = _splitSignature2.r, s = _splitSignature2.s;
+              sigStruct = {
+                v: v,
+                r: r,
+                s: s
+              };
+              return _context6.abrupt("return", sigStruct);
 
-              args = Array.prototype.slice.call(_args6);
+            case 14:
+            case "end":
+              return _context6.stop();
+          }
+        }
+      }, _callee6, this);
+    }));
+
+    function permitLP(_x26, _x27, _x28, _x29, _x30, _x31) {
+      return _permitLP.apply(this, arguments);
+    }
+
+    return permitLP;
+  }();
+
+  _proto.removeLiquidity = /*#__PURE__*/function () {
+    var _removeLiquidity = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/runtime_1.mark(function _callee7(_tokenA, _tokenB, _liquidity, _amountAMin, _amountBMin, _user, _deadline, _sig, gasLimit, gasPrice) {
+      var pairAddr,
+          pairExists,
+          limit,
+          args,
+          _args7 = arguments;
+      return runtime_1.wrap(function _callee7$(_context7) {
+        while (1) {
+          switch (_context7.prev = _context7.next) {
+            case 0:
+              this._checkInit(); // check if a pair exists
+
+
+              _context7.next = 3;
+              return this.factoryContract.getPair(_tokenA, _tokenB);
+
+            case 3:
+              pairAddr = _context7.sent;
+              pairExists = pairAddr !== zeroAddress; // determine gas limit
+
+              if (!pairExists) {
+                _context7.next = 9;
+                break;
+              }
+
+              if (gasLimit) {
+                limit = gasLimit;
+              } else {
+                limit = BigNumber$1.from(REMOVE_LIQUIDITY_GAS_LIMIT);
+              }
+
+              _context7.next = 10;
+              break;
+
+            case 9:
+              throw new Error("Pair does not exist.");
+
+            case 10:
+              // trim gas price and gas limit
+              args = Array.prototype.slice.call(_args7);
 
               if (gasLimit && gasPrice) {
                 args = args.slice(0, -2);
@@ -7818,28 +7906,21 @@ var Xata = /*#__PURE__*/function () {
               args = args.filter(function (x) {
                 return x !== undefined;
               });
-              sigStruct = {
-                v: v,
-                r: r,
-                s: s
-              }; // append sig to args
-
-              args.push(sigStruct);
-              _context6.next = 29;
+              _context7.next = 15;
               return this.sendRequest(args, 'removeLiquidity', limit, gasPrice);
 
-            case 29:
-              return _context6.abrupt("return", _context6.sent);
+            case 15:
+              return _context7.abrupt("return", _context7.sent);
 
-            case 30:
+            case 16:
             case "end":
-              return _context6.stop();
+              return _context7.stop();
           }
         }
-      }, _callee6, this);
+      }, _callee7, this);
     }));
 
-    function removeLiquidity(_x26, _x27, _x28, _x29, _x30, _x31, _x32, _x33, _x34) {
+    function removeLiquidity(_x32, _x33, _x34, _x35, _x36, _x37, _x38, _x39, _x40, _x41) {
       return _removeLiquidity.apply(this, arguments);
     }
 

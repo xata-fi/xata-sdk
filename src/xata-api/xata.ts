@@ -10,6 +10,7 @@ import { abi as PairAbi } from '../abis/ConveyorV2Pair.json';
 import { abi as ERC20Abi } from '../abis/ERC20.json';
 import { Environment, ChainId } from '../enums';
 import { RELAYER_ENDPOINT_MAP } from './lib/relayer';
+import { SignatureLike } from '@ethersproject/bytes';
 
 const zeroAddress = ethersConstants.AddressZero;
 
@@ -209,7 +210,7 @@ export default class Xata {
         _deadline: BigNumber,
         gasLimit?: BigNumber,
         gasPrice?: BigNumber
-    ) {
+    ): Promise<Response> {
         this._checkInit();
 
         // check if a pair exists
@@ -245,7 +246,7 @@ export default class Xata {
         _deadline: BigNumber,
         gasLimit?: BigNumber,
         gasPrice?: BigNumber
-    ) {
+    ): Promise<Response> {
         this._checkInit();
 
         const pathExists: boolean = (await this._pathExists(_path)) && _path.length >= 2;
@@ -277,6 +278,131 @@ export default class Xata {
         return (await this.sendRequest(args, 'swapExactTokensForTokens', limit, gasPrice));
     }
 
+    // async removeLiquidity(
+    //     _tokenA: string,
+    //     _tokenB: string,
+    //     _liquidity: BigNumber,
+    //     _amountAMin: BigNumber,
+    //     _amountBMin: BigNumber,
+    //     _user: string,
+    //     _deadline: BigNumber,
+    //     gasLimit?: BigNumber,
+    //     gasPrice?: BigNumber
+    // ): Promise<Response> {
+    //     this._checkInit();
+
+    //     // check if a pair exists
+    //     const pairAddr = await this.factoryContract!.getPair(_tokenA, _tokenB);
+    //     const pairExists: boolean = pairAddr !== zeroAddress;
+
+    //     // determine gas limit
+    //     let limit: BigNumber;
+    //     if (pairExists) {
+    //         if (gasLimit) {
+    //             limit = gasLimit;
+    //         } else {
+    //             limit = BigNumber.from(constants.REMOVE_LIQUIDITY_GAS_LIMIT);
+    //         }
+    //     } else {
+    //         throw new Error("Pair does not exist.");
+    //     }
+
+    //     // sign the permit message
+    //     const pairErc20 = new ethers.Contract(pairAddr, PairAbi, this.provider);
+    //     const permitDomain = eip712.getDomain(pairAddr, this.chainId, 'Conveyor V2');
+    //     const pairNonce = await pairErc20.nonces(_user);
+    //     const permitMessage = {
+    //         owner: _user,
+    //         spender: this.routerContract!.address,
+    //         value: _liquidity.toHexString(),
+    //         nonce: pairNonce.toHexString(),
+    //         deadline: _deadline.toHexString(),
+    //     }
+    //     const EIP712Permit = {
+    //         types: {
+    //             EIP712Domain: eip712.DomainType,
+    //             Permit: eip712.PermitType
+    //         },
+    //         domain: permitDomain,
+    //         primaryType: 'Permit',
+    //         message: permitMessage
+    //     }
+    //     const permitSigParams = [_user, JSON.stringify(EIP712Permit)];
+
+    //     const permitSig: Signature = await this.provider!.send(
+    //         'eth_signTypedData_v4',
+    //         permitSigParams
+    //     )
+
+    //     const { v, r, s } = splitSignature(permitSig);
+
+    //     // trim gas price and gas limit
+    //     let args: Array<any> = [...arguments];
+    //     if (gasLimit && gasPrice) {
+    //         args = args.slice(0, -2);
+    //     } else if (gasLimit) {
+    //         args = args.slice(0, -1);
+    //     }
+    //     args = args.filter((x) => x !== undefined);
+
+    //     const sigStruct = {
+    //         v: v,
+    //         r: r,
+    //         s: s,
+    //     }
+
+    //     // append sig to args
+    //     args.push(sigStruct);
+
+    //     return (await this.sendRequest(args, 'removeLiquidity', limit, gasPrice));
+    // }
+
+    async permitLP(
+        _pairAddr: string,
+        _owner: string,
+        _spender: string,
+        _value: BigNumber,
+        _nonce: BigNumber,
+        _deadline: BigNumber,
+    ): Promise<SignatureLike> {
+        // sign the permit message
+        const pairErc20 = new ethers.Contract(_pairAddr, PairAbi, this.provider);
+        const permitDomain = eip712.getDomain(_pairAddr, this.chainId, 'Conveyor V2');
+        const pairNonce = await pairErc20.nonces(_owner);
+        const permitMessage = {
+            owner: _owner,
+            spender: _spender,
+            value: _value.toHexString(),
+            nonce: pairNonce.toHexString(),
+            deadline: _deadline.toHexString(),
+        }
+        const EIP712Permit = {
+            types: {
+                EIP712Domain: eip712.DomainType,
+                Permit: eip712.PermitType
+            },
+            domain: permitDomain,
+            primaryType: 'Permit',
+            message: permitMessage
+        }
+        const permitSigParams = [_owner, JSON.stringify(EIP712Permit)];
+
+        const permitSig: Signature = await this.provider!.send(
+            'eth_signTypedData_v4',
+            permitSigParams
+        )
+
+        const { v, r, s } = splitSignature(permitSig);
+
+        const sigStruct = {
+            v: v,
+            r: r,
+            s: s,
+        }
+
+        return sigStruct;
+    }
+
     async removeLiquidity(
         _tokenA: string,
         _tokenB: string,
@@ -285,9 +411,10 @@ export default class Xata {
         _amountBMin: BigNumber,
         _user: string,
         _deadline: BigNumber,
+        _sig: SignatureLike,
         gasLimit?: BigNumber,
         gasPrice?: BigNumber
-    ) {
+    ): Promise<Response> {
         this._checkInit();
 
         // check if a pair exists
@@ -306,35 +433,6 @@ export default class Xata {
             throw new Error("Pair does not exist.");
         }
 
-        // sign the permit message
-        const pairErc20 = new ethers.Contract(pairAddr, PairAbi, this.provider);
-        const permitDomain = eip712.getDomain(pairAddr, this.chainId, 'Conveyor V2');
-        const pairNonce = await pairErc20.nonces(_user);
-        const permitMessage = {
-            owner: _user,
-            spender: this.routerContract!.address,
-            value: _liquidity.toHexString(),
-            nonce: pairNonce.toHexString(),
-            deadline: _deadline.toHexString(),
-        }
-        const EIP712Permit = {
-            types: {
-                EIP712Domain: eip712.DomainType,
-                Permit: eip712.PermitType
-            },
-            domain: permitDomain,
-            primaryType: 'Permit',
-            message: permitMessage
-        }
-        const permitSigParams = [_user, JSON.stringify(EIP712Permit)];
-
-        const permitSig: Signature = await this.provider!.send(
-            'eth_signTypedData_v4',
-            permitSigParams
-        )
-
-        const { v, r, s } = splitSignature(permitSig);
-
         // trim gas price and gas limit
         let args: Array<any> = [...arguments];
         if (gasLimit && gasPrice) {
@@ -343,15 +441,6 @@ export default class Xata {
             args = args.slice(0, -1);
         }
         args = args.filter((x) => x !== undefined);
-
-        const sigStruct = {
-            v: v,
-            r: r,
-            s: s,
-        }
-
-        // append sig to args
-        args.push(sigStruct);
 
         return (await this.sendRequest(args, 'removeLiquidity', limit, gasPrice));
     }
