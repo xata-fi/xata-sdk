@@ -232,6 +232,7 @@ export default class Xata {
         } else if (gasLimit) {
             args = args.slice(0, -1);
         }
+        args = args.filter((x) => x !== undefined);
 
         return (await this.sendRequest(args, 'addLiquidity', limit, gasPrice));
     }
@@ -271,6 +272,7 @@ export default class Xata {
         } else if (gasLimit) {
             args = args.slice(0, -1);
         }
+        args = args.filter((x) => x !== undefined);
 
         return (await this.sendRequest(args, 'swapExactTokensForTokens', limit, gasPrice));
     }
@@ -340,6 +342,7 @@ export default class Xata {
         } else if (gasLimit) {
             args = args.slice(0, -1);
         }
+        args = args.filter((x) => x !== undefined);
 
         const sigStruct = {
             v: v,

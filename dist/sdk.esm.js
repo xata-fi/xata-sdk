@@ -7619,13 +7619,16 @@ var Xata = /*#__PURE__*/function () {
                 args = args.slice(0, -1);
               }
 
-              _context4.next = 11;
+              args = args.filter(function (x) {
+                return x !== undefined;
+              });
+              _context4.next = 12;
               return this.sendRequest(args, 'addLiquidity', limit, gasPrice);
 
-            case 11:
+            case 12:
               return _context4.abrupt("return", _context4.sent);
 
-            case 12:
+            case 13:
             case "end":
               return _context4.stop();
           }
@@ -7696,13 +7699,16 @@ var Xata = /*#__PURE__*/function () {
                 args = args.slice(0, -1);
               }
 
-              _context5.next = 16;
+              args = args.filter(function (x) {
+                return x !== undefined;
+              });
+              _context5.next = 17;
               return this.sendRequest(args, 'swapExactTokensForTokens', limit, gasPrice);
 
-            case 16:
+            case 17:
               return _context5.abrupt("return", _context5.sent);
 
-            case 17:
+            case 18:
             case "end":
               return _context5.stop();
           }
@@ -7809,6 +7815,9 @@ var Xata = /*#__PURE__*/function () {
                 args = args.slice(0, -1);
               }
 
+              args = args.filter(function (x) {
+                return x !== undefined;
+              });
               sigStruct = {
                 v: v,
                 r: r,
@@ -7816,13 +7825,13 @@ var Xata = /*#__PURE__*/function () {
               }; // append sig to args
 
               args.push(sigStruct);
-              _context6.next = 28;
+              _context6.next = 29;
               return this.sendRequest(args, 'removeLiquidity', limit, gasPrice);
 
-            case 28:
+            case 29:
               return _context6.abrupt("return", _context6.sent);
 
-            case 29:
+            case 30:
             case "end":
               return _context6.stop();
           }
