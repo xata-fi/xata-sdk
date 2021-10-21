@@ -10,15 +10,15 @@ export const computePairAddress = ({
   factoryAddress,
   tokenA,
   tokenB,
-  isConveyorPair = false
+  isXataPair = false
 }: {
   factoryAddress: string
   tokenA: Token
   tokenB: Token
-  isConveyorPair: boolean
+  isXataPair: boolean
 }): string => {
   const [token0, token1] = tokenA.sortsBefore(tokenB) ? [tokenA, tokenB] : [tokenB, tokenA] // does safety checks
-  const exchanger = !isConveyorPair ? Exchanger.SUSHI : Exchanger.CONVEYOR
+  const exchanger = !isXataPair ? Exchanger.SUSHI : Exchanger.XATA
   return getCreate2Address(
     factoryAddress,
     keccak256(['bytes'], [pack(['address', 'address'], [token0.address, token1.address])]),

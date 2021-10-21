@@ -17,25 +17,25 @@ export class Pair {
   public readonly liquidityToken: Token
   private readonly tokenAmounts: [CurrencyAmount<Token>, CurrencyAmount<Token>]
 
-  public static getAddress(tokenA: Token, tokenB: Token, isConveyorPair: boolean = false, conveyorEnvIsProduction: boolean|undefined = undefined): string {
-    const env = conveyorEnvIsProduction ? Environment.PRODUCTION : Environment.STAGING
+  public static getAddress(tokenA: Token, tokenB: Token, isXataPair: boolean = false, xataEnvIsProduction: boolean|undefined = undefined): string {
+    const env = xataEnvIsProduction ? Environment.PRODUCTION : Environment.STAGING
     const factoryAddress = factoryAddressOf(tokenA.chainId, env)
     return computePairAddress({
       factoryAddress,
       tokenA,
       tokenB,
-      isConveyorPair
+      isXataPair
     })
   }
 
-  public constructor(currencyAmountA: CurrencyAmount<Token>, currencyAmountB: CurrencyAmount<Token>, isConveyorPair: boolean = false, conveyorEnvIsProduction: boolean|undefined = undefined) {
+  public constructor(currencyAmountA: CurrencyAmount<Token>, currencyAmountB: CurrencyAmount<Token>, isXataPair: boolean = false, xataEnvIsProduction: boolean|undefined = undefined) {
     const currencyAmounts = currencyAmountA.currency.sortsBefore(currencyAmountB.currency) // does safety checks
       ? [currencyAmountA, currencyAmountB]
       : [currencyAmountB, currencyAmountA]
-    const [tokenSymbol, tokenName] = tokenIdentityOf(!isConveyorPair ? TokenType.UNISWAP : TokenType.CONVEYOR)
+    const [tokenSymbol, tokenName] = tokenIdentityOf(!isXataPair ? TokenType.UNISWAP : TokenType.XATA)
     this.liquidityToken = new Token(
       currencyAmounts[0].currency.chainId,
-      Pair.getAddress(currencyAmounts[0].currency, currencyAmounts[1].currency, isConveyorPair, conveyorEnvIsProduction),
+      Pair.getAddress(currencyAmounts[0].currency, currencyAmounts[1].currency, isXataPair, xataEnvIsProduction),
       18,
       // 'UNI-V2',
       // 'Uniswap V2'
