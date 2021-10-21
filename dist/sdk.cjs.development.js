@@ -4969,11 +4969,18 @@ function encodeAddLiquidity(_tokenA, _tokenB, _amountADesired, _amountBDesired, 
 }
 var swap_tuple = 'tuple(uint256 amount0, uint256 amount1, address[] path, address user, uint256 deadline)';
 var swapExactTokensForTokensSig = ["function swapExactTokensForTokens(" + swap_tuple + ")"];
+var swapTokensForExactTokensSig = ["function swapTokensForExactTokens(" + swap_tuple + ")"];
 var swapExactTokensForTokensIFace = /*#__PURE__*/new ethers.utils.Interface(swapExactTokensForTokensSig);
+var swapTokensForExactTokensIFace = /*#__PURE__*/new ethers.utils.Interface(swapTokensForExactTokensSig);
 function encodeSwapExactTokensForTokens(_amountIn, _amountOutMin, _path, _user, _deadline) {
   var args = Array.prototype.slice.call(arguments);
   var typedArgs = args;
   return swapExactTokensForTokensIFace.encodeFunctionData('swapExactTokensForTokens', [typedArgs]);
+}
+function encodeSwapTokensForExactTokens(_amountOut, _amountInMax, _path, _user, _deadline) {
+  var args = Array.prototype.slice.call(arguments);
+  var typedArgs = args;
+  return swapTokensForExactTokensIFace.encodeFunctionData('swapTokensForExactTokens', [typedArgs]);
 }
 var removeLiquidity_tuple = 'tuple(address tokenA, address tokenB, uint256 liquidity, uint256 amountAMin, uint256 amountBMin, address user, uint256 deadline)';
 var removeLiquidityWithPermitSig = ["function removeLiquidityWithPermit(" + removeLiquidity_tuple + "," + sig_tuple + ")"];
@@ -5082,6 +5089,14 @@ function buildMessage(args, method, feeToken, maxTokenAmount, nonce) {
       typedArgs = args;
       hashedPayload = hashSwapPayload.apply(void 0, typedArgs);
       data = encodeSwapExactTokensForTokens.apply(void 0, typedArgs);
+      deadline = args[args.length - 1].toHexString();
+      from = args[args.length - 2];
+      break;
+
+    case 'swapTokensForExactTokens':
+      typedArgs = args;
+      hashedPayload = hashSwapPayload.apply(void 0, typedArgs);
+      data = encodeSwapTokensForExactTokens.apply(void 0, typedArgs);
       deadline = args[args.length - 1].toHexString();
       from = args[args.length - 2];
       break;
@@ -7705,6 +7720,86 @@ var Xata = /*#__PURE__*/function () {
     }
 
     return swapExactTokensForTokens;
+  }();
+
+  _proto.swapTokensForExactTokens = /*#__PURE__*/function () {
+    var _swapTokensForExactTokens = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/runtime_1.mark(function _callee6(_amountOut, _amountInMax, _path, _user, _deadline, gasLimit, gasPrice) {
+      var pathExists,
+          limit,
+          args,
+          _args6 = arguments;
+      return runtime_1.wrap(function _callee6$(_context6) {
+        while (1) {
+          switch (_context6.prev = _context6.next) {
+            case 0:
+              this._checkInit();
+
+              _context6.next = 3;
+              return this._pathExists(_path);
+
+            case 3:
+              _context6.t0 = _context6.sent;
+
+              if (!_context6.t0) {
+                _context6.next = 6;
+                break;
+              }
+
+              _context6.t0 = _path.length >= 2;
+
+            case 6:
+              pathExists = _context6.t0;
+
+              if (pathExists) {
+                _context6.next = 11;
+                break;
+              }
+
+              throw new Error("Trade path does not exist.");
+
+            case 11:
+              if (gasLimit) {
+                limit = gasLimit;
+              } else {
+                limit = ethers.BigNumber.from(SWAP_GAS_LIMIT);
+
+                if (_path.length >= 2) {
+                  limit = limit.add(ethers.BigNumber.from(HOP_ADDITIONAL_GAS * (_path.length - 2)));
+                }
+              }
+
+            case 12:
+              // trim gas price and gas limit
+              args = Array.prototype.slice.call(_args6);
+
+              if (gasLimit && gasPrice) {
+                args = args.slice(0, -2);
+              } else if (gasLimit) {
+                args = args.slice(0, -1);
+              }
+
+              args = args.filter(function (x) {
+                return x !== undefined;
+              });
+              _context6.next = 17;
+              return this.sendRequest(args, 'swapTokensForExactTokens', limit, gasPrice);
+
+            case 17:
+              return _context6.abrupt("return", _context6.sent);
+
+            case 18:
+            case "end":
+              return _context6.stop();
+          }
+        }
+      }, _callee6, this);
+    }));
+
+    function swapTokensForExactTokens(_x26, _x27, _x28, _x29, _x30, _x31, _x32) {
+      return _swapTokensForExactTokens.apply(this, arguments);
+    }
+
+    return swapTokensForExactTokens;
   }() // async removeLiquidity(
   //     _tokenA: string,
   //     _tokenB: string,
@@ -7779,21 +7874,21 @@ var Xata = /*#__PURE__*/function () {
   _proto.permitLP =
   /*#__PURE__*/
   function () {
-    var _permitLP = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/runtime_1.mark(function _callee6(_pairAddr, _owner, _spender, _value, _nonce, _deadline) {
+    var _permitLP = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/runtime_1.mark(function _callee7(_pairAddr, _owner, _spender, _value, _nonce, _deadline) {
       var pairErc20, permitDomain, pairNonce, permitMessage, EIP712Permit, permitSigParams, permitSig, _splitSignature2, v, r, s, sigStruct;
 
-      return runtime_1.wrap(function _callee6$(_context6) {
+      return runtime_1.wrap(function _callee7$(_context7) {
         while (1) {
-          switch (_context6.prev = _context6.next) {
+          switch (_context7.prev = _context7.next) {
             case 0:
               // sign the permit message
               pairErc20 = new ethers.ethers.Contract(_pairAddr, abi$3, this.provider);
               permitDomain = getDomain(_pairAddr, this.chainId, 'Conveyor V2');
-              _context6.next = 4;
+              _context7.next = 4;
               return pairErc20.nonces(_owner);
 
             case 4:
-              pairNonce = _context6.sent;
+              pairNonce = _context7.sent;
               permitMessage = {
                 owner: _owner,
                 spender: _spender,
@@ -7811,28 +7906,28 @@ var Xata = /*#__PURE__*/function () {
                 message: permitMessage
               };
               permitSigParams = [_owner, JSON.stringify(EIP712Permit)];
-              _context6.next = 10;
+              _context7.next = 10;
               return this.provider.send('eth_signTypedData_v4', permitSigParams);
 
             case 10:
-              permitSig = _context6.sent;
+              permitSig = _context7.sent;
               _splitSignature2 = splitSignature(permitSig), v = _splitSignature2.v, r = _splitSignature2.r, s = _splitSignature2.s;
               sigStruct = {
                 v: v,
                 r: r,
                 s: s
               };
-              return _context6.abrupt("return", sigStruct);
+              return _context7.abrupt("return", sigStruct);
 
             case 14:
             case "end":
-              return _context6.stop();
+              return _context7.stop();
           }
         }
-      }, _callee6, this);
+      }, _callee7, this);
     }));
 
-    function permitLP(_x26, _x27, _x28, _x29, _x30, _x31) {
+    function permitLP(_x33, _x34, _x35, _x36, _x37, _x38) {
       return _permitLP.apply(this, arguments);
     }
 
@@ -7840,28 +7935,28 @@ var Xata = /*#__PURE__*/function () {
   }();
 
   _proto.removeLiquidity = /*#__PURE__*/function () {
-    var _removeLiquidity = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/runtime_1.mark(function _callee7(_tokenA, _tokenB, _liquidity, _amountAMin, _amountBMin, _user, _deadline, _sig, gasLimit, gasPrice) {
+    var _removeLiquidity = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/runtime_1.mark(function _callee8(_tokenA, _tokenB, _liquidity, _amountAMin, _amountBMin, _user, _deadline, _sig, gasLimit, gasPrice) {
       var pairAddr,
           pairExists,
           limit,
           args,
-          _args7 = arguments;
-      return runtime_1.wrap(function _callee7$(_context7) {
+          _args8 = arguments;
+      return runtime_1.wrap(function _callee8$(_context8) {
         while (1) {
-          switch (_context7.prev = _context7.next) {
+          switch (_context8.prev = _context8.next) {
             case 0:
               this._checkInit(); // check if a pair exists
 
 
-              _context7.next = 3;
+              _context8.next = 3;
               return this.factoryContract.getPair(_tokenA, _tokenB);
 
             case 3:
-              pairAddr = _context7.sent;
+              pairAddr = _context8.sent;
               pairExists = pairAddr !== zeroAddress; // determine gas limit
 
               if (!pairExists) {
-                _context7.next = 9;
+                _context8.next = 9;
                 break;
               }
 
@@ -7871,7 +7966,7 @@ var Xata = /*#__PURE__*/function () {
                 limit = ethers.BigNumber.from(REMOVE_LIQUIDITY_GAS_LIMIT);
               }
 
-              _context7.next = 10;
+              _context8.next = 10;
               break;
 
             case 9:
@@ -7879,7 +7974,7 @@ var Xata = /*#__PURE__*/function () {
 
             case 10:
               // trim gas price and gas limit
-              args = Array.prototype.slice.call(_args7);
+              args = Array.prototype.slice.call(_args8);
 
               if (gasLimit && gasPrice) {
                 args = args.slice(0, -2);
@@ -7890,21 +7985,21 @@ var Xata = /*#__PURE__*/function () {
               args = args.filter(function (x) {
                 return x !== undefined;
               });
-              _context7.next = 15;
+              _context8.next = 15;
               return this.sendRequest(args, 'removeLiquidity', limit, gasPrice);
 
             case 15:
-              return _context7.abrupt("return", _context7.sent);
+              return _context8.abrupt("return", _context8.sent);
 
             case 16:
             case "end":
-              return _context7.stop();
+              return _context8.stop();
           }
         }
-      }, _callee7, this);
+      }, _callee8, this);
     }));
 
-    function removeLiquidity(_x32, _x33, _x34, _x35, _x36, _x37, _x38, _x39, _x40, _x41) {
+    function removeLiquidity(_x39, _x40, _x41, _x42, _x43, _x44, _x45, _x46, _x47, _x48) {
       return _removeLiquidity.apply(this, arguments);
     }
 

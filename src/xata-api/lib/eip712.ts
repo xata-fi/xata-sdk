@@ -1,6 +1,6 @@
 import { BigNumber, Signature, utils } from 'ethers';
 const { keccak256, defaultAbiCoder, toUtf8Bytes, solidityPack } = utils;
-import { encodeAddLiquidity, encodeSwapExactTokensForTokens, encodeRemoveLiquidityWithPermit } from './functionEncoder';
+import { encodeAddLiquidity, encodeSwapExactTokensForTokens, encodeSwapTokensForExactTokens, encodeRemoveLiquidityWithPermit } from './functionEncoder';
 
 // EIP712 Types
 export const DomainType = [
@@ -165,28 +165,35 @@ export function buildMessage(args: Array<any>, method: string, feeToken: string,
   let from: string = '';
   switch (method) {
     case 'addLiquidity':
-        typedArgs = args as [string, string, BigNumber, BigNumber, BigNumber, BigNumber, string, BigNumber];
-        hashedPayload = hashAddLiquidityPayload(...typedArgs);
-        data = encodeAddLiquidity(...typedArgs);
-        deadline = (args[args.length - 1]).toHexString();
-        from = args[args.length - 2];
-        break;
+      typedArgs = args as [string, string, BigNumber, BigNumber, BigNumber, BigNumber, string, BigNumber];
+      hashedPayload = hashAddLiquidityPayload(...typedArgs);
+      data = encodeAddLiquidity(...typedArgs);
+      deadline = (args[args.length - 1]).toHexString();
+      from = args[args.length - 2];
+      break;
     case 'swapExactTokensForTokens':
-        typedArgs = args as [BigNumber, BigNumber, string[], string, BigNumber];
-        hashedPayload = hashSwapPayload(...typedArgs);
-        data = encodeSwapExactTokensForTokens(...typedArgs);
-        deadline = (args[args.length - 1]).toHexString();
-        from = args[args.length - 2];
-        break;
+      typedArgs = args as [BigNumber, BigNumber, string[], string, BigNumber];
+      hashedPayload = hashSwapPayload(...typedArgs);
+      data = encodeSwapExactTokensForTokens(...typedArgs);
+      deadline = (args[args.length - 1]).toHexString();
+      from = args[args.length - 2];
+      break;
+    case 'swapTokensForExactTokens':
+      typedArgs = args as [BigNumber, BigNumber, string[], string, BigNumber];
+      hashedPayload = hashSwapPayload(...typedArgs);
+      data = encodeSwapTokensForExactTokens(...typedArgs);
+      deadline = (args[args.length - 1]).toHexString();
+      from = args[args.length - 2];
+      break;
     case 'removeLiquidity':
-        typedArgs = args as [string, string, BigNumber, BigNumber, BigNumber, string, BigNumber, Signature];
-        hashedPayload = hashRemoveLiquidityPayload(...typedArgs);
-        data = encodeRemoveLiquidityWithPermit(...typedArgs);
-        deadline = (args[args.length - 2]).toHexString();
-        from = args[args.length - 3];
-        break;
+      typedArgs = args as [string, string, BigNumber, BigNumber, BigNumber, string, BigNumber, Signature];
+      hashedPayload = hashRemoveLiquidityPayload(...typedArgs);
+      data = encodeRemoveLiquidityWithPermit(...typedArgs);
+      deadline = (args[args.length - 2]).toHexString();
+      from = args[args.length - 3];
+      break;
     default:
-        throw new Error('Error: Method not recognized!');
+      throw new Error('Error: Method not recognized!');
   }
   return {
     from: from,

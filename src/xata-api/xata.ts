@@ -278,6 +278,46 @@ export default class Xata {
         return (await this.sendRequest(args, 'swapExactTokensForTokens', limit, gasPrice));
     }
 
+    async swapTokensForExactTokens(
+        _amountOut: BigNumber,
+        _amountInMax: BigNumber,
+        _path: string[],
+        _user: string,
+        _deadline: BigNumber,
+        gasLimit?: BigNumber,
+        gasPrice?: BigNumber
+    ): Promise<Response> {
+        this._checkInit();
+
+        const pathExists: boolean = (await this._pathExists(_path)) && _path.length >= 2;
+
+        // get gas limit if not provided
+        let limit: BigNumber;
+        if (!pathExists) {
+            throw new Error("Trade path does not exist.");
+        } else {
+            if (gasLimit) {
+                limit = gasLimit;
+            } else {
+                limit = BigNumber.from(constants.SWAP_GAS_LIMIT);
+                if (_path.length >= 2) {
+                    limit = limit.add(BigNumber.from(constants.HOP_ADDITIONAL_GAS * (_path.length - 2)));
+                }
+            }
+        }
+
+        // trim gas price and gas limit
+        let args: Array<any> = [...arguments];
+        if (gasLimit && gasPrice) {
+            args = args.slice(0, -2);
+        } else if (gasLimit) {
+            args = args.slice(0, -1);
+        }
+        args = args.filter((x) => x !== undefined);
+
+        return (await this.sendRequest(args, 'swapTokensForExactTokens', limit, gasPrice));
+    }
+
     // async removeLiquidity(
     //     _tokenA: string,
     //     _tokenB: string,
