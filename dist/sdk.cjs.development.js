@@ -27,12 +27,12 @@ var bignumber_js = require('bignumber.js');
 
 (function (Exchanger) {
   Exchanger[Exchanger["SUSHI"] = 0] = "SUSHI";
-  Exchanger[Exchanger["CONVEYOR"] = 1] = "CONVEYOR";
+  Exchanger[Exchanger["XATA"] = 1] = "XATA";
 })(exports.Exchanger || (exports.Exchanger = {}));
 
 (function (TokenType) {
   TokenType[TokenType["UNISWAP"] = 0] = "UNISWAP";
-  TokenType[TokenType["CONVEYOR"] = 1] = "CONVEYOR";
+  TokenType[TokenType["XATA"] = 1] = "XATA";
 })(exports.TokenType || (exports.TokenType = {}));
 
 (function (ChainId) {
@@ -889,8 +889,8 @@ var _997 = /*#__PURE__*/JSBI.BigInt(997);
 var _1000 = /*#__PURE__*/JSBI.BigInt(1000);
 
 var _LIQUIDITY_TOKEN_IDEN, _INIT_CODE_HASH, _SOLIDITY_TYPE_MAXIMA;
-var LIQUIDITY_TOKEN_IDENTITY = (_LIQUIDITY_TOKEN_IDEN = {}, _LIQUIDITY_TOKEN_IDEN[exports.TokenType.UNISWAP] = ['UNI-V2', 'Uniswap V2'], _LIQUIDITY_TOKEN_IDEN[exports.TokenType.CONVEYOR] = ['CON-V2', 'Conveyor V2'], _LIQUIDITY_TOKEN_IDEN);
-var INIT_CODE_HASH = (_INIT_CODE_HASH = {}, _INIT_CODE_HASH[exports.Exchanger.SUSHI] = '0xe18a34eb0e04b04f7a0ac29a6e80748dca96319b42c54d679cb821dca90c6303', _INIT_CODE_HASH[exports.Exchanger.CONVEYOR] = '0xf7b68428a2644f9a0d674330d4e4af2d7c3d2797a7f5766d3a86c223c4e12d17', _INIT_CODE_HASH);
+var LIQUIDITY_TOKEN_IDENTITY = (_LIQUIDITY_TOKEN_IDEN = {}, _LIQUIDITY_TOKEN_IDEN[exports.TokenType.UNISWAP] = ['UNI-V2', 'Uniswap V2'], _LIQUIDITY_TOKEN_IDEN[exports.TokenType.XATA] = ['CON-V2', 'Conveyor V2'], _LIQUIDITY_TOKEN_IDEN);
+var INIT_CODE_HASH = (_INIT_CODE_HASH = {}, _INIT_CODE_HASH[exports.Exchanger.SUSHI] = '0xe18a34eb0e04b04f7a0ac29a6e80748dca96319b42c54d679cb821dca90c6303', _INIT_CODE_HASH[exports.Exchanger.XATA] = '0xf7b68428a2644f9a0d674330d4e4af2d7c3d2797a7f5766d3a86c223c4e12d17', _INIT_CODE_HASH);
 var MINIMUM_LIQUIDITY = /*#__PURE__*/JSBI.BigInt(1000);
 
 (function (SolidityType) {
@@ -1347,15 +1347,15 @@ var computePairAddress = function computePairAddress(_ref) {
   var factoryAddress = _ref.factoryAddress,
       tokenA = _ref.tokenA,
       tokenB = _ref.tokenB,
-      _ref$isConveyorPair = _ref.isConveyorPair,
-      isConveyorPair = _ref$isConveyorPair === void 0 ? false : _ref$isConveyorPair;
+      _ref$isXataPair = _ref.isXataPair,
+      isXataPair = _ref$isXataPair === void 0 ? false : _ref$isXataPair;
 
   var _ref2 = tokenA.sortsBefore(tokenB) ? [tokenA, tokenB] : [tokenB, tokenA],
       token0 = _ref2[0],
       token1 = _ref2[1]; // does safety checks
 
 
-  var exchanger = !isConveyorPair ? exports.Exchanger.SUSHI : exports.Exchanger.CONVEYOR;
+  var exchanger = !isXataPair ? exports.Exchanger.SUSHI : exports.Exchanger.XATA;
   return address.getCreate2Address(factoryAddress, solidity.keccak256(['bytes'], [solidity.pack(['address', 'address'], [token0.address, token1.address])]), // INIT_CODE_HASH
   initCodeHashOf(exchanger));
 };
@@ -1390,44 +1390,44 @@ function sqrt(value) {
 }
 
 var Pair = /*#__PURE__*/function () {
-  function Pair(currencyAmountA, currencyAmountB, isConveyorPair, conveyorEnvIsProduction) {
-    if (isConveyorPair === void 0) {
-      isConveyorPair = false;
+  function Pair(currencyAmountA, currencyAmountB, isXataPair, xataEnvIsProduction) {
+    if (isXataPair === void 0) {
+      isXataPair = false;
     }
 
-    if (conveyorEnvIsProduction === void 0) {
-      conveyorEnvIsProduction = undefined;
+    if (xataEnvIsProduction === void 0) {
+      xataEnvIsProduction = undefined;
     }
 
     var currencyAmounts = currencyAmountA.currency.sortsBefore(currencyAmountB.currency) // does safety checks
     ? [currencyAmountA, currencyAmountB] : [currencyAmountB, currencyAmountA];
 
-    var _tokenIdentityOf = tokenIdentityOf(!isConveyorPair ? exports.TokenType.UNISWAP : exports.TokenType.CONVEYOR),
+    var _tokenIdentityOf = tokenIdentityOf(!isXataPair ? exports.TokenType.UNISWAP : exports.TokenType.XATA),
         tokenSymbol = _tokenIdentityOf[0],
         tokenName = _tokenIdentityOf[1];
 
-    this.liquidityToken = new Token(currencyAmounts[0].currency.chainId, Pair.getAddress(currencyAmounts[0].currency, currencyAmounts[1].currency, isConveyorPair, conveyorEnvIsProduction), 18, // 'UNI-V2',
+    this.liquidityToken = new Token(currencyAmounts[0].currency.chainId, Pair.getAddress(currencyAmounts[0].currency, currencyAmounts[1].currency, isXataPair, xataEnvIsProduction), 18, // 'UNI-V2',
     // 'Uniswap V2'
     tokenSymbol, tokenName);
     this.tokenAmounts = currencyAmounts;
   }
 
-  Pair.getAddress = function getAddress(tokenA, tokenB, isConveyorPair, conveyorEnvIsProduction) {
-    if (isConveyorPair === void 0) {
-      isConveyorPair = false;
+  Pair.getAddress = function getAddress(tokenA, tokenB, isXataPair, xataEnvIsProduction) {
+    if (isXataPair === void 0) {
+      isXataPair = false;
     }
 
-    if (conveyorEnvIsProduction === void 0) {
-      conveyorEnvIsProduction = undefined;
+    if (xataEnvIsProduction === void 0) {
+      xataEnvIsProduction = undefined;
     }
 
-    var env = conveyorEnvIsProduction ? exports.Environment.PRODUCTION : exports.Environment.STAGING;
+    var env = xataEnvIsProduction ? exports.Environment.PRODUCTION : exports.Environment.STAGING;
     var factoryAddress = factoryAddressOf(tokenA.chainId, env);
     return computePairAddress({
       factoryAddress: factoryAddress,
       tokenA: tokenA,
       tokenB: tokenB,
-      isConveyorPair: isConveyorPair
+      isXataPair: isXataPair
     });
   }
   /**
@@ -4916,7 +4916,7 @@ var Fetcher = /*#__PURE__*/function () {
   Fetcher.fetchPairData =
   /*#__PURE__*/
   function () {
-    var _fetchPairData = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/runtime_1.mark(function _callee(tokenA, tokenB, conveyorEnvIsProduction, provider) {
+    var _fetchPairData = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/runtime_1.mark(function _callee(tokenA, tokenB, xataEnvIsProduction, provider) {
       var address, _yield$Contract$getRe, reserves0, reserves1, balances;
 
       return runtime_1.wrap(function _callee$(_context) {
@@ -4928,7 +4928,7 @@ var Fetcher = /*#__PURE__*/function () {
               }
 
               !(tokenA.chainId === tokenB.chainId) ?  invariant(false, 'CHAIN_ID')  : void 0;
-              address = Pair.getAddress(tokenA, tokenB, true, conveyorEnvIsProduction);
+              address = Pair.getAddress(tokenA, tokenB, true, xataEnvIsProduction);
               _context.next = 5;
               return new contracts.Contract(address, UniswapV2Pair.abi, provider).getReserves();
 

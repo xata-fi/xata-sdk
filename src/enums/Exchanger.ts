@@ -1,4 +1,4 @@
 export enum Exchanger {
   SUSHI,
-  CONVEYOR
+  XATA
 }

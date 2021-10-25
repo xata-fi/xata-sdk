@@ -13,5 +13,5 @@ export declare abstract class Fetcher {
      * @param tokenB second token
      * @param provider the provider to use to fetch the data
      */
-    static fetchPairData(tokenA: Token, tokenB: Token, conveyorEnvIsProduction: boolean, provider?: import("@ethersproject/providers").BaseProvider): Promise<Pair>;
+    static fetchPairData(tokenA: Token, tokenB: Token, xataEnvIsProduction: boolean, provider?: import("@ethersproject/providers").BaseProvider): Promise<Pair>;
 }

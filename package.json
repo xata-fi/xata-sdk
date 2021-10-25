@@ -1,8 +1,8 @@
 {
-  "name": "@conveyor/sdk",
+  "name": "@xata/sdk",
   "license": "MIT",
   "version": "5.0.0-canary.52",
-  "description": "🛠 An SDK for building applications on top of Automata Conveyor v2.",
+  "description": "🛠 An SDK for building applications on top of XATA.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "files": [
@@ -11,7 +11,7 @@
   "repository": "https://github.com/automata-network/conveyor-sdk",
   "keywords": [
     "automata",
-    "conveyor",
+    "xata",
     "ethereum",
     "sdk"
   ],
@@ -39,8 +39,11 @@
     "decimal.js-light": "^2.5.0",
     "isomorphic-unfetch": "^3.1.0",
     "jsbi": "^3.1.0",
+    "node-notifier": "^8.0.1",
+    "set-value": "^4.0.1",
     "tiny-invariant": "^1.1.0",
     "tiny-warning": "^1.0.3",
+    "tmpl": "^1.0.5",
     "toformat": "^2.0.0"
   },
   "peerDependencies": {
