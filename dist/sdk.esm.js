@@ -7259,6 +7259,84 @@ var abi$4 = [
 var _Environment$PRODUCTI$1, _Environment$STAGING$1, _RELAYER_ENDPOINT_MAP;
 var RELAYER_ENDPOINT_MAP = (_RELAYER_ENDPOINT_MAP = {}, _RELAYER_ENDPOINT_MAP[Environment.PRODUCTION] = (_Environment$PRODUCTI$1 = {}, _Environment$PRODUCTI$1[ChainId.MAINNET] = 'https://conveyor-prod-eth.ata.network', _Environment$PRODUCTI$1[ChainId.ROPSTEN] = '', _Environment$PRODUCTI$1[ChainId.RINKEBY] = '', _Environment$PRODUCTI$1[ChainId.GÖRLI] = '', _Environment$PRODUCTI$1[ChainId.KOVAN] = '', _Environment$PRODUCTI$1[ChainId.FANTOM] = '', _Environment$PRODUCTI$1[ChainId.FANTOM_TESTNET] = '', _Environment$PRODUCTI$1[ChainId.MATIC] = 'https://conveyor-prod-matic.ata.network', _Environment$PRODUCTI$1[ChainId.MATIC_TESTNET] = '', _Environment$PRODUCTI$1[ChainId.XDAI] = '', _Environment$PRODUCTI$1[ChainId.BSC] = 'https://conveyor-prod-bsc.ata.network', _Environment$PRODUCTI$1[ChainId.BSC_TESTNET] = '', _Environment$PRODUCTI$1[ChainId.ARBITRUM] = '', _Environment$PRODUCTI$1[ChainId.ARBITRUM_TESTNET] = '', _Environment$PRODUCTI$1[ChainId.MOONBEAM_TESTNET] = '', _Environment$PRODUCTI$1[ChainId.AVALANCHE] = '', _Environment$PRODUCTI$1[ChainId.AVALANCHE_TESTNET] = '', _Environment$PRODUCTI$1[ChainId.HECO] = '', _Environment$PRODUCTI$1[ChainId.HECO_TESTNET] = '', _Environment$PRODUCTI$1[ChainId.HARMONY] = '', _Environment$PRODUCTI$1[ChainId.HARMONY_TESTNET] = '', _Environment$PRODUCTI$1[ChainId.OKEX] = '', _Environment$PRODUCTI$1[ChainId.OKEX_TESTNET] = '', _Environment$PRODUCTI$1[ChainId.CELO] = '', _Environment$PRODUCTI$1[ChainId.PALM] = '', _Environment$PRODUCTI$1[ChainId.PALM_TESTNET] = '', _Environment$PRODUCTI$1), _RELAYER_ENDPOINT_MAP[Environment.STAGING] = (_Environment$STAGING$1 = {}, _Environment$STAGING$1[ChainId.MAINNET] = 'https://gtoken-geode-staging.ata.network', _Environment$STAGING$1[ChainId.ROPSTEN] = '', _Environment$STAGING$1[ChainId.RINKEBY] = '', _Environment$STAGING$1[ChainId.GÖRLI] = '', _Environment$STAGING$1[ChainId.KOVAN] = '', _Environment$STAGING$1[ChainId.FANTOM] = '', _Environment$STAGING$1[ChainId.FANTOM_TESTNET] = '', _Environment$STAGING$1[ChainId.MATIC] = 'https://gtoken-geode-staging.ata.network', _Environment$STAGING$1[ChainId.MATIC_TESTNET] = '', _Environment$STAGING$1[ChainId.XDAI] = '', _Environment$STAGING$1[ChainId.BSC] = 'https://gtoken-geode-staging.ata.network', _Environment$STAGING$1[ChainId.BSC_TESTNET] = 'https://gtoken-geode-staging.ata.network', _Environment$STAGING$1[ChainId.ARBITRUM] = '', _Environment$STAGING$1[ChainId.ARBITRUM_TESTNET] = '', _Environment$STAGING$1[ChainId.MOONBEAM_TESTNET] = '', _Environment$STAGING$1[ChainId.AVALANCHE] = '', _Environment$STAGING$1[ChainId.AVALANCHE_TESTNET] = '', _Environment$STAGING$1[ChainId.HECO] = '', _Environment$STAGING$1[ChainId.HECO_TESTNET] = '', _Environment$STAGING$1[ChainId.HARMONY] = '', _Environment$STAGING$1[ChainId.HARMONY_TESTNET] = '', _Environment$STAGING$1[ChainId.OKEX] = '', _Environment$STAGING$1[ChainId.OKEX_TESTNET] = '', _Environment$STAGING$1[ChainId.CELO] = '', _Environment$STAGING$1[ChainId.PALM] = '', _Environment$STAGING$1[ChainId.PALM_TESTNET] = '', _Environment$STAGING$1), _RELAYER_ENDPOINT_MAP);
 
+var Interface = utils.Interface;
+/**
+ * This function listens for the MetaStatus event emitted from the router contract.
+ * Failure of meta-txn execution does not cause the transaction to revert, therefore this method is necessory to extract
+ * the failure message.
+ * @param provider
+ * @param response
+ */
+
+function verifyMetaTxnResponse(_x, _x2) {
+  return _verifyMetaTxnResponse.apply(this, arguments);
+}
+
+function _verifyMetaTxnResponse() {
+  _verifyMetaTxnResponse = _asyncToGenerator( /*#__PURE__*/runtime_1.mark(function _callee(provider, response) {
+    var receipt, logs, res, _iterator, _step, log, topicToQuery, iface, decodedLog, _decodedLog$args, success, error;
+
+    return runtime_1.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            _context.next = 2;
+            return provider.getTransactionReceipt(response.result.txnHash);
+
+          case 2:
+            receipt = _context.sent;
+            logs = receipt.logs;
+            _iterator = _createForOfIteratorHelperLoose(logs);
+
+          case 5:
+            if ((_step = _iterator()).done) {
+              _context.next = 17;
+              break;
+            }
+
+            log = _step.value;
+            topicToQuery = '0xf624f223d0e1427abaf1ac2d9cf7c8487cad3018f0a93b5dafa867aed96165a3';
+
+            if (!(log.topics[0] === topicToQuery)) {
+              _context.next = 15;
+              break;
+            }
+
+            iface = new Interface(['event MetaStatus(address sender, bool success, string error)']);
+            decodedLog = iface.parseLog(log);
+            _decodedLog$args = decodedLog.args, success = _decodedLog$args.success, error = _decodedLog$args.error;
+
+            if (!(success === false)) {
+              _context.next = 15;
+              break;
+            }
+
+            res = _extends({}, response, {
+              result: {
+                txnHash: response.result.txnHash,
+                success: false,
+                errorMessage: error
+              }
+            });
+            return _context.abrupt("return", res);
+
+          case 15:
+            _context.next = 5;
+            break;
+
+          case 17:
+            return _context.abrupt("return", response);
+
+          case 18:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee);
+  }));
+  return _verifyMetaTxnResponse.apply(this, arguments);
+}
+
 var splitSignature = utils.splitSignature,
     verifyTypedData = utils.verifyTypedData;
 var zeroAddress = constants.AddressZero;
@@ -7390,7 +7468,7 @@ var Xata = /*#__PURE__*/function () {
 
   _proto.sendRequest = /*#__PURE__*/function () {
     var _sendRequest = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/runtime_1.mark(function _callee3(args, method, gasLimit, gasPrice) {
-      var price, txnFee, tokenDecimals, maxTokenFee, provider, signer, user, router, nonce, message, domain, EIP712Content, sigParams, metaIsEnabled, sig, _splitSignature, v, r, s, params, jsonRpcRequest, requestOptions, jsonRpcResponse, result, res, tx, err;
+      var price, txnFee, tokenDecimals, maxTokenFee, provider, signer, user, router, nonce, message, domain, EIP712Content, sigParams, response, metaIsEnabled, sig, _splitSignature, v, r, s, params, jsonRpcRequest, requestOptions, jsonRpcResponse, res, tx, err;
 
       return runtime_1.wrap(function _callee3$(_context3) {
         while (1) {
@@ -7523,18 +7601,20 @@ var Xata = /*#__PURE__*/function () {
                 body: JSON.stringify(jsonRpcRequest)
               }; // send request
 
+              console.log('sending request...');
               console.log(requestOptions);
-              _context3.next = 58;
+              _context3.next = 59;
               return fetch(this.geodeEndpoint, requestOptions);
 
-            case 58:
+            case 59:
               jsonRpcResponse = _context3.sent;
-              _context3.next = 61;
+              _context3.next = 62;
               return jsonRpcResponse.json();
 
-            case 61:
-              result = _context3.sent;
-              return _context3.abrupt("return", result);
+            case 62:
+              response = _context3.sent;
+              _context3.next = 79;
+              break;
 
             case 65:
               _context3.prev = 65;
@@ -7579,9 +7659,26 @@ var Xata = /*#__PURE__*/function () {
               };
 
             case 78:
-              return _context3.abrupt("return", res);
+              response = res;
 
             case 79:
+              if (!(response.result.success && metaIsEnabled)) {
+                _context3.next = 83;
+                break;
+              }
+
+              _context3.next = 82;
+              return verifyMetaTxnResponse(this.provider, response);
+
+            case 82:
+              response = _context3.sent;
+
+            case 83:
+              console.log('response: ');
+              console.log(response);
+              return _context3.abrupt("return", response);
+
+            case 86:
             case "end":
               return _context3.stop();
           }

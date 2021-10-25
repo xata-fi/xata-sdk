@@ -3,7 +3,7 @@ import * as eip712 from './lib/eip712';
 import { JsonRpcProvider } from '@ethersproject/providers';
 import { Environment } from '../enums';
 import { SignatureLike } from '@ethersproject/bytes';
-interface Response {
+export interface Response {
     id: number;
     jsonrpc: string;
     result: {
@@ -31,4 +31,3 @@ export default class Xata {
     permitLP(_pairAddr: string, _owner: string, _spender: string, _value: BigNumber, _nonce: BigNumber, _deadline: BigNumber): Promise<SignatureLike>;
     removeLiquidity(_tokenA: string, _tokenB: string, _liquidity: BigNumber, _amountAMin: BigNumber, _amountBMin: BigNumber, _user: string, _deadline: BigNumber, _sig: SignatureLike, gasLimit?: BigNumber, gasPrice?: BigNumber): Promise<Response>;
 }
-export {};

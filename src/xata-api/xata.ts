@@ -11,10 +11,11 @@ import { abi as ERC20Abi } from '../abis/ERC20.json';
 import { Environment, ChainId } from '../enums';
 import { RELAYER_ENDPOINT_MAP } from './lib/relayer';
 import { SignatureLike } from '@ethersproject/bytes';
+import { verifyMetaTxnResponse } from './lib/event-listener';
 
 const zeroAddress = ethersConstants.AddressZero;
 
-interface Response {
+export interface Response {
     id: number;
     jsonrpc: string;
     result: {
@@ -126,9 +127,8 @@ export default class Xata {
             message: message,
         }
         const sigParams = [user, JSON.stringify(EIP712Content)];
-
+        let response: Response;
         const metaIsEnabled = await router!.metaEnabled();
-
         if (metaIsEnabled) {
             // sign message
             const sig: Signature = await provider!.send(
@@ -159,10 +159,10 @@ export default class Xata {
             }
 
             // send request
+            console.log('sending request...');
             console.log(requestOptions);
             const jsonRpcResponse = await fetch(this.geodeEndpoint, requestOptions);
-            const result  = (await jsonRpcResponse.json()) as Response;
-            return result;
+            response = (await jsonRpcResponse.json()) as Response;
         } else {
             // send the txn directly
             let res: Response;
@@ -195,8 +195,14 @@ export default class Xata {
                     } 
                 }
             }
-            return res;
+            response = res;
         }
+        if (response.result.success && metaIsEnabled) {
+            response = await verifyMetaTxnResponse(this.provider!, response);
+        }
+        console.log('response: ');
+        console.log(response);
+        return response;
     }
 
     async addLiquidity(
