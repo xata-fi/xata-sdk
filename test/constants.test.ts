@@ -1,5 +1,7 @@
-import { INIT_CODE_HASH } from '../src/constants'
+// import { INIT_CODE_HASH } from '../src/constants'
 import { keccak256 } from '@ethersproject/solidity'
+import { initCodeHashOf } from '../src/functions/determiner'
+import { Exchanger } from '../src/enums/Exchanger'
 
 // import { bytecode } from "@sushiswap/core/artifacts/contracts/uniswapv2/UniswapV2Pair.sol/UniswapV2Pair.json";
 
@@ -17,7 +19,7 @@ const COMPUTED_INIT_CODE_HASH = keccak256(
 describe('constants', () => {
   describe('INIT_CODE_HASH', () => {
     it('matches computed bytecode hash', () => {
-      expect(COMPUTED_INIT_CODE_HASH).toEqual(INIT_CODE_HASH)
+      expect(COMPUTED_INIT_CODE_HASH).toEqual(initCodeHashOf(Exchanger.SUSHI))
     })
   })
 })

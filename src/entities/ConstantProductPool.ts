@@ -1,4 +1,4 @@
-import { FACTORY_ADDRESS, FIVE, MINIMUM_LIQUIDITY, ONE, ZERO, _1000, _997 } from '../constants'
+import { /*FACTORY_ADDRESS,*/ FIVE, MINIMUM_LIQUIDITY, ONE, ZERO, _1000, _997 } from '../constants'
 import { InsufficientInputAmountError, InsufficientReservesError } from '../errors'
 
 import { BigintIsh } from '../types'
@@ -10,6 +10,7 @@ import { Token } from './Token'
 import { computeConstantProductPoolAddress } from '../functions/computePoolAddress'
 import invariant from 'tiny-invariant'
 import { sqrt } from '../functions/sqrt'
+import { factoryAddressOf } from 'functions/determiner'
 
 export class ConstantProductPool {
   public readonly liquidityToken: Token
@@ -17,8 +18,9 @@ export class ConstantProductPool {
   private readonly tokenAmounts: [CurrencyAmount<Token>, CurrencyAmount<Token>]
 
   public static getAddress(tokenA: Token, tokenB: Token, fee: Fee = 25, twap: boolean = true): string {
+    const factoryAddress = factoryAddressOf(tokenA.chainId)
     return computeConstantProductPoolAddress({
-      factoryAddress: FACTORY_ADDRESS[tokenA.chainId],
+      factoryAddress,
       tokenA,
       tokenB,
       fee,

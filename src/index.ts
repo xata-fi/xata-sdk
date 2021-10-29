@@ -13,3 +13,7 @@ export * from './router'
 export * from './types'
 export * from './utils/MultiRouterMath'
 export * from './limitorder'
+export * from './fetcher'
+import Xata from './xata-api/xata'
+
+export { Xata }

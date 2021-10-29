@@ -1,4 +1,4 @@
-import { FACTORY_ADDRESS, FIVE, MINIMUM_LIQUIDITY, ONE, ZERO, _1000, _997 } from '../constants'
+import { /*FACTORY_ADDRESS,*/ FIVE, MINIMUM_LIQUIDITY, ONE, ZERO, _1000, _997 } from '../constants'
 import { InsufficientInputAmountError, InsufficientReservesError } from '../errors'
 
 import { BigintIsh } from '../types'
@@ -9,29 +9,48 @@ import { Token } from './Token'
 import { computePairAddress } from '../functions/computePairAddress'
 import invariant from 'tiny-invariant'
 import { sqrt } from '../functions/sqrt'
+import { factoryAddressOf, tokenIdentityOf } from '../functions/determiner'
+import { TokenType } from '../enums/Liquidity'
+import { Environment } from '../enums/Environment'
 
 export class Pair {
   public readonly liquidityToken: Token
   private readonly tokenAmounts: [CurrencyAmount<Token>, CurrencyAmount<Token>]
 
-  public static getAddress(tokenA: Token, tokenB: Token): string {
+  public static getAddress(
+    tokenA: Token,
+    tokenB: Token,
+    isXataPair: boolean = false,
+    xataEnvIsProduction: boolean | undefined = undefined
+  ): string {
+    const env = xataEnvIsProduction ? Environment.PRODUCTION : Environment.STAGING
+    const factoryAddress = factoryAddressOf(tokenA.chainId, env)
     return computePairAddress({
-      factoryAddress: FACTORY_ADDRESS[tokenA.chainId],
+      factoryAddress,
       tokenA,
-      tokenB
+      tokenB,
+      isXataPair
     })
   }
 
-  public constructor(currencyAmountA: CurrencyAmount<Token>, currencyAmountB: CurrencyAmount<Token>) {
+  public constructor(
+    currencyAmountA: CurrencyAmount<Token>,
+    currencyAmountB: CurrencyAmount<Token>,
+    isXataPair: boolean = false,
+    xataEnvIsProduction: boolean | undefined = undefined
+  ) {
     const currencyAmounts = currencyAmountA.currency.sortsBefore(currencyAmountB.currency) // does safety checks
       ? [currencyAmountA, currencyAmountB]
       : [currencyAmountB, currencyAmountA]
+    const [tokenSymbol, tokenName] = tokenIdentityOf(!isXataPair ? TokenType.UNISWAP : TokenType.XATA)
     this.liquidityToken = new Token(
       currencyAmounts[0].currency.chainId,
-      Pair.getAddress(currencyAmounts[0].currency, currencyAmounts[1].currency),
+      Pair.getAddress(currencyAmounts[0].currency, currencyAmounts[1].currency, isXataPair, xataEnvIsProduction),
       18,
-      'UNI-V2',
-      'Uniswap V2'
+      // 'UNI-V2',
+      // 'Uniswap V2'
+      tokenSymbol,
+      tokenName
     )
     this.tokenAmounts = currencyAmounts as [CurrencyAmount<Token>, CurrencyAmount<Token>]
   }
