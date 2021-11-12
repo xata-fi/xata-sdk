@@ -11,7 +11,9 @@ export const USDC_ADDRESS: AddressMap = {
   [ChainId.HARMONY]: '0x985458E523dB3d53125813eD68c274899e9DfAb4',
   [ChainId.HECO]: '0x9362Bbef4B8313A8Aa9f0c9808B80577Aa26B73B',
   [ChainId.OKEX]: '0xc946DAf81b08146B1C7A8Da2A851Ddf2B3EAaf85',
-  [ChainId.XDAI]: '0xDDAfbb505ad214D7b80b1f830fcCc89B60fb7A83'
+  [ChainId.XDAI]: '0xDDAfbb505ad214D7b80b1f830fcCc89B60fb7A83',
+  [ChainId.MOONRIVER]: '0xE3F5a90F9cb311505cd691a46596599aA1A0AD7D',
+  [ChainId.ARBITRUM]: '0xff970a61a04b1ca14834a43f5de4533ebddb5cc8'
 }
 
 export const FACTORY_ADDRESS: { [env in Environment]: AddressMap } = {
@@ -28,7 +30,6 @@ export const FACTORY_ADDRESS: { [env in Environment]: AddressMap } = {
     [ChainId.XDAI]: '',
     [ChainId.BSC]: '0x5f8017621825BC10D63d15C3e863f893946781F7',
     [ChainId.BSC_TESTNET]: '',
-    [ChainId.ARBITRUM]: '',
     [ChainId.ARBITRUM_TESTNET]: '',
     [ChainId.MOONBEAM_TESTNET]: '',
     [ChainId.AVALANCHE]: '',
@@ -41,7 +42,9 @@ export const FACTORY_ADDRESS: { [env in Environment]: AddressMap } = {
     [ChainId.OKEX_TESTNET]: '',
     [ChainId.CELO]: '',
     [ChainId.PALM]: '',
-    [ChainId.PALM_TESTNET]: ''
+    [ChainId.PALM_TESTNET]: '',
+    [ChainId.MOONRIVER]: '0x5f8017621825BC10D63d15C3e863f893946781F7',
+    [ChainId.ARBITRUM]: '0x5f8017621825BC10D63d15C3e863f893946781F7'
   },
   [Environment.STAGING]: {
     [ChainId.MAINNET]: '0x5f8017621825BC10D63d15C3e863f893946781F7',
@@ -88,7 +91,6 @@ export const ROUTER_ADDRESS: { [env in Environment]: AddressMap } = {
     [ChainId.XDAI]: '',
     [ChainId.BSC]: '0xe4C5Cf259351d7877039CBaE0e7f92EB2Ab017EB',
     [ChainId.BSC_TESTNET]: '',
-    [ChainId.ARBITRUM]: '',
     [ChainId.ARBITRUM_TESTNET]: '',
     [ChainId.MOONBEAM_TESTNET]: '',
     [ChainId.AVALANCHE]: '',
@@ -101,7 +103,9 @@ export const ROUTER_ADDRESS: { [env in Environment]: AddressMap } = {
     [ChainId.OKEX_TESTNET]: '',
     [ChainId.CELO]: '',
     [ChainId.PALM]: '',
-    [ChainId.PALM_TESTNET]: ''
+    [ChainId.PALM_TESTNET]: '',
+    [ChainId.MOONRIVER]: '0xe4C5Cf259351d7877039CBaE0e7f92EB2Ab017EB',
+    [ChainId.ARBITRUM]: '0xe4C5Cf259351d7877039CBaE0e7f92EB2Ab017EB'
   },
   [Environment.STAGING]: {
     [ChainId.MAINNET]: '0xe4C5Cf259351d7877039CBaE0e7f92EB2Ab017EB',
@@ -543,7 +547,8 @@ export const WNATIVE_ADDRESS: AddressMap = {
   [ChainId.OKEX]: '0x8F8526dbfd6E38E3D8307702cA8469Bae6C56C15',
   [ChainId.OKEX_TESTNET]: '0x2219845942d28716c0F7C605765fABDcA1a7d9E0',
   [ChainId.CELO]: '0x471EcE3750Da237f93B8E339c536989b8978a438',
-  [ChainId.PALM]: '0xF98cABF0a963452C5536330408B2590567611a71'
+  [ChainId.PALM]: '0xF98cABF0a963452C5536330408B2590567611a71',
+  [ChainId.MOONRIVER]: '0x98878b06940ae243284ca214f92bb71a2b032b8a'
 }
 
 export const MASTERCHEF_V2_ADDRESS: AddressMap = {
@@ -592,5 +597,6 @@ export const MULTICALL2_ADDRESS: AddressMap = {
   [ChainId.HARMONY_TESTNET]: '',
   [ChainId.OKEX]: '0xF4d73326C13a4Fc5FD7A064217e12780e9Bd62c3',
   [ChainId.OKEX_TESTNET]: '',
-  [ChainId.PALM]: '0x0769fd68dFb93167989C6f7254cd0D766Fb2841F'
+  [ChainId.PALM]: '0x0769fd68dFb93167989C6f7254cd0D766Fb2841F',
+  [ChainId.MOONRIVER]: '0x270f2F35bED92B7A59eA5F08F6B3fd34c8D9D9b5'
 }

@@ -14,7 +14,9 @@ export const USDC: TokenMap = {
   [ChainId.HARMONY]: new Token(ChainId.HARMONY, USDC_ADDRESS[ChainId.HARMONY], 6, 'USDC', 'USD Coin'),
   [ChainId.HECO]: new Token(ChainId.HECO, USDC_ADDRESS[ChainId.HECO], 6, 'USDC', 'USD Coin'),
   [ChainId.OKEX]: new Token(ChainId.OKEX, USDC_ADDRESS[ChainId.OKEX], 18, 'USDC', 'USD Coin'),
-  [ChainId.XDAI]: new Token(ChainId.XDAI, USDC_ADDRESS[ChainId.XDAI], 6, 'USDC', 'USD Coin')
+  [ChainId.XDAI]: new Token(ChainId.XDAI, USDC_ADDRESS[ChainId.XDAI], 6, 'USDC', 'USD Coin'),
+  [ChainId.ARBITRUM]: new Token(ChainId.ARBITRUM, USDC_ADDRESS[ChainId.ARBITRUM], 6, 'USDC', 'USD Coin'),
+  [ChainId.MOONRIVER]: new Token(ChainId.MOONRIVER, USDC_ADDRESS[ChainId.MOONRIVER], 6, 'USDC', 'USD Coin')
 }
 
 export const WETH9: TokenMap = {
@@ -122,5 +124,12 @@ export const WNATIVE: TokenMap = {
     'Wrapped OKExChain'
   ),
   [ChainId.CELO]: new Token(ChainId.CELO, WNATIVE_ADDRESS[ChainId.CELO], 18, 'CELO', 'Celo'),
-  [ChainId.PALM]: new Token(ChainId.PALM, WNATIVE_ADDRESS[ChainId.PALM], 18, 'WPALM', 'Wrapped Palm')
+  [ChainId.PALM]: new Token(ChainId.PALM, WNATIVE_ADDRESS[ChainId.PALM], 18, 'WPALM', 'Wrapped Palm'),
+  [ChainId.MOONRIVER]: new Token(
+    ChainId.MOONRIVER,
+    WNATIVE_ADDRESS[ChainId.MOONRIVER],
+    18,
+    'WMOVR',
+    'Wrapped Moonriver'
+  )
 }

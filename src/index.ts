@@ -1,4 +1,5 @@
 import JSBI from 'jsbi'
+import Xata from './xata-api/xata'
 
 // Export JSBI
 export { JSBI }
@@ -14,6 +15,5 @@ export * from './types'
 export * from './utils/MultiRouterMath'
 export * from './limitorder'
 export * from './fetcher'
-import Xata from './xata-api/xata'
 
 export { Xata }

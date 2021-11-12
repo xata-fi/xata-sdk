@@ -31,7 +31,6 @@
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
       "yarn lint",
-      "yarn test --bail --passWithNoTests --findRelatedTests",
       "prettier --write"
     ],
     "*.md": "prettier --write"
