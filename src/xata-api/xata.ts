@@ -1,9 +1,8 @@
 import { BigNumber, ethers, utils, constants as ethersConstants, Signature } from 'ethers'
 import * as eip712 from './lib/eip712'
 import * as constants from './lib/constants'
-import { calculateFee, calculateFeeOnMatic } from './lib/fee'
+import { calculateFee, calculateFeeThenConvert } from './lib/fee'
 import { JsonRpcProvider } from '@ethersproject/providers'
-const { splitSignature, verifyTypedData } = utils
 import { abi as RouterAbi } from '../abis/ConveyorV2Router01.json'
 import { abi as FactoryAbi } from '../abis/ConveyorV2Factory.json'
 import { abi as PairAbi } from '../abis/ConveyorV2Pair.json'
@@ -12,6 +11,7 @@ import { Environment, ChainId } from '../enums'
 import { RELAYER_ENDPOINT_MAP } from './lib/relayer'
 import { SignatureLike } from '@ethersproject/bytes'
 import { verifyMetaTxnResponse } from './lib/event-listener'
+const { splitSignature, verifyTypedData } = utils
 
 const zeroAddress = ethersConstants.AddressZero
 
@@ -41,7 +41,7 @@ export default class Xata {
     this.factoryContract = new ethers.Contract(constants.FACTORY_ADDRESS, FactoryAbi, provider)
     this.routerContract = new ethers.Contract(constants.ROUTER_ADDRESS, RouterAbi, provider)
     this.geodeEndpoint = RELAYER_ENDPOINT_MAP[env][this.chainId]
-    if (this.geodeEndpoint.length == 0) {
+    if (this.geodeEndpoint.length === 0) {
       throw new Error(`Chain ID ${this.chainId} not supported`)
     }
   }
@@ -97,10 +97,16 @@ export default class Xata {
 
     switch (this.chainId) {
       case ChainId.MATIC:
-        maxTokenFee = await calculateFeeOnMatic(this.feeToken!.address, tokenDecimals, txnFee)
+        maxTokenFee = await calculateFeeThenConvert(this.chainId, this.feeToken!.address, tokenDecimals, txnFee)
+        break
+      case ChainId.MOONRIVER:
+        maxTokenFee = await calculateFeeThenConvert(this.chainId, this.feeToken!.address, tokenDecimals, txnFee)
         break
       case ChainId.BSC:
         maxTokenFee = await calculateFee(this.chainId, this.feeToken!.address, tokenDecimals, txnFee, 'bnb')
+        break
+      case ChainId.ARBITRUM:
+        maxTokenFee = await calculateFee(this.chainId, this.feeToken!.address, tokenDecimals, txnFee, 'eth')
         break
     }
 

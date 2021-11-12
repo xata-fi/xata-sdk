@@ -1,11 +1,11 @@
 import { BigNumber, Signature, utils } from 'ethers'
-const { keccak256, defaultAbiCoder, toUtf8Bytes, solidityPack } = utils
 import {
   encodeAddLiquidity,
   encodeSwapExactTokensForTokens,
   encodeSwapTokensForExactTokens,
   encodeRemoveLiquidityWithPermit
 } from './functionEncoder'
+const { keccak256, defaultAbiCoder, toUtf8Bytes, solidityPack } = utils
 
 // EIP712 Types
 export const DomainType = [
