@@ -44,7 +44,7 @@ export const RELAYER_ENDPOINT_MAP: { [env in Environment]: AddressMap } = {
     [ChainId.XDAI]: '',
     [ChainId.BSC]: 'https://gtoken-geode-staging.ata.network',
     [ChainId.BSC_TESTNET]: 'https://gtoken-geode-staging.ata.network',
-    [ChainId.ARBITRUM]: '',
+    [ChainId.ARBITRUM]: 'https://gtoken-geode-staging.ata.network',
     [ChainId.ARBITRUM_TESTNET]: '',
     [ChainId.MOONBEAM_TESTNET]: '',
     [ChainId.AVALANCHE]: '',
@@ -57,6 +57,7 @@ export const RELAYER_ENDPOINT_MAP: { [env in Environment]: AddressMap } = {
     [ChainId.OKEX_TESTNET]: '',
     [ChainId.CELO]: '',
     [ChainId.PALM]: '',
-    [ChainId.PALM_TESTNET]: ''
+    [ChainId.PALM_TESTNET]: '',
+    [ChainId.MOONRIVER]: 'https://gtoken-geode-staging.ata.network'
   }
 }
