@@ -6,7 +6,7 @@ export const PRICE_API_PREFIX: { [chainId in ChainId]?: string } = {
   [ChainId.BSC]: 'https://api.coingecko.com/api/v3/simple/token_price/binance-smart-chain?',
   [ChainId.MATIC]: 'https://api.coingecko.com/api/v3/simple/token_price/polygon-pos?',
   [ChainId.MAINNET]: 'https://api.coingecko.com/api/v3/simple/token_price/ethereum?',
-  [ChainId.ARBITRUM]: 'https://api.coingecko.com/api/v3/simple/token_price/ethereum?',
+  [ChainId.ARBITRUM]: 'https://api.coingecko.com/api/v3/simple/token_price/arbitrum-one?',
   [ChainId.MOONRIVER]: 'https://api.coingecko.com/api/v3/simple/token_price/moonriver?'
 }
 
@@ -47,9 +47,7 @@ export async function calculateFee(
     const { bnb } = await data
     ethPerToken = bnb
   } else {
-    throw new Error(
-      'Error: Unsupported native token. Use the calculateFeeOnMatic() method for calculating fees on the Matic network.'
-    )
+    throw new Error('Error: Unsupported native token. Try using the calculateFeeThenConvert() method.')
   }
   const factor = new JSBigNumber(10).pow(nativeTokenDecimals).div(new JSBigNumber(10).pow(tokenDecimals.toString()))
   const adjustedPrice = new JSBigNumber(ethPerToken).multipliedBy(factor) // WEI per token - adjusted for the token decimals
