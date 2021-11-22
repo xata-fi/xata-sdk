@@ -164,9 +164,11 @@ export default class Xata {
       console.log(requestOptions)
       const jsonRpcResponse = await fetch(this.geodeEndpoint, requestOptions)
       response = (await jsonRpcResponse.json()) as Response
+      if (response.result.success) {
+        response = await verifyMetaTxnResponse(this.provider!, response)
+      }
     } else {
       // send the txn directly
-      let res: Response
       try {
         const tx = await signer.sendTransaction({
           to: router!.address,
@@ -175,7 +177,7 @@ export default class Xata {
           gasPrice: price
         })
         await tx.wait()
-        res = {
+        response = {
           id: 1,
           jsonrpc: '2.0',
           result: {
@@ -186,7 +188,7 @@ export default class Xata {
         }
       } catch (e) {
         const err = e as Error
-        res = {
+        response = {
           id: 1,
           jsonrpc: '2.0',
           result: {
@@ -196,10 +198,6 @@ export default class Xata {
           }
         }
       }
-      response = res
-    }
-    if (response.result.success && metaIsEnabled) {
-      response = await verifyMetaTxnResponse(this.provider!, response)
     }
     console.log('response: ')
     console.log(response)
