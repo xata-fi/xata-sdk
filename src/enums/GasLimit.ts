@@ -1,0 +1,7 @@
+export enum GasLimit {
+  HOP,
+  SWAP,
+  CREATE_PAIR,
+  LIQUIDITY_ADD,
+  LIQUIDITY_REMOVE
+}

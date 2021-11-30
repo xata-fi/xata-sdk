@@ -164,9 +164,11 @@ export default class Xata {
       console.log(requestOptions)
       const jsonRpcResponse = await fetch(this.geodeEndpoint, requestOptions)
       response = (await jsonRpcResponse.json()) as Response
+      if (response.result.success) {
+        response = await verifyMetaTxnResponse(this.provider!, response)
+      }
     } else {
       // send the txn directly
-      let res: Response
       try {
         const tx = await signer.sendTransaction({
           to: router!.address,
@@ -175,7 +177,7 @@ export default class Xata {
           gasPrice: price
         })
         await tx.wait()
-        res = {
+        response = {
           id: 1,
           jsonrpc: '2.0',
           result: {
@@ -186,7 +188,7 @@ export default class Xata {
         }
       } catch (e) {
         const err = e as Error
-        res = {
+        response = {
           id: 1,
           jsonrpc: '2.0',
           result: {
@@ -196,10 +198,6 @@ export default class Xata {
           }
         }
       }
-      response = res
-    }
-    if (response.result.success && metaIsEnabled) {
-      response = await verifyMetaTxnResponse(this.provider!, response)
     }
     console.log('response: ')
     console.log(response)
@@ -228,14 +226,20 @@ export default class Xata {
     if (gasLimit) {
       limit = gasLimit
     } else if (pairExists) {
-      limit = BigNumber.from(constants.ADD_LIQUIDITY_GAS_LIMIT)
+      limit = BigNumber.from(
+        this.chainId === ChainId.ARBITRUM
+          ? constants.ARBITRUM_ADD_LIQUIDITY_GAS_LIMIT
+          : constants.ADD_LIQUIDITY_GAS_LIMIT
+      )
     } else {
-      limit = BigNumber.from(constants.CREATE_PAIR_GAS_LIMIT)
+      limit = BigNumber.from(
+        this.chainId === ChainId.ARBITRUM ? constants.ARBITRUM_CREATE_PAIR_GAS_LIMIT : constants.CREATE_PAIR_GAS_LIMIT
+      )
     }
 
     // trim gas price and gas limit
     let args: Array<any> = [...arguments]
-    if (gasLimit && gasPrice) {
+    if (gasPrice) {
       args = args.slice(0, -2)
     } else if (gasLimit) {
       args = args.slice(0, -1)
@@ -266,7 +270,9 @@ export default class Xata {
       if (gasLimit) {
         limit = gasLimit
       } else {
-        limit = BigNumber.from(constants.SWAP_GAS_LIMIT)
+        limit = BigNumber.from(
+          this.chainId === ChainId.ARBITRUM ? constants.ARBITRUM_SWAP_GAS_LIMIT : constants.SWAP_GAS_LIMIT
+        )
         if (_path.length >= 2) {
           limit = limit.add(BigNumber.from(constants.HOP_ADDITIONAL_GAS * (_path.length - 2)))
         }
@@ -306,7 +312,9 @@ export default class Xata {
       if (gasLimit) {
         limit = gasLimit
       } else {
-        limit = BigNumber.from(constants.SWAP_GAS_LIMIT)
+        limit = BigNumber.from(
+          this.chainId === ChainId.ARBITRUM ? constants.ARBITRUM_SWAP_GAS_LIMIT : constants.SWAP_GAS_LIMIT
+        )
         if (_path.length >= 2) {
           limit = limit.add(BigNumber.from(constants.HOP_ADDITIONAL_GAS * (_path.length - 2)))
         }
@@ -315,7 +323,7 @@ export default class Xata {
 
     // trim gas price and gas limit
     let args: Array<any> = [...arguments]
-    if (gasLimit && gasPrice) {
+    if (gasPrice) {
       args = args.slice(0, -2)
     } else if (gasLimit) {
       args = args.slice(0, -1)
@@ -385,11 +393,11 @@ export default class Xata {
 
   //     // trim gas price and gas limit
   //     let args: Array<any> = [...arguments];
-  //     if (gasLimit && gasPrice) {
-  //         args = args.slice(0, -2);
-  //     } else if (gasLimit) {
-  //         args = args.slice(0, -1);
-  //     }
+  // if (gasPrice) {
+  //   args = args.slice(0, -2)
+  // } else if (gasLimit) {
+  //   args = args.slice(0, -1)
+  // }
   //     args = args.filter((x) => x !== undefined);
 
   //     const sigStruct = {
@@ -471,7 +479,11 @@ export default class Xata {
       if (gasLimit) {
         limit = gasLimit
       } else {
-        limit = BigNumber.from(constants.REMOVE_LIQUIDITY_GAS_LIMIT)
+        limit = BigNumber.from(
+          this.chainId === ChainId.ARBITRUM
+            ? constants.ARBITRUM_REMOVE_LIQUIDITY_GAS_LIMIT
+            : constants.REMOVE_LIQUIDITY_GAS_LIMIT
+        )
       }
     } else {
       throw new Error('Pair does not exist.')
@@ -479,7 +491,7 @@ export default class Xata {
 
     // trim gas price and gas limit
     let args: Array<any> = [...arguments]
-    if (gasLimit && gasPrice) {
+    if (gasPrice) {
       args = args.slice(0, -2)
     } else if (gasLimit) {
       args = args.slice(0, -1)

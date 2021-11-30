@@ -73,7 +73,9 @@ export const FACTORY_ADDRESS: { [env in Environment]: AddressMap } = {
     [ChainId.OKEX_TESTNET]: '',
     [ChainId.CELO]: '',
     [ChainId.PALM]: '',
-    [ChainId.PALM_TESTNET]: ''
+    [ChainId.PALM_TESTNET]: '',
+    [ChainId.MOONRIVER]: '0x5f8017621825BC10D63d15C3e863f893946781F7',
+    [ChainId.ARBITRUM]: '0x5f8017621825BC10D63d15C3e863f893946781F7'
   }
 }
 
@@ -134,7 +136,9 @@ export const ROUTER_ADDRESS: { [env in Environment]: AddressMap } = {
     [ChainId.OKEX_TESTNET]: '',
     [ChainId.CELO]: '',
     [ChainId.PALM]: '',
-    [ChainId.PALM_TESTNET]: ''
+    [ChainId.PALM_TESTNET]: '',
+    [ChainId.MOONRIVER]: '0xe4C5Cf259351d7877039CBaE0e7f92EB2Ab017EB',
+    [ChainId.ARBITRUM]: '0xe4C5Cf259351d7877039CBaE0e7f92EB2Ab017EB'
   }
 }
 
