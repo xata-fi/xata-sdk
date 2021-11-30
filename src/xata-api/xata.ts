@@ -1,6 +1,7 @@
 import { BigNumber, ethers, utils, constants as ethersConstants, Signature } from 'ethers'
 import * as eip712 from './lib/eip712'
 import * as constants from './lib/constants'
+import { FACTORY_ADDRESS, ROUTER_ADDRESS } from '../constants'
 import { calculateFee, calculateFeeThenConvert } from './lib/fee'
 import { JsonRpcProvider } from '@ethersproject/providers'
 import { abi as RouterAbi } from '../abis/ConveyorV2Router01.json'
@@ -38,8 +39,8 @@ export default class Xata {
     this.chainId = (await provider.getNetwork()).chainId
     this.provider = provider
     this.feeToken = new ethers.Contract(feeTokenAddr, ERC20Abi, provider)
-    this.factoryContract = new ethers.Contract(constants.FACTORY_ADDRESS, FactoryAbi, provider)
-    this.routerContract = new ethers.Contract(constants.ROUTER_ADDRESS, RouterAbi, provider)
+    this.factoryContract = new ethers.Contract(FACTORY_ADDRESS, FactoryAbi, provider)
+    this.routerContract = new ethers.Contract(ROUTER_ADDRESS, RouterAbi, provider)
     this.geodeEndpoint = RELAYER_ENDPOINT_MAP[env][this.chainId]
     if (this.geodeEndpoint.length === 0) {
       throw new Error(`Chain ID ${this.chainId} not supported`)
@@ -51,7 +52,7 @@ export default class Xata {
       this.chainId === -1 ||
       this.feeToken === undefined ||
       this.geodeEndpoint === '' ||
-      !this.factoryContract === undefined ||
+      this.factoryContract === undefined ||
       this.routerContract === undefined ||
       this.provider === undefined
 
@@ -92,7 +93,6 @@ export default class Xata {
     const tokenDecimals = await this.feeToken!.decimals()
 
     // determine token gas price
-    // let maxTokenFee = parseUnits('10', tokenDecimals);
     let maxTokenFee = BigNumber.from(0)
 
     switch (this.chainId) {
