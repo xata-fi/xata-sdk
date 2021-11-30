@@ -12,7 +12,6 @@ export * from './router'
 export * from './enums'
 export * from './router'
 export * from './types'
-export * from './limitorder'
 export * from './fetcher'
 
 export { Xata }
