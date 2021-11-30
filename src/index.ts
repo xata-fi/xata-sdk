@@ -10,7 +10,6 @@ export * from './entities'
 export * from './functions'
 export * from './enums'
 export * from './types'
-export * from './fetcher'
 
 export { Xata }
 export {
