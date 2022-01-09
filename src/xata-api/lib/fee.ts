@@ -64,6 +64,7 @@ async function fetchPrice(
  * @param gasFee the transaction fee
  * @param nativeToken the native token of the network. 'eth', 'bsc' etc
  * @param nativeTokenDecimals defaults at 18
+ * @param env Deployment environment of the app. Default is production
  * @return the total amount of tokens to be paid for the transaction fee
  */
 export async function calculateFee(
@@ -72,9 +73,10 @@ export async function calculateFee(
   tokenDecimals: BigNumber,
   gasFee: BigNumber,
   nativeToken: string,
-  nativeTokenDecimals = 18
+  nativeTokenDecimals = 18,
+  env: Environment = Environment.PRODUCTION
 ): Promise<BigNumber> {
-  const response = await fetchPrice(chainId, token, nativeToken)
+  const response = await fetchPrice(chainId, token, nativeToken, env)
   const data: Promise<any> = response.json().then(res => {
     if (Object.keys(res).length === 0) {
       throw new Error('Error: Unsupported fee token.')
@@ -108,15 +110,17 @@ export async function calculateFee(
  * @param token the payment token
  * @param tokenDecimals the decimals of the token
  * @param gasFee the transaction fee
+ * @param env Deployment environment of the app. Default is production.
  * @returns the total amount of tokens to be paid for the transaction fee
  */
 export async function calculateFeeThenConvert(
   chainId: ChainId,
   token: string,
   tokenDecimals: BigNumber,
-  gasFee: BigNumber
+  gasFee: BigNumber,
+  env: Environment = Environment.PRODUCTION
 ): Promise<BigNumber> {
-  const response = await fetchPrice(chainId, token, 'bnb')
+  const response = await fetchPrice(chainId, token, 'bnb', env)
   const data: Promise<any> = response.json().then(res => {
     if (Object.keys(res).length === 0) {
       throw new Error('Error: Unsupported fee token.')
