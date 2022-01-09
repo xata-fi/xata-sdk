@@ -58,7 +58,7 @@ function getPriceApiUrl(host: string, network: string, query: PriceQueryString):
  * @param env Deployment environment of the app. Default is production.
  * @return Price API promise
  */
-async function fetchPrice(
+export async function fetchPrice(
   chainId: ChainId,
   tokens: string | string[],
   base: string = 'usd',

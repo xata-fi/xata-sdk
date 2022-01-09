@@ -15,4 +15,4 @@ export * from './types'
 // Export XATA API
 export { Xata }
 export * from './xata-api/lib/constants'
-export { calculateFee, calculateFeeThenConvert } from './xata-api/lib/fee'
+export { fetchPrice, calculateFee, calculateFeeThenConvert } from './xata-api/lib/fee'
