@@ -99,16 +99,44 @@ export default class Xata {
 
     switch (this.chainId) {
       case ChainId.MATIC:
-        maxTokenFee = await calculateFeeThenConvert(this.chainId, this.feeToken!.address, tokenDecimals, txnFee, this._e)
+        maxTokenFee = await calculateFeeThenConvert(
+          this.chainId,
+          this.feeToken!.address,
+          tokenDecimals,
+          txnFee,
+          this._e
+        )
         break
       case ChainId.MOONRIVER:
-        maxTokenFee = await calculateFeeThenConvert(this.chainId, this.feeToken!.address, tokenDecimals, txnFee, this._e)
+        maxTokenFee = await calculateFeeThenConvert(
+          this.chainId,
+          this.feeToken!.address,
+          tokenDecimals,
+          txnFee,
+          this._e
+        )
         break
       case ChainId.BSC:
-        maxTokenFee = await calculateFee(this.chainId, this.feeToken!.address, tokenDecimals, txnFee, 'bnb', 18, this._e)
+        maxTokenFee = await calculateFee(
+          this.chainId,
+          this.feeToken!.address,
+          tokenDecimals,
+          txnFee,
+          'bnb',
+          18,
+          this._e
+        )
         break
       case ChainId.ARBITRUM:
-        maxTokenFee = await calculateFee(this.chainId, this.feeToken!.address, tokenDecimals, txnFee, 'eth', 18, this._e)
+        maxTokenFee = await calculateFee(
+          this.chainId,
+          this.feeToken!.address,
+          tokenDecimals,
+          txnFee,
+          'eth',
+          18,
+          this._e
+        )
         break
     }
 
