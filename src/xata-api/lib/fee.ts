@@ -1,13 +1,59 @@
 import { BigNumber } from '@ethersproject/bignumber'
-import { ChainId } from '../../enums'
 import { BigNumber as JSBigNumber } from 'bignumber.js'
+import { ChainId, Environment } from '../../enums'
 
-export const PRICE_API_PREFIX: { [chainId in ChainId]?: string } = {
-  [ChainId.BSC]: 'https://api.coingecko.com/api/v3/simple/token_price/binance-smart-chain?',
-  [ChainId.MATIC]: 'https://api.coingecko.com/api/v3/simple/token_price/polygon-pos?',
-  [ChainId.MAINNET]: 'https://api.coingecko.com/api/v3/simple/token_price/ethereum?',
-  [ChainId.ARBITRUM]: 'https://api.coingecko.com/api/v3/simple/token_price/arbitrum-one?',
-  [ChainId.MOONRIVER]: 'https://api.coingecko.com/api/v3/simple/token_price/moonriver?'
+export const BASE_URL: { [env in Environment]: string } = {
+  [Environment.STAGING]: 'https://8e9e-2406-da18-c6c-300-d339-7160-2052-7937.ngrok.io/price?network=',
+  [Environment.PRODUCTION]: 'https://xata-coingecko.automata.team/price?network='
+}
+
+const NETWORK_ID: { [chainId in ChainId]?: string } = {
+  [ChainId.BSC]: 'binance-smart-chain',
+  [ChainId.MATIC]: 'polygon-pos',
+  [ChainId.MAINNET]: 'ethereum',
+  [ChainId.ARBITRUM]: 'arbitrum-one',
+  [ChainId.MOONRIVER]: 'moonriver'
+}
+
+const COIN_ID: { [chainId in ChainId]?: string } = {
+  [ChainId.MATIC]: 'matic-network',
+  [ChainId.MOONRIVER]: 'moonriver'
+}
+
+// export const PRICE_API_PREFIX: { [chainId in ChainId]?: string } = {
+//   [ChainId.BSC]: 'https://api.coingecko.com/api/v3/simple/token_price/binance-smart-chain?',
+//   [ChainId.MATIC]: 'https://api.coingecko.com/api/v3/simple/token_price/polygon-pos?',
+//   [ChainId.MAINNET]: 'https://api.coingecko.com/api/v3/simple/token_price/ethereum?',
+//   [ChainId.ARBITRUM]: 'https://api.coingecko.com/api/v3/simple/token_price/arbitrum-one?',
+//   [ChainId.MOONRIVER]: 'https://api.coingecko.com/api/v3/simple/token_price/moonriver?'
+// }
+
+// type Price = {
+//   [tokenAddress: string]: {
+//     [baseSymbol: string]: number
+//   }
+// }
+
+/**
+ * Fetch price API and return the result
+ * @param chainId The chain id of the network.
+ * @param tokens The token address(es) to check.
+ * @param base Crypto token or world currency symbol which will be used to compare the tokens price. Default is usd.
+ * @param env Deployment environment of the app. Default is production.
+ * @return Price API promise
+ */
+async function fetchPrice(
+  chainId: ChainId,
+  tokens: string | string[],
+  base: string = 'usd',
+  env: Environment = Environment.PRODUCTION
+) {
+  if (!NETWORK_ID[chainId]) {
+    throw new Error(`Error: API support for the provided chainId ${chainId} is not supported`)
+  }
+
+  const tokensQuery = Array.isArray(tokens) ? encodeURIComponent(tokens.join(',')) : tokens
+  return fetch(`${BASE_URL[env]}${NETWORK_ID[chainId]}&tokens=${tokensQuery}&base=${base}`)
 }
 
 /**
@@ -28,17 +74,14 @@ export async function calculateFee(
   nativeToken: string,
   nativeTokenDecimals = 18
 ): Promise<BigNumber> {
-  const priceApiPrefix = PRICE_API_PREFIX[chainId]
-  if (!priceApiPrefix) {
-    throw new Error(`Error: API support for the provided chainId ${chainId} is not supported`)
-  }
-  const response = await fetch(`${priceApiPrefix}contract_addresses=${token}&vs_currencies=${nativeToken}`)
+  const response = await fetchPrice(chainId, token, nativeToken)
   const data: Promise<any> = response.json().then(res => {
     if (Object.keys(res).length === 0) {
       throw new Error('Error: Unsupported fee token.')
     }
     return Object.values(res)[0]
   })
+
   let ethPerToken: number
   if (nativeToken === 'eth') {
     const { eth } = await data
@@ -49,11 +92,13 @@ export async function calculateFee(
   } else {
     throw new Error('Error: Unsupported native token. Try using the calculateFeeThenConvert() method.')
   }
+
   const factor = new JSBigNumber(10).pow(nativeTokenDecimals).div(new JSBigNumber(10).pow(tokenDecimals.toString()))
   const adjustedPrice = new JSBigNumber(ethPerToken).multipliedBy(factor) // WEI per token - adjusted for the token decimals
   const fee = new JSBigNumber(gasFee.toString()).div(adjustedPrice)
   const roundedFee = fee.toFixed(0, 2)
   const max = parseInt(roundedFee) < 1 ? '1' : roundedFee
+
   return BigNumber.from(max)
 }
 
@@ -71,21 +116,7 @@ export async function calculateFeeThenConvert(
   tokenDecimals: BigNumber,
   gasFee: BigNumber
 ): Promise<BigNumber> {
-  let priceApiPrefix: string
-  let network: string
-  switch (chainId) {
-    case ChainId.MATIC:
-      priceApiPrefix = PRICE_API_PREFIX[ChainId.MATIC]!
-      network = 'matic-network'
-      break
-    case ChainId.MOONRIVER:
-      priceApiPrefix = PRICE_API_PREFIX[ChainId.MOONRIVER]!
-      network = 'moonriver'
-      break
-    default:
-      throw new Error(`Error: API support for the provided chainId ${chainId} is not supported`)
-  }
-  const response = await fetch(`${priceApiPrefix}contract_addresses=${token}&vs_currencies=bnb`)
+  const response = await fetchPrice(chainId, token, 'bnb')
   const data: Promise<any> = response.json().then(res => {
     if (Object.keys(res).length === 0) {
       throw new Error('Error: Unsupported fee token.')
@@ -96,15 +127,18 @@ export async function calculateFeeThenConvert(
   const adjustedBnbPerToken = new JSBigNumber(bnb)
     .multipliedBy(new JSBigNumber(10).pow(18))
     .div(new JSBigNumber(10).pow(tokenDecimals.toString()))
-  const nativeBnbRatioApi = `https://api.coingecko.com/api/v3/simple/price?ids=${network}&vs_currencies=bnb`
+
+  const coinId = COIN_ID[chainId]
+  const nativeBnbRatioApi = `https://api.coingecko.com/api/v3/simple/price?ids=${coinId}&vs_currencies=bnb`
   const nativeResponse = await fetch(nativeBnbRatioApi)
   const nativeResponseMap = await nativeResponse.json()
-  const nativeData = nativeResponseMap[network]
+  const nativeData = nativeResponseMap[coinId!]
   const nativeBnb = nativeData['bnb']
   const bnbPerNative = new JSBigNumber(nativeBnb)
 
   const fee = new JSBigNumber(gasFee.toString()).div(adjustedBnbPerToken.div(bnbPerNative))
   const roundedFee = fee.toFixed(0, 2)
   const max = parseInt(roundedFee) < 1 ? '1' : roundedFee
+
   return BigNumber.from(max)
 }
