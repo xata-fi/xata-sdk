@@ -34,6 +34,22 @@ const COIN_ID: { [chainId in ChainId]?: string } = {
 //   }
 // }
 
+type PriceQueryString = {
+  tokens: string
+  base: string
+}
+
+/**
+ * Get the endpoint of Price API based on supplied params
+ * @param host
+ * @param network
+ * @param query
+ */
+function getPriceApiUrl(host: string, network: string, query: PriceQueryString): string {
+  const { tokens, base } = query
+  return `${host}?network=${network}&tokens=${tokens}&base=${base}`
+}
+
 /**
  * Fetch price API and return the result
  * @param chainId The chain id of the network.
@@ -48,12 +64,18 @@ async function fetchPrice(
   base: string = 'usd',
   env: Environment = Environment.PRODUCTION
 ) {
-  if (!NETWORK_ID[chainId]) {
+  const network = NETWORK_ID[chainId]
+  if (!network) {
     throw new Error(`Error: API support for the provided chainId ${chainId} is not supported`)
   }
 
-  const tokensQuery = Array.isArray(tokens) ? encodeURIComponent(tokens.join(',')) : tokens
-  return fetch(`${BASE_URL[env]}${NETWORK_ID[chainId]}&tokens=${tokensQuery}&base=${base}`)
+  const host = BASE_URL[env]
+  const query: PriceQueryString = {
+    tokens: Array.isArray(tokens) ? encodeURIComponent(tokens.join(',')) : tokens,
+    base
+  }
+
+  return fetch(getPriceApiUrl(host, network, query))
 }
 
 /**
