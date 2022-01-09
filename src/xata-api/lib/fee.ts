@@ -3,8 +3,8 @@ import { BigNumber as JSBigNumber } from 'bignumber.js'
 import { ChainId, Environment } from '../../enums'
 
 export const BASE_URL: { [env in Environment]: string } = {
-  [Environment.STAGING]: 'https://8e9e-2406-da18-c6c-300-d339-7160-2052-7937.ngrok.io/price?network=',
-  [Environment.PRODUCTION]: 'https://xata-coingecko.automata.team/price?network='
+  [Environment.STAGING]: 'https://8e9e-2406-da18-c6c-300-d339-7160-2052-7937.ngrok.io/price',
+  [Environment.PRODUCTION]: 'https://xata-coingecko.automata.team/price'
 }
 
 const NETWORK_ID: { [chainId in ChainId]?: string } = {
