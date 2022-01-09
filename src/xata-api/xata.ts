@@ -33,9 +33,11 @@ export default class Xata {
   feeToken?: ethers.Contract
   routerContract?: ethers.Contract
   factoryContract?: ethers.Contract
+  _e?: Environment
 
   // Must be called immediately after instantiating the class
   async init(provider: JsonRpcProvider, feeTokenAddr: string, env: Environment = Environment.PRODUCTION) {
+    this._e = env
     this.chainId = (await provider.getNetwork()).chainId
     this.provider = provider
     this.feeToken = new ethers.Contract(feeTokenAddr, ERC20Abi, provider)
@@ -97,16 +99,16 @@ export default class Xata {
 
     switch (this.chainId) {
       case ChainId.MATIC:
-        maxTokenFee = await calculateFeeThenConvert(this.chainId, this.feeToken!.address, tokenDecimals, txnFee)
+        maxTokenFee = await calculateFeeThenConvert(this.chainId, this.feeToken!.address, tokenDecimals, txnFee, this._e)
         break
       case ChainId.MOONRIVER:
-        maxTokenFee = await calculateFeeThenConvert(this.chainId, this.feeToken!.address, tokenDecimals, txnFee)
+        maxTokenFee = await calculateFeeThenConvert(this.chainId, this.feeToken!.address, tokenDecimals, txnFee, this._e)
         break
       case ChainId.BSC:
-        maxTokenFee = await calculateFee(this.chainId, this.feeToken!.address, tokenDecimals, txnFee, 'bnb')
+        maxTokenFee = await calculateFee(this.chainId, this.feeToken!.address, tokenDecimals, txnFee, 'bnb', 18, this._e)
         break
       case ChainId.ARBITRUM:
-        maxTokenFee = await calculateFee(this.chainId, this.feeToken!.address, tokenDecimals, txnFee, 'eth')
+        maxTokenFee = await calculateFee(this.chainId, this.feeToken!.address, tokenDecimals, txnFee, 'eth', 18, this._e)
         break
     }
 
