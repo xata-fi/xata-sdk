@@ -10,7 +10,8 @@ import {
   Okex,
   Palm,
   xDai,
-  Movr
+  Movr,
+  AltLayer
 } from '../entities/Native'
 
 import { ChainId } from '../enums'
@@ -40,5 +41,6 @@ export const NATIVE = {
   [ChainId.CELO]: Celo.onChain(ChainId.CELO),
   [ChainId.PALM]: Palm.onChain(ChainId.PALM),
   [ChainId.ARBITRUM]: Ether.onChain(ChainId.ARBITRUM),
-  [ChainId.MOONRIVER]: Movr.onChain(ChainId.MOONRIVER)
+  [ChainId.MOONRIVER]: Movr.onChain(ChainId.MOONRIVER),
+  [ChainId.ALTLAYER_AUTOMATA]: AltLayer.onChain(ChainId.ALTLAYER_AUTOMATA)
 }
