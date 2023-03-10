@@ -138,6 +138,9 @@ export default class Xata {
           this._e
         )
         break
+      case ChainId.ALTLAYER_AUTOMATA:
+        maxTokenFee = BigNumber.from(0)
+        break
     }
 
     // fetch router info
