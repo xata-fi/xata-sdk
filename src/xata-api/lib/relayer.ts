@@ -29,7 +29,8 @@ export const RELAYER_ENDPOINT_MAP: { [env in Environment]: AddressMap } = {
     [ChainId.OKEX_TESTNET]: '',
     [ChainId.CELO]: '',
     [ChainId.PALM]: '',
-    [ChainId.PALM_TESTNET]: ''
+    [ChainId.PALM_TESTNET]: '',
+    [ChainId.ALTLAYER_AUTOMATA]: 'https://conveyor-prod-alt.ata.network'
   },
   [Environment.STAGING]: {
     [ChainId.MAINNET]: 'https://gtoken-geode-staging.ata.network',
@@ -58,6 +59,7 @@ export const RELAYER_ENDPOINT_MAP: { [env in Environment]: AddressMap } = {
     [ChainId.CELO]: '',
     [ChainId.PALM]: '',
     [ChainId.PALM_TESTNET]: '',
-    [ChainId.MOONRIVER]: 'https://gtoken-geode-staging.ata.network'
+    [ChainId.MOONRIVER]: 'https://gtoken-geode-staging.ata.network',
+    [ChainId.ALTLAYER_AUTOMATA]: 'https://conveyor-prod-alt.ata.network'
   }
 }
